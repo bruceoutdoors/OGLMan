@@ -26,6 +26,8 @@ private:
     std::vector<Mesh*> shapes;
     Buffer *vertex_buffer;
     Buffer *index_buffer;
+
+    bool is_setup;
 };
 
 #endif // BUFFERMAN_H

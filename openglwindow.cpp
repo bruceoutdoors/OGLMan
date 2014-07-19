@@ -4,12 +4,24 @@
 #include <glm/gtc/matrix_transform.hpp>
 
 using glm::vec3;
+using glm::vec4;
 
 OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Window(mode, title)
 {
     m_title = title;
     m_mode = mode;
     m_fullscreen = false;
+
+    lightPosition = vec3(0.0f, 1.0f, 1.0f);
+    ambientLight = vec4(0.05f, 0.05f, 0.05f ,1.0f);
+
+    shaderman = new ShaderMan("D:/Libraries/Documents/Qt/sfml-opengl/shaders/default");
+    bufferman = new BufferMan();
+    camera = new Camera();
+
+    eyePositionWorldUniformLocation = shaderman->getUniformLoc("eyePositionWorld");
+    ambientLightUniformLocation = shaderman->getUniformLoc("ambientLight");
+    lightPositionUniformLocation = shaderman->getUniformLoc("lightPosition");
 }
 
 OpenGLWindow::~OpenGLWindow()
@@ -25,13 +37,18 @@ void OpenGLWindow::toggleFullscreen()
 
     if (m_fullscreen) {
         create(sf::VideoMode::getDesktopMode(), m_title, sf::Style::Fullscreen);
-        setup();
         resizeGL(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
     } else {
         create(m_mode, m_title, sf::Style::Resize | sf::Style::Close);
-        setup();
         resizeGL(m_mode.width, m_mode.height);
     }
+
+    // have to setup OpenGL again, and relink the static pointers
+    setupGL();
+
+    // recreating the window causes the buffers to get cleared so we need to
+    // add the data back again.
+    bufferman->setupBuffers();
 }
 
 void OpenGLWindow::run()
@@ -46,31 +63,22 @@ void OpenGLWindow::run()
 
 void OpenGLWindow::setup()
 {
-    glewInit();
-
-    glEnable(GL_DEPTH_TEST);
-    glEnable(GL_CULL_FACE);
-
-    std::string path = "D:/Libraries/Documents/Qt/sfml-opengl/shaders/default";
-    shaderman = new ShaderMan(path);
-    bufferman = new BufferMan();
-    camera = new Camera();
-
-    eyePositionWorldUniformLocation = shaderman->getUniformLoc("eyePositionWorld");
-    ambientLightUniformLocation = shaderman->getUniformLoc("ambientLight");
-    lightPositionUniformLocation = shaderman->getUniformLoc("lightPosition");
-
-    lightPosition = vec3(0.0f, 1.0f, 1.0f);
-    ambientLight = vec4(0.05f, 0.05f, 0.05f ,1.0f);
-
-    Mesh::setShaderMan(shaderman);
-    Mesh::setBufferMan(bufferman);
-    Mesh::setCamera(camera);
+    setupGL();
 
     init();
 
     bufferman->setupBuffers();
     resizeGL(getSize().x, getSize().y);
+}
+
+void OpenGLWindow::setupGL()
+{
+    glEnable(GL_DEPTH_TEST);
+    glEnable(GL_CULL_FACE);
+
+    Mesh::setShaderMan(shaderman);
+    Mesh::setBufferMan(bufferman);
+    Mesh::setCamera(camera);
 }
 
 void OpenGLWindow::renderScene()

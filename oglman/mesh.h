@@ -47,6 +47,7 @@ public:
 
     GLuint getVao() const;
     void setVao(GLuint v);
+    void deleteVao();
 
     void setDrawMode(GLenum mode);
     void setWorldMatrix(mat4 mat);

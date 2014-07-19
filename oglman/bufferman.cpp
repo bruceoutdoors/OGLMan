@@ -11,6 +11,7 @@ BufferMan::BufferMan()
     index_buffer_size = 0;
     vertex_buffer_size = 0;
     num_vertices = 0;
+    is_setup = false;
 }
 
 BufferMan::~BufferMan()
@@ -31,10 +32,18 @@ GLuint BufferMan::getTotalVectices() const
 
 void BufferMan::setupBuffers()
 {
-    for(Mesh *s : shapes) {
-        s->store();
-        index_buffer_size += s->getIndexBufferSize();
-        vertex_buffer_size += s->getVertexBufferSize();
+    if(!is_setup) {
+        for(Mesh *s : shapes) {
+            s->store();
+            index_buffer_size += s->getIndexBufferSize();
+            vertex_buffer_size += s->getVertexBufferSize();
+            num_vertices += s->getNumVertices();
+        }
+    } else {
+        // calling this function past the 1st time will readd the data
+        // to the graphics card
+        delete vertex_buffer;
+        delete index_buffer;
     }
 
     vertex_buffer = new Buffer(GL_ARRAY_BUFFER, vertex_buffer_size);
@@ -58,9 +67,11 @@ void BufferMan::setupBuffers()
                     s->getIndexBufferSize());
         s->setIndexBufferOffset(offset);
 
-        num_vertices += s->getNumVertices();
+        if(is_setup) s->deleteVao();
         s->setVao(setupVAO(s));
     }
+
+    if(!is_setup) is_setup = true;
 }
 
 GLuint BufferMan::setupVAO(Mesh *s)

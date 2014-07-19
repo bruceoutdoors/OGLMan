@@ -27,7 +27,7 @@ Mesh::Mesh()
 
 Mesh::~Mesh()
 {
-    glDeleteVertexArrays(1, &vao);
+    deleteVao();
 }
 
 void Mesh::draw()
@@ -123,6 +123,11 @@ GLuint Mesh::getVao() const
 void Mesh::setVao(GLuint v)
 {
     vao = v;
+}
+
+void Mesh::deleteVao()
+{
+    glDeleteVertexArrays(1, &vao);
 }
 
 void Mesh::setDrawMode(GLenum mode)
