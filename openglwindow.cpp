@@ -16,7 +16,7 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
     lightPosition = vec3(0.0f, 1.0f, 1.0f);
     ambientLight = vec4(0.05f, 0.05f, 0.05f ,1.0f);
 
-    shaderman = new ShaderMan("D:/Libraries/Documents/Qt/sfml-opengl/shaders/default");
+    shaderman = new ShaderMan("shaders/default");
     bufferman = new BufferMan();
     camera = new Camera();
 
