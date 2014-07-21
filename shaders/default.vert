@@ -9,11 +9,11 @@ uniform mat4 modelToWorldMatrix;
 uniform mat4 normalMatrix;
 
 out vec3 vertexPositionWorld;
-out vec3 normalWorld;
+out vec3 N;
 
 void main()
 {
     gl_Position = modelToProjectionMatrix * vertexPositionModel;
     vertexPositionWorld = vec3(modelToWorldMatrix * vertexPositionModel);
-    normalWorld = normalize(vec3(normalMatrix * vec4(normalModel, 0.0f)));
+    N = normalize(vec3(normalMatrix * vec4(normalModel, 0.0f)));
 }
