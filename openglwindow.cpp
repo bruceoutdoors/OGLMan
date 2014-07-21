@@ -19,6 +19,10 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
     bufferman = new BufferMan();
     camera = new Camera();
 
+    Mesh::setCamera(camera);
+    Mesh::setBufferMan(bufferman);
+    Mesh::setShaderMan(shaderman);
+
     eyePositionWorldUniformLocation = shaderman->getUniformLoc("eyePositionWorld");
     ambientLightUniformLocation = shaderman->getUniformLoc("ambientLight");
     lightPositionUniformLocation = shaderman->getUniformLoc("lightPosition");
@@ -43,8 +47,11 @@ void OpenGLWindow::toggleFullscreen()
         resizeGL(m_mode.width, m_mode.height);
     }
 
-    // have to setup OpenGL again, and relink the static pointers
+    // have to setup OpenGL again
     setupGL();
+
+    // use the program
+    shaderman->use();
 
     // recreating the window causes the buffers to get cleared so we need to
     // add the data back again.
@@ -54,6 +61,7 @@ void OpenGLWindow::toggleFullscreen()
 void OpenGLWindow::run()
 {
     setup();
+
 
     while (true) {
         if (handleEvents()) break;
@@ -75,10 +83,6 @@ void OpenGLWindow::setupGL()
 {
     glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
-
-    Mesh::setShaderMan(shaderman);
-    Mesh::setBufferMan(bufferman);
-    Mesh::setCamera(camera);
 }
 
 void OpenGLWindow::renderScene()
