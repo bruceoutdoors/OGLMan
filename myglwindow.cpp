@@ -45,5 +45,5 @@ void MyGLWindow::init()
     plane = new Plane(10);
     arrow = new Arrow();
 
-    camera->setUseAim();
+    camera->enableAim();
 }

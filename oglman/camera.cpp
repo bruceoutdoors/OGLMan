@@ -99,6 +99,16 @@ void Camera::pan(glm::vec2 const &new_mouse_position)
     old_mouse_position = new_mouse_position;
 }
 
+void Camera::enableAim()
+{
+    isAim = true;
+}
+
+void Camera::disableAim()
+{
+    isAim = false;
+}
+
 void Camera::moveForward(float s)
 {
     float speed;

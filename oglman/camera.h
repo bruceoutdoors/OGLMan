@@ -20,8 +20,8 @@ public:
     void pan(const glm::vec2 &new_mouse_position);
 
     bool hasAim() const { return isAim; }
-    void setUseAim() { isAim = true; }
-    void setNoAim()  { isAim = false; }
+    void enableAim();
+    void disableAim();
 
     // keyboard functions:
     void moveForward(float s = -1.0f);

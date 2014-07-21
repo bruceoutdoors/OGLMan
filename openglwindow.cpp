@@ -158,8 +158,12 @@ bool OpenGLWindow::keyboardEventHandler(int key)
         this->close();
         return true;
 
-    case sf::Keyboard::F1:
+    case sf::Keyboard::F11:
         toggleFullscreen();
+        break;
+
+    case sf::Keyboard::C:
+        camera->hasAim() ? camera->disableAim() : camera->enableAim();
         break;
     }
 
