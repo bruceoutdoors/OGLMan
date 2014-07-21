@@ -37,6 +37,8 @@ class OpenGLWindow : public sf::Window
 
     private:
         bool handleEvents();
+        bool keyboardEventHandler(int key);
+
         bool m_fullscreen;
         sf::VideoMode m_mode;
         sf::String m_title;

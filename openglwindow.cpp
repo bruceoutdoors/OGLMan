@@ -123,26 +123,28 @@ bool OpenGLWindow::handleEvents()
 
         // Handle keyboard events
         case sf::Event::KeyPressed:
-            switch (event.key.code) {
-            case sf::Keyboard::Escape:
-                this->close();
-                return true;
-                break;
-
-            case sf::Keyboard::F1:
-                toggleFullscreen();
-                break;
-
-            default:
-                break; // suppress enum not handled warnings
-
-            }
+            if (keyboardEventHandler(event.key.code)) return true;
             break;
 
         default:
             break; // suppress enum not handled warnings
         }
     }
+    return false;
+}
+
+bool OpenGLWindow::keyboardEventHandler(int key)
+{
+    switch (key) {
+    case sf::Keyboard::Escape:
+        this->close();
+        return true;
+
+    case sf::Keyboard::F1:
+        toggleFullscreen();
+        break;
+    }
+
     return false;
 }
 
