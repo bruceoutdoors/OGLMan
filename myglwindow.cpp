@@ -17,7 +17,7 @@ MyGLWindow::~MyGLWindow()
 void MyGLWindow::draw()
 {
     cube->setWorldMatrix(
-                glm::translate(lightPosition) *
+                glm::translate(light_position) *
                 glm::scale(mat4(1.0f), vec3(0.3f)));
     cube->draw();
     cube->setWorldMatrix(

@@ -30,7 +30,7 @@ class OpenGLWindow : public sf::Window
         BufferMan *bufferman;
         Camera *camera;
 
-        glm::vec3 lightPosition;
+        glm::vec3 light_position;
         glm::vec4 ambientLight;
         glm::vec2 oldMousePosition;
 

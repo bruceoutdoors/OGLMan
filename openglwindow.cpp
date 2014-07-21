@@ -7,13 +7,15 @@ using glm::vec2;
 using glm::vec3;
 using glm::vec4;
 
+const float LIGHT_MOVE = 0.1f;
+
 OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Window(mode, title)
 {
     m_title = title;
     m_mode = mode;
     m_fullscreen = false;
 
-    lightPosition = vec3(0.0f, 1.0f, 1.0f);
+    light_position = vec3(0.0f, 1.0f, 1.0f);
     ambientLight = vec4(0.05f, 0.05f, 0.05f ,1.0f);
 
     shaderman = new ShaderMan("shaders/default");
@@ -92,7 +94,7 @@ void OpenGLWindow::renderScene()
 
     vec3 eyePositionWorld = camera->getPosition();
     glUniform4fv(ambientLightUniformLocation, 1, &ambientLight[0]);
-    glUniform3fv(lightPositionUniformLocation, 1, &lightPosition[0]);
+    glUniform3fv(lightPositionUniformLocation, 1, &light_position[0]);
     glUniform3fv(eyePositionWorldUniformLocation, 1, &eyePositionWorld[0]);
 
     draw();
@@ -164,6 +166,25 @@ bool OpenGLWindow::keyboardEventHandler(int key)
 
     case sf::Keyboard::C:
         camera->hasAim() ? camera->disableAim() : camera->enableAim();
+        break;
+
+    case sf::Keyboard::U:
+        light_position.z += LIGHT_MOVE;
+        break;
+    case sf::Keyboard::J:
+        light_position.z -= LIGHT_MOVE;
+        break;
+    case sf::Keyboard::H:
+        light_position.x -= LIGHT_MOVE;
+        break;
+    case sf::Keyboard::K:
+        light_position.x += LIGHT_MOVE;
+        break;
+    case sf::Keyboard::O:
+        light_position.y += LIGHT_MOVE;
+        break;
+    case sf::Keyboard::L:
+        light_position.y -= LIGHT_MOVE;
         break;
     }
 

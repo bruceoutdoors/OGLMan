@@ -8,6 +8,7 @@ int main()
             << "**                        -INSTRUCTIONS-                       **\n"
             << "*****************************************************************\n"
             << "| Press:                                                        |\n"
+            << "|   U, H, J, K, O, L        => move light                       |\n"
             << "|   ESC                     => exit                             |\n"
             << "|   F1                      => toggle shading / wire-frame mode |\n"
             << "|   F11                     => toggle fullscreen                |\n"
