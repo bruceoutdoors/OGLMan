@@ -27,7 +27,7 @@ Camera::Camera() :
     updateSidewayVector();
 }
 
-mat4 Camera::getProjectionMatrix()
+mat4 Camera::getProjectionMatrix() const
 {
     if (isAim) {
         return projection * glm::lookAt(position, aim, up);
@@ -37,41 +37,21 @@ mat4 Camera::getProjectionMatrix()
 
 void Camera::mouseUpdate(const glm::vec2 &new_mouse_position)
 {
-    vec2 mouseDelta = new_mouse_position - old_mouse_position;
+    vec2 mouse_delta = new_mouse_position - old_mouse_position;
 
-    if (glm::length(mouseDelta) < 50.0f) { // fix camera jump
+    if (glm::length(mouse_delta) < 50.0f) { // fix camera jump
         if (isAim) {
 //            up = glm::normalize(glm::cross(sideways, (aim - position)));
-//            updateSidewayVector();
-//            float a = glm::angle(vec3(1, 0, 0), glm::normalize(position));
-//            float ratio;
-//            if (a <= 90.0f) {
-//                ratio = a/90.0f;
-//                qDebug() << "ratio to left: " << ratio;
-//            }
-//            float b = glm::angle(vec3(-1, 0, 0), glm::normalize(position));
-//            if (b <= 90.0f) {
-//                ratio = b/90.0f;
-//                qDebug() << "right area: " << ratio;
-//            }
-
             position =
                 mat3(
-                    glm::rotate(-mouseDelta.y, vec3(1, 0, 0)) *
-                    glm::rotate(-mouseDelta.x, vec3(0, 1, 0))
+                    glm::rotate(-mouse_delta.y, vec3(1, 0, 0)) *
+                    glm::rotate(-mouse_delta.x, vec3(0, 1, 0))
                 ) * position;
-
-//            up =
-//                mat3(
-//                    glm::rotate(-mouseDelta.y, vec3(1, 0, 0)) *
-//                    glm::rotate(-mouseDelta.x, vec3(0, 1, 0))
-//                ) * up;
-
         } else {
             view_direction =
                 mat3(
-                    glm::rotate(-mouseDelta.x * ROTATION_SPEED, up) *
-                    glm::rotate(-mouseDelta.y * ROTATION_SPEED, sideways)
+                    glm::rotate(-mouse_delta.x * ROTATION_SPEED, up) *
+                    glm::rotate(-mouse_delta.y * ROTATION_SPEED, sideways)
                 ) * view_direction;
             updateSidewayVector();
         }
@@ -99,6 +79,24 @@ void Camera::setPosition(const glm::vec3 &p)
 glm::vec3 Camera::getPosition() const
 {
     return position;
+}
+
+void Camera::pan(glm::vec2 const &new_mouse_position)
+{
+    vec2 mouse_delta = new_mouse_position - old_mouse_position;
+    if (glm::length(mouse_delta) < 50.0f) { // fix jump
+        if (mouse_delta.y > 0.0f) {
+            moveUp();
+        } else if (mouse_delta.y < 0.0f) {
+            moveDown();
+        }
+        if (mouse_delta.x > 0.0f) {
+            moveLeft();
+        } else if (mouse_delta.x < 0.0f) {
+            moveRight();
+        }
+    }
+    old_mouse_position = new_mouse_position;
 }
 
 void Camera::moveForward(float s)

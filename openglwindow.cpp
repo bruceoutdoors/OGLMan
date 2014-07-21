@@ -3,6 +3,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 
+using glm::vec2;
 using glm::vec3;
 using glm::vec4;
 
@@ -108,9 +109,9 @@ GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)
 
 bool OpenGLWindow::handleEvents()
 {
-    sf::Event event;
-    while (this->pollEvent(event)) {
-        switch (event.type) {
+    sf::Event e;
+    while (this->pollEvent(e)) {
+        switch (e.type) {
         case sf::Event::Closed:
             this->close();
             return true;
@@ -118,13 +119,30 @@ bool OpenGLWindow::handleEvents()
 
         // Resize event : adjust viewport
         case sf::Event::Resized:
-            resizeGL(event.size.width, event.size.height);
+            resizeGL(e.size.width, e.size.height);
             break;
 
         // Handle keyboard events
         case sf::Event::KeyPressed:
-            if (keyboardEventHandler(event.key.code)) return true;
+            if (keyboardEventHandler(e.key.code)) return true;
             break;
+
+        case sf::Event::MouseMoved:
+            if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+                camera->mouseUpdate(vec2(e.mouseMove.x, e.mouseMove.y));
+            } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
+                camera->pan(vec2(e.mouseMove.x, e.mouseMove.y));
+            }
+            break;
+
+        case sf::Event::MouseWheelMoved:
+            if (e.mouseWheel.delta > 0) {
+                camera->moveForward(1.0f);
+            } else {
+                camera->moveBackward(1.0f);
+            }
+            break;
+
 
         default:
             break; // suppress enum not handled warnings

@@ -11,12 +11,13 @@ class Camera
 {
 public:
     Camera();
-    mat4 getProjectionMatrix();
-    void mouseUpdate(const glm::vec2 &new_mouse_position);
+    mat4 getProjectionMatrix() const;
+    void mouseUpdate(const vec2 &new_mouse_position);
     void setAspectRatio(float ratio);
     void updateProjection();
     void setPosition(const vec3 &p);
     vec3 getPosition() const;
+    void pan(const glm::vec2 &new_mouse_position);
 
     bool hasAim() const { return isAim; }
     void setUseAim() { isAim = true; }

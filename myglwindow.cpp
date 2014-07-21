@@ -44,4 +44,6 @@ void MyGLWindow::init()
     cube = new Cube();
     plane = new Plane(10);
     arrow = new Arrow();
+
+    camera->setUseAim();
 }
