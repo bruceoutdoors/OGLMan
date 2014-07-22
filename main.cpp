@@ -17,6 +17,7 @@ int main()
             << "| Mouse:                                                        |\n"
             << "|   Left Drag               => navigate world                   |\n"
             << "|   Middle Drag             => pan                              |\n"
+            << "|   Scroll Wheel            => zoom in/out                      |\n"
             << "|                                                               |\n"
             << "*****************************************************************\n";
     MyGLWindow *myWindow = new MyGLWindow(

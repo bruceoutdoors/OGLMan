@@ -65,7 +65,6 @@ void OpenGLWindow::run()
 {
     setup();
 
-
     while (true) {
         if (handleEvents()) break;
         renderScene();
