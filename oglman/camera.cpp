@@ -13,6 +13,11 @@ const float PI = 3.14159265358979f;
 Camera::Camera() :
     Camera(46.0f, 0.1f, 50.0f, 1.34f) {}
 
+Camera::~Camera()
+{
+
+}
+
 Camera::Camera(float fov, float near_plane, float far_plane, float aspect_ratio) :
     fov(fov),
     near_plane(near_plane),

@@ -11,20 +11,12 @@ class Camera
 {
 public:
     Camera();
+    virtual ~Camera();
     Camera(float fov, float near_plane, float far_plane, float aspect_ratio);
 
     virtual void mouseDrag(const vec2 &new_mouse_position) = 0;
     virtual void pan(const glm::vec2 &new_mouse_position, float speed) = 0;
     virtual mat4 getViewProjectionMatrix() = 0;
-
-    void setPosition(const vec3 &p);
-    vec3 getPosition() const;
-    void setForwardVector(const vec3 &f);
-    vec3 getForwardVector() const;
-    void setSideVector(const vec3 &s);
-    vec3 getSideVector() const;
-    void setUpVector(const vec3 &u);
-    vec3 getUpVector() const;
 
     // move functions:
     void moveForward(float speed);
@@ -37,12 +29,21 @@ public:
     void setNearPlane(float plane);
     void setFarPlane(float plane);
     void setFocalLength(float focal_length);
+    void setPosition(const vec3 &p);
+    void setForwardVector(const vec3 &f);
+    void setSideVector(const vec3 &s);
+    void setUpVector(const vec3 &u);
+
 
     float getAspectRatio() const;
     float getFov() const;
     float getNearPlane() const;
     float getFarPlane() const;
     float getFocalLength() const;
+    vec3 getPosition() const;
+    vec3 getForwardVector() const;
+    vec3 getUpVector() const;
+    vec3 getSideVector() const;
 
 protected:
     vec3 position;
@@ -51,7 +52,7 @@ protected:
     vec3 forward;
     vec3 up;
     vec3 side;
-    inline void updateSidewayVector();
+    void updateSidewayVector();
 
 private:
     void updateProjection();

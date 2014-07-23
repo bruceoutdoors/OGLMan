@@ -49,5 +49,5 @@ void MyGLWindow::init()
     camera->setPosition(vec3(-0.157f, 3.288f, 3.79f));
 
     // set fish eye lens:
-    camera->setFocalLength(10);
+//    camera->setFocalLength(10);
 }
