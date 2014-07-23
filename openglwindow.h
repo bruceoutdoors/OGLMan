@@ -28,7 +28,7 @@ class OpenGLWindow : public sf::Window
         GLvoid resizeGL(GLsizei width, GLsizei height);
         ShaderMan *shaderman;
         BufferMan *bufferman;
-        Camera *camera;
+        Arcball *camera;
 
         glm::vec3 light_position;
         glm::vec4 ambientLight;

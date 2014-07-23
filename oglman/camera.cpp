@@ -24,12 +24,25 @@ Camera::Camera(float fov, float near_plane, float far_plane, float aspect_ratio)
     far_plane(far_plane),
     aspect_ratio(aspect_ratio)
 {
-    setUpVector(vec3(0, 1, 0));
-    setForwardVector(vec3(0, 0, -1));
-    setPosition(vec3(0, 0, 0));
-
-    updateSidewayVector();
     updateProjection();
+}
+
+void Camera::pan(const glm::vec2 &new_mouse_position, float speed)
+{
+    vec2 mouse_delta = new_mouse_position - old_mouse_position;
+    if (glm::length(mouse_delta) < 50.0f) { // fix jump
+        if (mouse_delta.y > 0.0f) {
+            moveUp(speed);
+        } else if (mouse_delta.y < 0.0f) {
+            moveUp(-speed);
+        }
+        if (mouse_delta.x > 0.0f) {
+            moveRight(-speed);
+        } else if (mouse_delta.x < 0.0f) {
+            moveRight(speed);
+        }
+    }
+    old_mouse_position = new_mouse_position;
 }
 
 void Camera::setAspectRatio(float ratio)
@@ -92,62 +105,14 @@ void Camera::updateProjection()
     projection = glm::perspective(fov, aspect_ratio, near_plane, far_plane);
 }
 
-void Camera::setPosition(const glm::vec3 &p)
+void Camera::setPosition(const vec3 &p)
 {
     position = p;
 }
 
-glm::vec3 Camera::getPosition() const
+vec3 Camera::getPosition() const
 {
     return position;
 }
 
-void Camera::setForwardVector(const glm::vec3 &f)
-{
-    forward = glm::normalize(f);
-}
 
-glm::vec3 Camera::getForwardVector() const
-{
-    return forward;
-}
-
-void Camera::setSideVector(const glm::vec3 &s)
-{
-    side = glm::normalize(s);
-}
-
-glm::vec3 Camera::getSideVector() const
-{
-    return side;
-}
-
-void Camera::setUpVector(const glm::vec3 &u)
-{
-    up = glm::normalize(u);
-}
-
-glm::vec3 Camera::getUpVector() const
-{
-    return up;
-}
-
-void Camera::moveForward(float speed)
-{
-    position += speed * forward;
-}
-
-void Camera::moveRight(float speed)
-{
-    position += speed * side;
-}
-
-void Camera::moveUp(float speed)
-{
-    position += speed * up;
-}
-
-void Camera::updateSidewayVector()
-{
-    side = glm::normalize(glm::cross(forward, up));
-}

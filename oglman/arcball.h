@@ -12,10 +12,16 @@ class Arcball : public Camera
 {
 public:
     Arcball(float dist = 7);
-    mat4 getViewProjectionMatrix();
     void mouseDrag(const vec2 &new_mouse_position);
-    void pan(const glm::vec2 &new_mouse_position, float speed);
+    mat4 getViewProjectionMatrix();
+
     void moveForward(float speed);
+    void moveRight(float speed);
+    void moveUp(float speed);
+
+    vec3 getAim() const;
+
+    void setAim(const vec3 &a);
 
 private:
     void updateTransformation();

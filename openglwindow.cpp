@@ -9,7 +9,7 @@ using glm::vec4;
 
 const float LIGHT_MOVE = 0.1f;
 const float ZOOM_SPEED = 1.0f;
-const float PAN_SPEED = 0.1f;
+const float PAN_SPEED = 0.05f;
 
 OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Window(mode, title)
 {

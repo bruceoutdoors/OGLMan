@@ -45,8 +45,8 @@ void MyGLWindow::init()
     plane = new Plane(10);
     arrow = new Arrow();
 
-    camera->setForwardVector(vec3(-0.06f, -0.35f, -0.94f));
-    camera->setPosition(vec3(-0.157f, 3.2f, 8.79f));
+    camera->setPosition(vec3(-0.157f, 3.2f, 50.79f));
+//    camera->setAim(vec3(5,0,0));
 
     // set fish eye lens:
 //    camera->setFocalLength(10);
