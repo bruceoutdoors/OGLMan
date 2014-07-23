@@ -19,7 +19,7 @@ public:
     virtual mat4 getViewProjectionMatrix() = 0;
 
     // move functions:
-    void moveForward(float speed);
+    virtual void moveForward(float speed);
     void moveRight(float speed);
     void moveUp(float speed);
 

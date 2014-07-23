@@ -8,7 +8,7 @@
 
 #include "oglman/shaderman.h"
 #include "oglman/bufferman.h"
-#include "oglman/walkcam.h"
+#include "oglman/arcball.h"
 #include "oglman/mesh.h"
 
 class OpenGLWindow : public sf::Window
@@ -28,7 +28,7 @@ class OpenGLWindow : public sf::Window
         GLvoid resizeGL(GLsizei width, GLsizei height);
         ShaderMan *shaderman;
         BufferMan *bufferman;
-        WalkCam *camera;
+        Camera *camera;
 
         glm::vec3 light_position;
         glm::vec4 ambientLight;

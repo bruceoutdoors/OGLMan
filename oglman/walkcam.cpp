@@ -8,7 +8,7 @@ using glm::vec3;
 using glm::mat3;
 using glm::mat4;
 
-WalkCam::WalkCam() : Camera()
+WalkCam::WalkCam()
 {
 }
 

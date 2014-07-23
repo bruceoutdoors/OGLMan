@@ -22,7 +22,7 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
 
     shaderman = new ShaderMan("shaders/default");
     bufferman = new BufferMan();
-    camera = new WalkCam();
+    camera = new Arcball(12);
 
     Mesh::setCamera(camera);
     Mesh::setBufferMan(bufferman);

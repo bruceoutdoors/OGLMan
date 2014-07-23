@@ -16,7 +16,7 @@ SOURCES += main.cpp \
     primitives/cube.cpp \
     primitives/plane.cpp \
     oglman/walkcam.cpp \
-    oglman/arcballcam.cpp
+    oglman/arcball.cpp
 
 HEADERS += \
     myglwindow.h \
@@ -31,7 +31,7 @@ HEADERS += \
     primitives/cube.h \
     primitives/plane.h \
     oglman/walkcam.h \
-    oglman/arcballcam.h
+    oglman/arcball.h
 
 
 
