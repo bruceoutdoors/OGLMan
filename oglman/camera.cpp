@@ -1,69 +1,85 @@
 #include "camera.h"
 #include <glm/gtx/transform.hpp>
+#include <cmath>
 
 using glm::vec2;
 using glm::vec3;
 using glm::mat3;
 using glm::mat4;
 
-const float ROTATION_SPEED = 0.3f;
-const float MOVE_SPEED = 0.2f;
-
+const float FILM_DIAGONAL = 43.266615300557f;
+const float PI = 3.14159265358979f;
 
 Camera::Camera() :
-    view_direction(-0.06f, -0.35f, -0.94f),
-    aim(0.0f, 0.0f, 0.0f),
-    up(0.0f, 1.0f, 0.0f),
-    position(-0.157f, 3.288f, 7.79f)
+    Camera(46.0f, 0.1f, 50.0f, 1.34f) {}
 
+Camera::Camera(float fov, float near_plane, float far_plane, float aspect_ratio) :
+    fov(fov),
+    near_plane(near_plane),
+    far_plane(far_plane),
+    aspect_ratio(aspect_ratio)
 {
-    // default camera values emulate the human eye
-    isAim = false;
-    fov = 46.0f;
-    near_plane = 0.1f;
-    far_plane = 50.0f;
-    aspect_ratio = 1.34f;
+    setUpVector(vec3(0, 1, 0));
+    setForwardVector(vec3(0, 0, -1));
+    setPosition(vec3(0, 0, 0));
 
     updateSidewayVector();
-}
-
-mat4 Camera::getProjectionMatrix() const
-{
-    if (isAim) {
-        return projection * glm::lookAt(position, aim, up);
-    }
-    return projection * glm::lookAt(position, position + view_direction, up);
-}
-
-void Camera::mouseUpdate(const glm::vec2 &new_mouse_position)
-{
-    vec2 mouse_delta = new_mouse_position - old_mouse_position;
-
-    if (glm::length(mouse_delta) < 50.0f) { // fix camera jump
-        if (isAim) {
-//            up = glm::normalize(glm::cross(sideways, (aim - position)));
-            position =
-                mat3(
-                    glm::rotate(-mouse_delta.y, vec3(1, 0, 0)) *
-                    glm::rotate(-mouse_delta.x, vec3(0, 1, 0))
-                ) * position;
-        } else {
-            view_direction =
-                mat3(
-                    glm::rotate(-mouse_delta.x * ROTATION_SPEED, up) *
-                    glm::rotate(-mouse_delta.y * ROTATION_SPEED, sideways)
-                ) * view_direction;
-            updateSidewayVector();
-        }
-
-    }
-    old_mouse_position = new_mouse_position;
+    updateProjection();
 }
 
 void Camera::setAspectRatio(float ratio)
 {
     aspect_ratio = ratio;
     updateProjection();
+}
+
+void Camera::setFov(float view)
+{
+    fov = view;
+    updateProjection();
+}
+
+void Camera::setNearPlane(float plane)
+{
+    near_plane = plane;
+    updateProjection();
+}
+
+void Camera::setFarPlane(float plane)
+{
+    far_plane = plane;
+    updateProjection();
+}
+
+void Camera::setFocalLength(float focal_length)
+{
+    fov = 2 * std::atan(FILM_DIAGONAL / (2 * focal_length)) * 180 / PI;
+    updateProjection();
+}
+
+float Camera::getAspectRatio() const
+{
+    return aspect_ratio;
+}
+
+float Camera::getFov() const
+{
+    return fov;
+}
+
+float Camera::getNearPlane() const
+{
+    return near_plane;
+}
+
+float Camera::getFarPlane() const
+{
+    return far_plane;
+}
+
+float Camera::getFocalLength() const
+{
+    return FILM_DIAGONAL / (2 * std::tan(PI * fov / 360));
 }
 
 void Camera::updateProjection()
@@ -81,77 +97,52 @@ glm::vec3 Camera::getPosition() const
     return position;
 }
 
-void Camera::pan(glm::vec2 const &new_mouse_position)
+void Camera::setForwardVector(const glm::vec3 &f)
 {
-    vec2 mouse_delta = new_mouse_position - old_mouse_position;
-    if (glm::length(mouse_delta) < 50.0f) { // fix jump
-        if (mouse_delta.y > 0.0f) {
-            moveUp();
-        } else if (mouse_delta.y < 0.0f) {
-            moveDown();
-        }
-        if (mouse_delta.x > 0.0f) {
-            moveLeft();
-        } else if (mouse_delta.x < 0.0f) {
-            moveRight();
-        }
-    }
-    old_mouse_position = new_mouse_position;
+    forward = glm::normalize(f);
 }
 
-void Camera::enableAim()
+glm::vec3 Camera::getForwardVector() const
 {
-    isAim = true;
+    return forward;
 }
 
-void Camera::disableAim()
+void Camera::setSideVector(const glm::vec3 &s)
 {
-    isAim = false;
+    side = glm::normalize(s);
 }
 
-void Camera::moveForward(float s)
+glm::vec3 Camera::getSideVector() const
 {
-    float speed;
-    s == -1.0f ? speed = MOVE_SPEED : speed = s;
-    if (isAim) {
-        position += speed * glm::normalize(aim - position);
-    } else {
-        position += speed * view_direction;
-    }
+    return side;
 }
 
-void Camera::moveBackward(float s)
+void Camera::setUpVector(const glm::vec3 &u)
 {
-    float speed;
-    s == -1.0f ? speed = MOVE_SPEED : speed = s;
-    if (isAim) {
-        position -= speed * glm::normalize(aim - position);
-    } else {
-        position -= speed * view_direction;
-    }
+    up = glm::normalize(u);
 }
 
-void Camera::moveLeft()
+glm::vec3 Camera::getUpVector() const
 {
-    position -= MOVE_SPEED * sideways;
+    return up;
 }
 
-void Camera::moveRight()
+void Camera::moveForward(float speed)
 {
-    position += MOVE_SPEED * sideways;
+    position += speed * forward;
 }
 
-void Camera::moveUp()
+void Camera::moveRight(float speed)
 {
-    position += MOVE_SPEED * up;
+    position += speed * side;
 }
 
-void Camera::moveDown()
+void Camera::moveUp(float speed)
 {
-    position -= MOVE_SPEED * up;
+    position += speed * up;
 }
 
 void Camera::updateSidewayVector()
 {
-    sideways = glm::normalize(glm::cross(view_direction, up));
+    side = glm::normalize(glm::cross(forward, up));
 }

@@ -32,7 +32,7 @@ Mesh::~Mesh()
 
 void Mesh::draw()
 {
-    mat4 model2projection = active_cam->getProjectionMatrix() * world_matrix;
+    mat4 model2projection = active_cam->getViewProjectionMatrix() * world_matrix;
 
     glBindVertexArray(vao);
     glUniformMatrix4fv(normals_loc, 1,

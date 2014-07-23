@@ -11,44 +11,56 @@ class Camera
 {
 public:
     Camera();
-    mat4 getProjectionMatrix() const;
-    void mouseUpdate(const vec2 &new_mouse_position);
-    void setAspectRatio(float ratio);
-    void updateProjection();
+    Camera(float fov, float near_plane, float far_plane, float aspect_ratio);
+
+    virtual void mouseDrag(const vec2 &new_mouse_position) = 0;
+    virtual void pan(const glm::vec2 &new_mouse_position, float speed) = 0;
+    virtual mat4 getViewProjectionMatrix() = 0;
+
     void setPosition(const vec3 &p);
     vec3 getPosition() const;
-    void pan(const glm::vec2 &new_mouse_position);
+    void setForwardVector(const vec3 &f);
+    vec3 getForwardVector() const;
+    void setSideVector(const vec3 &s);
+    vec3 getSideVector() const;
+    void setUpVector(const vec3 &u);
+    vec3 getUpVector() const;
 
-    bool hasAim() const { return isAim; }
-    void enableAim();
-    void disableAim();
+    // move functions:
+    void moveForward(float speed);
+    void moveRight(float speed);
+    void moveUp(float speed);
 
-    // keyboard functions:
-    void moveForward(float s = -1.0f);
-    void moveBackward(float s = -1.0f);
-    void moveLeft();
-    void moveRight();
-    void moveUp();
-    void moveDown();
+    // camera setters:
+    void setAspectRatio(float ratio);
+    void setFov(float view);
+    void setNearPlane(float plane);
+    void setFarPlane(float plane);
+    void setFocalLength(float focal_length);
 
-private:
-    inline void updateSidewayVector();
-    vec3 view_direction;
-    vec3 aim;
-    vec3 up;
+    float getAspectRatio() const;
+    float getFov() const;
+    float getNearPlane() const;
+    float getFarPlane() const;
+    float getFocalLength() const;
+
+protected:
     vec3 position;
     vec2 old_mouse_position;
-    vec2 orbit_theta;
-    vec3 sideways;
-
-    float aspect_ratio;
-    float fov;
-    float far_plane;
-    float near_plane;
-
-    bool isAim;
-
     mat4 projection;
+    vec3 forward;
+    vec3 up;
+    vec3 side;
+    inline void updateSidewayVector();
+
+private:
+    void updateProjection();
+
+    float fov;
+    float near_plane;
+    float far_plane;
+    float aspect_ratio;
+
 };
 
 #endif // CAMERA_H

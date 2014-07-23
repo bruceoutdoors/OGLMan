@@ -8,6 +8,8 @@ using glm::vec3;
 using glm::vec4;
 
 const float LIGHT_MOVE = 0.1f;
+const float ZOOM_SPEED = 1.0f;
+const float PAN_SPEED = 0.1f;
 
 OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Window(mode, title)
 {
@@ -20,7 +22,7 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
 
     shaderman = new ShaderMan("shaders/default");
     bufferman = new BufferMan();
-    camera = new Camera();
+    camera = new WalkCam();
 
     Mesh::setCamera(camera);
     Mesh::setBufferMan(bufferman);
@@ -130,17 +132,17 @@ bool OpenGLWindow::handleEvents()
 
         case sf::Event::MouseMoved:
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                camera->mouseUpdate(vec2(e.mouseMove.x, e.mouseMove.y));
+                camera->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
             } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-                camera->pan(vec2(e.mouseMove.x, e.mouseMove.y));
+                camera->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
             }
             break;
 
         case sf::Event::MouseWheelMoved:
             if (e.mouseWheel.delta > 0) {
-                camera->moveForward(1.0f);
+                camera->moveForward(ZOOM_SPEED);
             } else {
-                camera->moveBackward(1.0f);
+                camera->moveForward(-ZOOM_SPEED);
             }
             break;
 
@@ -164,7 +166,6 @@ bool OpenGLWindow::keyboardEventHandler(int key)
         break;
 
     case sf::Keyboard::C:
-        camera->hasAim() ? camera->disableAim() : camera->enableAim();
         break;
 
     case sf::Keyboard::U:

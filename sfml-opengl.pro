@@ -14,7 +14,9 @@ SOURCES += main.cpp \
     oglman/shaderman.cpp \
     primitives/arrow.cpp \
     primitives/cube.cpp \
-    primitives/plane.cpp
+    primitives/plane.cpp \
+    oglman/walkcam.cpp \
+    oglman/arcballcam.cpp
 
 HEADERS += \
     myglwindow.h \
@@ -27,7 +29,9 @@ HEADERS += \
     oglman/shaderman.h \
     primitives/arrow.h \
     primitives/cube.h \
-    primitives/plane.h
+    primitives/plane.h \
+    oglman/walkcam.h \
+    oglman/arcballcam.h
 
 
 
