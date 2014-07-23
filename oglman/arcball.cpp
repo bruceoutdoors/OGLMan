@@ -3,6 +3,7 @@
 
 using glm::vec2;
 using glm::vec3;
+using glm::vec4;
 using glm::mat3;
 using glm::mat4;
 
@@ -38,7 +39,7 @@ void Arcball::pan(const glm::vec2 &new_mouse_position, float speed)
 
 void Arcball::moveForward(float speed)
 {
-    distance += speed;
+    distance -= speed;
     updateTransformation();
 }
 
@@ -48,6 +49,13 @@ void Arcball::updateTransformation()
             glm::translate(vec3(0,0,-distance)) *
             glm::rotate(pitch, side) *
             glm::rotate(yaw, up);
+
+    position = vec3((glm::rotate(pitch, side) *
+                     glm::rotate(yaw, up)) *
+                     glm::translate(vec3(0,0,-distance)) *
+                   vec4(0,0,0,1));
+
+    position = vec3(position.x, position.y, -position.z);
 }
 
 mat4 Arcball::getViewProjectionMatrix()
