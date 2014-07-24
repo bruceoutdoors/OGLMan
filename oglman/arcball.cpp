@@ -72,21 +72,22 @@ void Arcball::updateTransformation()
             glm::rotate(yaw, Y_AXIS) *
             glm::translate(-aim);
 
-    position =
-            vec3(glm::translate(aim) *
-                 glm::rotate(pitch, X_AXIS) *
-                 glm::rotate(yaw, Y_AXIS) *
-                 glm::translate(vec3(0,0,-distance)) *
-                 vec4(0,0,0,1));
+    vec4 getXZ =
+            glm::translate(aim) *
+            glm::rotate(pitch, X_AXIS) *
+            glm::rotate(yaw, Y_AXIS) *
+            glm::translate(vec3(0,0,-distance)) *
+            vec4(0,0,0,1);
 
-    vec3 position2 =
-            vec3(glm::translate(aim) *
-                 glm::rotate(yaw, Y_AXIS) *
-                 glm::rotate(pitch, X_AXIS) *
-                 glm::translate(vec3(0,0,-distance)) *
-                 vec4(0,0,0,1));
+    // to solve gimbal lock, a separate transformation is created
+    // with only pitch movement
+    vec4 getY =
+            glm::translate(aim) *
+            glm::rotate(pitch, X_AXIS) *
+            glm::translate(vec3(0,0,-distance)) *
+            vec4(0,0,0,1);
 
-    position = vec3(position.x, position2.y, -position.z);
+    position = vec3(getXZ.x, getY.y, -getXZ.z);
 
 //    cout << "x: " << position.x << ", y: " << position.y
 //         << ", z: " << position.z << endl;

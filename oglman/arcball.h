@@ -20,17 +20,16 @@ public:
     void moveUp(float speed);
 
     vec3 getAim() const;
-
     void setAim(const vec3 &a);
 
 private:
     void updateTransformation();
 
-    vec3 aim;
     mat4 transformation;
     float pitch;
     float yaw;
     float distance;
+    vec3 aim;
 };
 
 #endif // ARCBALLCAM_H
