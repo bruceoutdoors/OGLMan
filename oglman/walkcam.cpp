@@ -17,11 +17,6 @@ WalkCam::WalkCam()
     updateSideVector();
 }
 
-mat4 WalkCam::getViewProjectionMatrix()
-{
-    return projection * lookat;
-}
-
 void WalkCam::mouseDrag(const vec2 &new_mouse_position)
 {
     vec2 mouse_delta = new_mouse_position - old_mouse_position;
@@ -69,21 +64,21 @@ void WalkCam::calculateLookat()
 {
     up2 = glm::cross(side, forward);
 
-    lookat[0][0] = side.x;
-    lookat[1][0] = side.y;
-    lookat[2][0] = side.z;
+    view[0][0] = side.x;
+    view[1][0] = side.y;
+    view[2][0] = side.z;
 
-    lookat[0][1] = up2.x;
-    lookat[1][1] = up2.y;
-    lookat[2][1] = up2.z;
+    view[0][1] = up2.x;
+    view[1][1] = up2.y;
+    view[2][1] = up2.z;
 
-    lookat[0][2] = -forward.x;
-    lookat[1][2] = -forward.y;
-    lookat[2][2] = -forward.z;
+    view[0][2] = -forward.x;
+    view[1][2] = -forward.y;
+    view[2][2] = -forward.z;
 
-    lookat[3][0] = -glm::dot(side, position);
-    lookat[3][1] = -glm::dot(up2, position);
-    lookat[3][2] = glm::dot(forward, position);
+    view[3][0] = -glm::dot(side, position);
+    view[3][1] = -glm::dot(up2, position);
+    view[3][2] = glm::dot(forward, position);
 }
 
 vec3 WalkCam::getUpVector() const

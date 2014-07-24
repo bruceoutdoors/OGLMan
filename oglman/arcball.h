@@ -13,7 +13,6 @@ class Arcball : public Camera
 public:
     Arcball(float dist = 7);
     void mouseDrag(const vec2 &new_mouse_position);
-    mat4 getViewProjectionMatrix();
 
     void moveForward(float speed);
     void moveRight(float speed);
@@ -25,7 +24,6 @@ public:
 private:
     void updateTransformation();
 
-    mat4 transformation;
     float pitch;
     float yaw;
     float distance;

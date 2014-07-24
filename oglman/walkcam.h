@@ -11,7 +11,6 @@ class WalkCam : public Camera
 {
 public:
     WalkCam();
-    mat4 getViewProjectionMatrix();
     void mouseDrag(const vec2 &new_mouse_position);
 
     void moveForward(float speed);
@@ -36,7 +35,6 @@ private:
     vec3 up;
     vec3 up2;
     vec3 side;
-    mat4 lookat;
 };
 
 #endif // WALKCAM_H

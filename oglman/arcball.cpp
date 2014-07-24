@@ -19,7 +19,6 @@ Arcball::Arcball(float dist) :
     aim(vec3(0,0,0))
 {
     distance = dist;
-    transformation = glm::mat4();
 
     updateTransformation();
 }
@@ -66,7 +65,7 @@ void Arcball::setAim(const glm::vec3 &a)
 
 void Arcball::updateTransformation()
 {
-    transformation =
+    view =
             glm::translate(vec3(0,0,-distance)) *
             glm::rotate(pitch, X_AXIS) *
             glm::rotate(yaw, Y_AXIS) *
@@ -92,9 +91,4 @@ void Arcball::updateTransformation()
 //    cout << "x: " << position.x << ", y: " << position.y
 //         << ", z: " << position.z << endl;
 
-}
-
-mat4 Arcball::getViewProjectionMatrix()
-{
-    return projection * transformation;
 }

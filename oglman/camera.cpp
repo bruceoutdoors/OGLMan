@@ -45,6 +45,11 @@ void Camera::pan(const glm::vec2 &new_mouse_position, float speed)
     old_mouse_position = new_mouse_position;
 }
 
+mat4 Camera::getViewProjectionMatrix() const
+{
+    return projection * view;
+}
+
 void Camera::setAspectRatio(float ratio)
 {
     aspect_ratio = ratio;

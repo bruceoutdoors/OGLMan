@@ -14,9 +14,9 @@ public:
     virtual ~Camera();
     Camera(float fov, float near_plane, float far_plane, float aspect_ratio);
     void pan(const glm::vec2 &new_mouse_position, float speed);
+    mat4 getViewProjectionMatrix() const;
 
     virtual void mouseDrag(const vec2 &new_mouse_position) = 0;
-    virtual mat4 getViewProjectionMatrix() = 0;
 
     // move functions:
     virtual void moveForward(float speed) = 0;
@@ -41,6 +41,7 @@ protected:
     vec3 position;
     vec2 old_mouse_position;
     mat4 projection;
+    mat4 view;
 
 private:
     void updateProjection();
