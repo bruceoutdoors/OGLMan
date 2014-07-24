@@ -22,9 +22,16 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
 
     shaderman = new ShaderMan("shaders/default");
     bufferman = new BufferMan();
-    camera = new Arcball(12);
 
-    Mesh::setCamera(camera);
+    arcball = new Arcball();
+    walkcam = new WalkCam();
+
+    walkcam->setForwardVector(vec3(-0.06f, -0.35f, -0.94f));
+    walkcam->setPosition(vec3(-0.157f, 3.288f, 8.79f));
+
+    active_camera = arcball;
+
+    Mesh::setCamera(active_camera);
     Mesh::setBufferMan(bufferman);
     Mesh::setShaderMan(shaderman);
 
@@ -37,7 +44,8 @@ OpenGLWindow::~OpenGLWindow()
 {
     delete shaderman;
     delete bufferman;
-    delete camera;
+    delete arcball;
+    delete walkcam;
 }
 
 void OpenGLWindow::toggleFullscreen()
@@ -93,7 +101,7 @@ void OpenGLWindow::renderScene()
 {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-    vec3 eyePositionWorld = camera->getPosition();
+    vec3 eyePositionWorld = active_camera->getPosition();
     glUniform4fv(ambientLightUniformLocation, 1, &ambientLight[0]);
     glUniform3fv(lightPositionUniformLocation, 1, &light_position[0]);
     glUniform3fv(eyePositionWorldUniformLocation, 1, &eyePositionWorld[0]);
@@ -107,7 +115,7 @@ GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)
 {
     glViewport(0, 0, width, height);         // Reset the current viewport
     float aspect_ratio = ((float)width)/height;
-    camera->setAspectRatio(aspect_ratio);
+    active_camera->setAspectRatio(aspect_ratio);
 }
 
 bool OpenGLWindow::handleEvents()
@@ -132,17 +140,17 @@ bool OpenGLWindow::handleEvents()
 
         case sf::Event::MouseMoved:
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                camera->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
+                active_camera->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
             } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-                camera->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
+                active_camera->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
             }
             break;
 
         case sf::Event::MouseWheelMoved:
             if (e.mouseWheel.delta > 0) {
-                camera->moveForward(ZOOM_SPEED);
+                active_camera->moveForward(ZOOM_SPEED);
             } else {
-                camera->moveForward(-ZOOM_SPEED);
+                active_camera->moveForward(-ZOOM_SPEED);
             }
             break;
 
@@ -166,6 +174,9 @@ bool OpenGLWindow::keyboardEventHandler(int key)
         break;
 
     case sf::Keyboard::C:
+        active_camera == arcball ? active_camera = walkcam : active_camera = arcball;
+        // update the mesh's Camera pointer
+        Mesh::setCamera(active_camera);
         break;
 
     case sf::Keyboard::U:
