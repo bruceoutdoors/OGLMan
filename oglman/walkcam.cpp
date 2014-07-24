@@ -14,12 +14,12 @@ WalkCam::WalkCam()
     setForwardVector(vec3(0, 0, -1));
     setPosition(vec3(0, 0, 0));
 
-    updateSidewayVector();
+    updateSideVector();
 }
 
 mat4 WalkCam::getViewProjectionMatrix()
 {
-    return projection * glm::lookAt(position, position + forward, up);
+    return projection * lookat;
 }
 
 void WalkCam::mouseDrag(const vec2 &new_mouse_position)
@@ -32,29 +32,26 @@ void WalkCam::mouseDrag(const vec2 &new_mouse_position)
                     glm::rotate(-mouse_delta.x * ROTATION_SPEED, up) *
                     glm::rotate(-mouse_delta.y * ROTATION_SPEED, side)
                 ) * forward;
-            updateSidewayVector();
+            updateSideVector();
     }
     old_mouse_position = new_mouse_position;
 }
 
-void WalkCam::updateSidewayVector()
+void WalkCam::updateSideVector()
 {
     side = glm::normalize(glm::cross(forward, up));
+    calculateLookat();
 }
 
 void WalkCam::setForwardVector(const vec3 &f)
 {
     forward = glm::normalize(f);
+    calculateLookat();
 }
 
 vec3 WalkCam::getForwardVector() const
 {
     return forward;
-}
-
-void WalkCam::setSideVector(const vec3 &s)
-{
-    side = glm::normalize(s);
 }
 
 vec3 WalkCam::getSideVector() const
@@ -65,6 +62,28 @@ vec3 WalkCam::getSideVector() const
 void WalkCam::setUpVector(const vec3 &u)
 {
     up = glm::normalize(u);
+    calculateLookat();
+}
+
+void WalkCam::calculateLookat()
+{
+    up2 = glm::cross(side, forward);
+
+    lookat[0][0] = side.x;
+    lookat[1][0] = side.y;
+    lookat[2][0] = side.z;
+
+    lookat[0][1] = up2.x;
+    lookat[1][1] = up2.y;
+    lookat[2][1] = up2.z;
+
+    lookat[0][2] = -forward.x;
+    lookat[1][2] = -forward.y;
+    lookat[2][2] = -forward.z;
+
+    lookat[3][0] = -glm::dot(side, position);
+    lookat[3][1] = -glm::dot(up2, position);
+    lookat[3][2] = glm::dot(forward, position);
 }
 
 vec3 WalkCam::getUpVector() const
@@ -75,14 +94,23 @@ vec3 WalkCam::getUpVector() const
 void WalkCam::moveForward(float speed)
 {
     position += speed * forward;
+    calculateLookat();
 }
 
 void WalkCam::moveRight(float speed)
 {
     position += speed * side;
+    calculateLookat();
 }
 
 void WalkCam::moveUp(float speed)
 {
-    position += speed * up;
+    position += speed * up2;
+    calculateLookat();
+}
+
+void WalkCam::setPosition(const glm::vec3 &p)
+{
+    Camera::setPosition(p);
+    calculateLookat();
 }

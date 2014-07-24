@@ -18,20 +18,25 @@ public:
     void moveRight(float speed);
     void moveUp(float speed);
 
+    void setPosition(const vec3 &p);
+
     vec3 getForwardVector() const;
     vec3 getUpVector() const;
     vec3 getSideVector() const;
 
     void setForwardVector(const vec3 &f);
-    void setSideVector(const vec3 &s);
     void setUpVector(const vec3 &u);
 
+    void calculateLookat();
+
 private:
-    void updateSidewayVector();
+    void updateSideVector();
 
     vec3 forward;
     vec3 up;
+    vec3 up2;
     vec3 side;
+    mat4 lookat;
 };
 
 #endif // WALKCAM_H

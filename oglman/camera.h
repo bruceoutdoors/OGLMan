@@ -22,20 +22,20 @@ public:
     virtual void moveForward(float speed) = 0;
     virtual void moveRight(float speed) = 0;
     virtual void moveUp(float speed) = 0;
+    virtual void setPosition(const vec3 &p);
+
+    vec3 getPosition() const;
+    float getAspectRatio() const;
+    float getFov() const;
+    float getNearPlane() const;
+    float getFarPlane() const;
+    float getFocalLength() const;
 
     void setAspectRatio(float ratio);
     void setFov(float view);
     void setNearPlane(float plane);
     void setFarPlane(float plane);
     void setFocalLength(float focal_length);
-    void setPosition(const vec3 &p);
-
-    float getAspectRatio() const;
-    float getFov() const;
-    float getNearPlane() const;
-    float getFarPlane() const;
-    float getFocalLength() const;
-    vec3 getPosition() const;
 
 protected:
     vec3 position;
