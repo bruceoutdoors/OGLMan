@@ -17,7 +17,7 @@ public:
     void moveRight(float speed);
     void moveUp(float speed);
 
-    void setPosition(const vec3 &p);
+    void setEye(const vec3 &p);
 
     vec3 getForwardVector() const;
     vec3 getUpVector() const;

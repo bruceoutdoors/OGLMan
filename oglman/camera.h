@@ -22,9 +22,9 @@ public:
     virtual void moveForward(float speed) = 0;
     virtual void moveRight(float speed) = 0;
     virtual void moveUp(float speed) = 0;
-    virtual void setPosition(const vec3 &p);
+    virtual void setEye(const vec3 &p);
 
-    vec3 getPosition() const;
+    vec3 getEye() const;
     float getAspectRatio() const;
     float getFov() const;
     float getNearPlane() const;
@@ -38,7 +38,7 @@ public:
     void setFocalLength(float focal_length);
 
 protected:
-    vec3 position;
+    vec3 eye;
     vec2 old_mouse_position;
     mat4 projection;
     mat4 view;

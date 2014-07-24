@@ -12,7 +12,7 @@ WalkCam::WalkCam()
 {
     setUpVector(vec3(0, 1, 0));
     setForwardVector(vec3(0, 0, -1));
-    setPosition(vec3(0, 0, 0));
+    setEye(vec3(0, 0, 0));
 
     updateSideVector();
 }
@@ -76,9 +76,9 @@ void WalkCam::calculateLookat()
     view[1][2] = -forward.y;
     view[2][2] = -forward.z;
 
-    view[3][0] = -glm::dot(side, position);
-    view[3][1] = -glm::dot(up2, position);
-    view[3][2] = glm::dot(forward, position);
+    view[3][0] = -glm::dot(side, eye);
+    view[3][1] = -glm::dot(up2, eye);
+    view[3][2] = glm::dot(forward, eye);
 }
 
 vec3 WalkCam::getUpVector() const
@@ -88,24 +88,24 @@ vec3 WalkCam::getUpVector() const
 
 void WalkCam::moveForward(float speed)
 {
-    position += speed * forward;
+    eye += speed * forward;
     calculateLookat();
 }
 
 void WalkCam::moveRight(float speed)
 {
-    position += speed * side;
+    eye += speed * side;
     calculateLookat();
 }
 
 void WalkCam::moveUp(float speed)
 {
-    position += speed * up2;
+    eye += speed * up2;
     calculateLookat();
 }
 
-void WalkCam::setPosition(const glm::vec3 &p)
+void WalkCam::setEye(const glm::vec3 &p)
 {
-    Camera::setPosition(p);
+    Camera::setEye(p);
     calculateLookat();
 }

@@ -86,9 +86,9 @@ void Arcball::updateTransformation()
             glm::translate(vec3(0,0,-distance)) *
             vec4(0,0,0,1);
 
-    position = vec3(getXZ.x, getY.y, -getXZ.z);
+    eye = vec3(getXZ.x, getY.y, -getXZ.z);
 
-//    cout << "x: " << position.x << ", y: " << position.y
-//         << ", z: " << position.z << endl;
+//    cout << "x: " << eye.x << ", y: " << eye.y
+//         << ", z: " << eye.z << endl;
 
 }

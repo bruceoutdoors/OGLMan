@@ -27,7 +27,7 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
     walkcam = new WalkCam();
 
     walkcam->setForwardVector(vec3(-0.06f, -0.35f, -0.94f));
-    walkcam->setPosition(vec3(-0.157f, 3.288f, 8.79f));
+    walkcam->setEye(vec3(-0.157f, 3.288f, 8.79f));
 
     active_camera = arcball;
 
@@ -101,7 +101,7 @@ void OpenGLWindow::renderScene()
 {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-    vec3 eyePositionWorld = active_camera->getPosition();
+    vec3 eyePositionWorld = active_camera->getEye();
     glUniform4fv(ambientLightUniformLocation, 1, &ambientLight[0]);
     glUniform3fv(lightPositionUniformLocation, 1, &light_position[0]);
     glUniform3fv(eyePositionWorldUniformLocation, 1, &eyePositionWorld[0]);

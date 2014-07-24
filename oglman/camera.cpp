@@ -110,14 +110,14 @@ void Camera::updateProjection()
     projection = glm::perspective(fov, aspect_ratio, near_plane, far_plane);
 }
 
-void Camera::setPosition(const vec3 &p)
+void Camera::setEye(const vec3 &p)
 {
-    position = p;
+    eye = p;
 }
 
-vec3 Camera::getPosition() const
+vec3 Camera::getEye() const
 {
-    return position;
+    return eye;
 }
 
 
