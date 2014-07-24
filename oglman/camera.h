@@ -40,7 +40,6 @@ public:
 protected:
     vec3 eye;
     vec2 old_mouse_position;
-    mat4 projection;
     mat4 view;
 
 private:
@@ -50,6 +49,7 @@ private:
     float near_plane;
     float far_plane;
     float aspect_ratio;
+    mat4 projection;
 };
 
 #endif // CAMERA_H

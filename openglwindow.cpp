@@ -26,9 +26,6 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
     arcball = new Arcball();
     walkcam = new WalkCam();
 
-    walkcam->setForwardVector(vec3(-0.06f, -0.35f, -0.94f));
-    walkcam->setEye(vec3(-0.157f, 3.288f, 8.79f));
-
     active_camera = arcball;
 
     Mesh::setCamera(active_camera);

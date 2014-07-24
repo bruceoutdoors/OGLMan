@@ -19,7 +19,14 @@ public:
     void moveUp(float speed);
 
     vec3 getAim() const;
+    float getPitch() const;
+    float getYaw() const;
+    float getDistance() const;
+
     void setAim(const vec3 &a);
+    void setPitch(float val);
+    void setYaw(float val);
+    void setDistance(float val);
 
 private:
     void updateTransformation();

@@ -47,4 +47,11 @@ void MyGLWindow::init()
 
     // set fish eye lens:
 //    active_camera->setFocalLength(10);
+
+    walkcam->setForwardVector(vec3(-0.06f, -0.35f, -0.94f));
+    walkcam->setEye(vec3(-0.157f, 3.288f, 8.79f));
+
+    arcball->setPitch(20);
+    arcball->setYaw(5);
+    arcball->setDistance(10);
 }

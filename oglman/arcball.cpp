@@ -57,9 +57,42 @@ glm::vec3 Arcball::getAim() const
     return aim;
 }
 
+float Arcball::getPitch() const
+{
+    return pitch;
+}
+
+float Arcball::getYaw() const
+{
+    return yaw;
+}
+
+float Arcball::getDistance() const
+{
+    return distance;
+}
+
 void Arcball::setAim(const glm::vec3 &a)
 {
     aim = a;
+    updateTransformation();
+}
+
+void Arcball::setPitch(float val)
+{
+    pitch = val;
+    updateTransformation();
+}
+
+void Arcball::setYaw(float val)
+{
+    yaw = val;
+    updateTransformation();
+}
+
+void Arcball::setDistance(float val)
+{
+    distance = val;
     updateTransformation();
 }
 

@@ -22,12 +22,12 @@ void WalkCam::mouseDrag(const vec2 &new_mouse_position)
     vec2 mouse_delta = new_mouse_position - old_mouse_position;
 
     if (glm::length(mouse_delta) < 50.0f) { // fix camera jump
-            forward =
+        forward =
                 mat3(
                     glm::rotate(-mouse_delta.x * ROTATION_SPEED, up) *
                     glm::rotate(-mouse_delta.y * ROTATION_SPEED, side)
-                ) * forward;
-            updateSideVector();
+                    ) * forward;
+        updateSideVector();
     }
     old_mouse_position = new_mouse_position;
 }
