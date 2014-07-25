@@ -60,9 +60,15 @@ public:
     static void setShaderMan(ShaderMan *man);
     static void setBufferMan(BufferMan *man);
 
-    void enableColor();
-    void disableColor();
-    bool hasColor() const;
+    void enableVertexColor();
+    void disableVertexColor();
+    bool hasVertexColor() const;
+
+    void enableFlatColor();
+    void disableFlatColor();
+    bool hasFlatColor() const;
+    void setFlatColor(const glm::vec3 &color);
+    vec3 getFlatColor() const;
 
 protected:
     std::vector<vec3> vertices;
@@ -78,7 +84,10 @@ private:
     GLuint normal_buffer_offset;
     GLuint color_buffer_offset;
 
-    bool isColor;
+    bool isVertexColor;
+    bool isFlatColor;
+
+    vec3 flat_color;
 
     mat4 world_matrix;
     mat4 normal_matrix;
@@ -86,7 +95,9 @@ private:
     static GLint model_projection_loc;
     static GLint model_world_loc;
     static GLint normals_loc;
-    static GLint has_color_loc;
+    static GLint has_vertex_color_loc;
+    static GLint has_flat_color_loc;
+    static GLint flat_color_loc;
 
     static Camera *active_cam;
     static BufferMan *bufferman;

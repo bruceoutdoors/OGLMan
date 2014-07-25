@@ -14,7 +14,9 @@ BufferMan *Mesh::bufferman = NULL;
 GLint Mesh::model_projection_loc;
 GLint Mesh::model_world_loc;
 GLint Mesh::normals_loc;
-GLint Mesh::has_color_loc;
+GLint Mesh::has_vertex_color_loc;
+GLint Mesh::has_flat_color_loc;
+GLint Mesh::flat_color_loc;
 
 Mesh::Mesh()
 {
@@ -24,7 +26,8 @@ Mesh::Mesh()
     DRAW_MODE = GL_TRIANGLES;
 
     bufferman->addShape(this);
-    isColor = false;
+    isVertexColor = false;
+    isFlatColor = false;
 }
 
 Mesh::~Mesh()
@@ -44,10 +47,17 @@ void Mesh::draw()
     glUniformMatrix4fv(model_projection_loc, 1,
                        GL_FALSE, &model2projection[0][0]);
 
-    if(hasColor()) {
-        glUniform1f(has_color_loc, GL_TRUE);
+    if(hasVertexColor()) {
+        glUniform1f(has_vertex_color_loc, GL_TRUE);
     } else {
-        glUniform1f(has_color_loc, GL_FALSE);
+        glUniform1f(has_vertex_color_loc, GL_FALSE);
+    }
+
+    if (hasFlatColor()) {
+        glUniform1f(has_flat_color_loc, GL_TRUE);
+        glUniform3fv(flat_color_loc, 1, &flat_color[0]);
+    } else {
+        glUniform1f(has_flat_color_loc, GL_FALSE);
     }
 
     glDrawElements(DRAW_MODE, indices.size(), GL_UNSIGNED_SHORT, (void*)index_buffer_offset);
@@ -57,7 +67,7 @@ GLsizeiptr Mesh::getVertexBufferSize() const
 {
     GLuint size = vertices.size() + normals.size();
 
-    if (hasColor()) { size += colors.size(); }
+    if (hasVertexColor()) { size += colors.size(); }
 
     return (size) * sizeof(vec3);
 }
@@ -178,7 +188,9 @@ void Mesh::setShaderMan(ShaderMan *man)
     model_projection_loc = man->getUniformLoc("modelToProjectionMatrix");
     model_world_loc = man->getUniformLoc("modelToWorldMatrix");
     normals_loc = man->getUniformLoc("normalMatrix");
-    has_color_loc = man->getUniformLoc("hasColor");
+    has_vertex_color_loc = man->getUniformLoc("hasVertexColor");
+    has_flat_color_loc = man->getUniformLoc("hasFlatColor");
+    flat_color_loc = man->getUniformLoc("flatColor");
     man->use();
 }
 
@@ -187,19 +199,44 @@ void Mesh::setBufferMan(BufferMan *man)
     bufferman = man;
 }
 
-void Mesh::enableColor()
+void Mesh::enableVertexColor()
 {
-    isColor = true;
+    isVertexColor = true;
 }
 
-void Mesh::disableColor()
+void Mesh::disableVertexColor()
 {
-    isColor = false;
+    isVertexColor = false;
 }
 
-bool Mesh::hasColor() const
+bool Mesh::hasVertexColor() const
 {
-    return isColor;
+    return isVertexColor;
+}
+
+void Mesh::enableFlatColor()
+{
+    isFlatColor = true;
+}
+
+void Mesh::disableFlatColor()
+{
+    isFlatColor = false;
+}
+
+bool Mesh::hasFlatColor() const
+{
+    return isFlatColor;
+}
+
+void Mesh::setFlatColor(const glm::vec3 &color)
+{
+    flat_color = color;
+}
+
+glm::vec3 Mesh::getFlatColor() const
+{
+    return flat_color;
 }
 
 

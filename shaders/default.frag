@@ -1,13 +1,16 @@
 #version 430
 
 in vec3 vertexPositionWorld;
-in vec3 color;
+in vec3 vertcolor;
 in vec3 N;
 
 uniform vec3 lightPosition;
 uniform vec3 eyePositionWorld;
 uniform vec4 ambientLight;
-uniform bool hasColor;
+uniform vec3 flatColor;
+
+uniform bool hasVertexColor;
+uniform bool hasFlatColor;
 
 void main()
 {
@@ -29,9 +32,12 @@ void main()
 //    vec3 H = normalize(L+V);
 //    float I_s = pow(dot(N, H), 60);
 
-    if (hasColor) {
-        diffuseLight = vec4(vec3(I_d) * color, 1);
-        specularLight = vec4(vec3(I_s) * color, 1);
+    if (hasVertexColor) {
+        diffuseLight = vec4(vec3(I_d) * vertcolor, 1);
+        specularLight = vec4(vec3(I_s) * vertcolor, 1);
+    } else if (hasFlatColor) {
+        diffuseLight = vec4(vec3(I_d) * flatColor, 1);
+        specularLight = vec4(vec3(I_s) * flatColor, 1);
     } else {
         diffuseLight = vec4(vec3(I_d), 1);
         specularLight = vec4(vec3(I_s), 1);

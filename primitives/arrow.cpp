@@ -172,6 +172,4 @@ void Arrow::store()
     STORE_NORMALS(stackNormals);
     STORE_INDICES(stackIndices);
     STORE_COLORS(stackColors);
-
-    enableColor();
 }

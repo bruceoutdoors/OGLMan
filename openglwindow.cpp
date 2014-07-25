@@ -17,7 +17,7 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
     m_mode = mode;
     m_fullscreen = false;
 
-    light_position = vec3(0.0f, 1.0f, 1.0f);
+    light_position = vec3(0.0f, 3.0f, 1.0f);
     ambientLight = vec4(0.05f, 0.05f, 0.05f ,1.0f);
 
     shaderman = new ShaderMan("shaders/default");

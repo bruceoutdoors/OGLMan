@@ -25,11 +25,15 @@ void MyGLWindow::draw()
                 glm::rotate(-40.0f, vec3(1.0f, 0.0f, 0.0f)) *
                 glm::rotate(25.0f, vec3(0.0f, 1.0f, 0.0f)));
     cube->draw();
+
+    cube->enableFlatColor();
+    cube->setFlatColor(vec3(1.0f,1.0f,0.0f));
     cube->setWorldMatrix(
                 glm::translate(vec3(2.0f, 1.0f, 1.0f)) *
                 glm::rotate(-30.0f, vec3(0.0f, 1.0f, 0.0f)) *
                 glm::scale(mat4(1.0f), vec3(0.7f)));
     cube->draw();
+    cube->disableFlatColor();
 
     arrow->setWorldMatrix(
                 glm::translate(vec3(-1.0f, 2.0f, 2.0f)) *
@@ -44,6 +48,11 @@ void MyGLWindow::init()
     cube = new Cube();
     plane = new Plane(10);
     arrow = new Arrow();
+
+    arrow->enableVertexColor();
+
+    plane->enableFlatColor();
+    plane->setFlatColor(vec3(0.6f,0.8f,1.0f));
 
     // set fish eye lens:
 //    active_camera->setFocalLength(10);

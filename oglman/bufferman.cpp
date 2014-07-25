@@ -62,7 +62,7 @@ void BufferMan::setupBuffers()
                     s->getNormalAddress(),
                     s->getVertexBufferSubSize());
         s->setNormalBufferOffset(offset);
-        if (s->hasColor()) {
+        if (s->hasVertexColor()) {
             // add colors:
             offset = vertex_buffer->addData(
                         s->getColorAddress(),
@@ -92,7 +92,7 @@ GLuint BufferMan::setupVAO(Mesh *s)
     glEnableVertexAttribArray(NORMAL_IDX);
     glVertexAttribPointer(NORMAL_IDX, 3, GL_FLOAT, GL_FALSE, 0, (void*)s->getNormalBufferOffset());
 
-    if (s->hasColor()) {
+    if (s->hasVertexColor()) {
         glEnableVertexAttribArray(COLOR_IDX);
         glVertexAttribPointer(COLOR_IDX, 3, GL_FLOAT, GL_FALSE, 0, (void*)s->getColorBufferOffset());
     }
