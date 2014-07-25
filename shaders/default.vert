@@ -8,19 +8,12 @@ uniform mat4 modelToProjectionMatrix;
 uniform mat4 modelToWorldMatrix;
 uniform mat4 normalMatrix;
 
-uniform vec3 lightPosition;
-uniform vec3 eyePositionWorld;
-
+out vec3 vertexPositionWorld;
 out vec3 N;
-out vec3 L;
-out vec3 V;
 
 void main()
 {
     gl_Position = modelToProjectionMatrix * vertexPositionModel;
-    vec3 vertexPositionWorld = vec3(modelToWorldMatrix * vertexPositionModel);
-
+    vertexPositionWorld = vec3(modelToWorldMatrix * vertexPositionModel);
     N = normalize(vec3(normalMatrix * vec4(normalModel, 0.0f)));
-    L = normalize(lightPosition - vertexPositionWorld);
-    V = normalize(eyePositionWorld - vertexPositionWorld);
 }
