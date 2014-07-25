@@ -2,7 +2,8 @@
 #include "buffer.h"
 
 const int POSITION_IDX = 0;
-const int NORMAL_IDX = 2;
+const int COLOR_IDX    = 1;
+const int NORMAL_IDX   = 2;
 
 BufferMan::BufferMan()
 {
@@ -61,6 +62,13 @@ void BufferMan::setupBuffers()
                     s->getNormalAddress(),
                     s->getVertexBufferSubSize());
         s->setNormalBufferOffset(offset);
+        if (s->hasColor()) {
+            // add colors:
+            offset = vertex_buffer->addData(
+                        s->getColorAddress(),
+                        s->getVertexBufferSubSize());
+            s->setColorBufferOffset(offset);
+        }
         // add indices:
         offset = index_buffer->addData(
                     s->getIndexAddress(),
@@ -80,10 +88,16 @@ GLuint BufferMan::setupVAO(Mesh *s)
     glGenVertexArrays(1, &vao);
     glBindVertexArray(vao);
     glEnableVertexAttribArray(POSITION_IDX);
-    glEnableVertexAttribArray(NORMAL_IDX);
-    glBindBuffer(vertex_buffer->getType(), vertex_buffer->getID());
     glVertexAttribPointer(POSITION_IDX, 3, GL_FLOAT, GL_FALSE, 0, (void*)s->getVertexBufferOffset());
+    glEnableVertexAttribArray(NORMAL_IDX);
     glVertexAttribPointer(NORMAL_IDX, 3, GL_FLOAT, GL_FALSE, 0, (void*)s->getNormalBufferOffset());
+
+    if (s->hasColor()) {
+        glEnableVertexAttribArray(COLOR_IDX);
+        glVertexAttribPointer(COLOR_IDX, 3, GL_FLOAT, GL_FALSE, 0, (void*)s->getColorBufferOffset());
+    }
+
+    glBindBuffer(vertex_buffer->getType(), vertex_buffer->getID());
     glBindBuffer(index_buffer->getType(), index_buffer->getID());
 
     return vao;

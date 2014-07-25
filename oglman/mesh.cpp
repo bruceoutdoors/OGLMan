@@ -14,6 +14,7 @@ BufferMan *Mesh::bufferman = NULL;
 GLint Mesh::model_projection_loc;
 GLint Mesh::model_world_loc;
 GLint Mesh::normals_loc;
+GLint Mesh::has_color_loc;
 
 Mesh::Mesh()
 {
@@ -23,6 +24,7 @@ Mesh::Mesh()
     DRAW_MODE = GL_TRIANGLES;
 
     bufferman->addShape(this);
+    isColor = false;
 }
 
 Mesh::~Mesh()
@@ -42,12 +44,22 @@ void Mesh::draw()
     glUniformMatrix4fv(model_projection_loc, 1,
                        GL_FALSE, &model2projection[0][0]);
 
+    if(hasColor()) {
+        glUniform1f(has_color_loc, GL_TRUE);
+    } else {
+        glUniform1f(has_color_loc, GL_FALSE);
+    }
+
     glDrawElements(DRAW_MODE, indices.size(), GL_UNSIGNED_SHORT, (void*)index_buffer_offset);
 }
 
 GLsizeiptr Mesh::getVertexBufferSize() const
 {
-    return (vertices.size() + normals.size()) * sizeof(vec3);
+    GLuint size = vertices.size() + normals.size();
+
+    if (hasColor()) { size += colors.size(); }
+
+    return (size) * sizeof(vec3);
 }
 
 GLsizeiptr Mesh::getVertexBufferSubSize() const
@@ -70,6 +82,11 @@ const vec3 *Mesh::getNormalAddress() const
     return normals.data();
 }
 
+const glm::vec3 *Mesh::getColorAddress() const
+{
+    return colors.data();
+}
+
 const GLushort *Mesh::getIndexAddress() const
 {
     return indices.data();
@@ -90,6 +107,11 @@ void Mesh::setNormalBufferOffset(GLuint offset)
     normal_buffer_offset = offset;
 }
 
+void Mesh::setColorBufferOffset(GLuint offset)
+{
+    color_buffer_offset = offset;
+}
+
 GLuint Mesh::getIndexBufferOffset() const
 {
     return index_buffer_offset;
@@ -103,6 +125,11 @@ GLuint Mesh::getVertexBufferOffset() const
 GLuint Mesh::getNormalBufferOffset() const
 {
     return normal_buffer_offset;
+}
+
+GLuint Mesh::getColorBufferOffset() const
+{
+    return color_buffer_offset;
 }
 
 GLuint Mesh::getNumIndices() const
@@ -151,12 +178,28 @@ void Mesh::setShaderMan(ShaderMan *man)
     model_projection_loc = man->getUniformLoc("modelToProjectionMatrix");
     model_world_loc = man->getUniformLoc("modelToWorldMatrix");
     normals_loc = man->getUniformLoc("normalMatrix");
+    has_color_loc = man->getUniformLoc("hasColor");
     man->use();
 }
 
 void Mesh::setBufferMan(BufferMan *man)
 {
     bufferman = man;
+}
+
+void Mesh::enableColor()
+{
+    isColor = true;
+}
+
+void Mesh::disableColor()
+{
+    isColor = false;
+}
+
+bool Mesh::hasColor() const
+{
+    return isColor;
 }
 
 

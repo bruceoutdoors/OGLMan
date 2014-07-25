@@ -32,7 +32,7 @@ void MyGLWindow::draw()
     cube->draw();
 
     arrow->setWorldMatrix(
-                glm::translate(vec3(-1.0f, 0.5f, 2.0f)) *
+                glm::translate(vec3(-1.0f, 2.0f, 2.0f)) *
                 glm::rotate(-150.0f, vec3(0.0f, 1.0f, 0.0f)));
     arrow->draw();
 

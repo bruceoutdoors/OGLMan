@@ -8,6 +8,7 @@
 #define PROCESS_ARRAY(a, v) v.insert(v.end(), &a[0], &a[sizeof(a)/sizeof(*a)]);
 #define STORE_VERTICES(v) PROCESS_ARRAY(v, vertices);
 #define STORE_NORMALS(n)  PROCESS_ARRAY(n, normals);
+#define STORE_COLORS(c)   PROCESS_ARRAY(c, colors);
 #define STORE_INDICES(i)  PROCESS_ARRAY(i, indices);
 
 using glm::vec3;
@@ -31,16 +32,19 @@ public:
     GLsizeiptr getIndexBufferSize() const;
 
     const vec3* getVertexAddress() const;
-    const glm::vec3* getNormalAddress() const;
+    const vec3* getNormalAddress() const;
+    const vec3* getColorAddress() const;
     const GLushort* getIndexAddress() const;
 
     void setIndexBufferOffset(GLuint offset);
     void setVertexBufferOffset(GLuint offset);
     void setNormalBufferOffset(GLuint offset);
+    void setColorBufferOffset(GLuint offset);
 
     GLuint getIndexBufferOffset() const;
     GLuint getVertexBufferOffset() const;
     GLuint getNormalBufferOffset() const;
+    GLuint getColorBufferOffset() const;
 
     GLuint getNumIndices() const;
     GLuint getNumVertices() const;
@@ -56,8 +60,13 @@ public:
     static void setShaderMan(ShaderMan *man);
     static void setBufferMan(BufferMan *man);
 
+    void enableColor();
+    void disableColor();
+    bool hasColor() const;
+
 protected:
     std::vector<vec3> vertices;
+    std::vector<vec3> colors;
     std::vector<vec3> normals;
     std::vector<GLushort> indices;
 
@@ -67,6 +76,9 @@ private:
     GLuint index_buffer_offset;
     GLuint vertex_buffer_offset;
     GLuint normal_buffer_offset;
+    GLuint color_buffer_offset;
+
+    bool isColor;
 
     mat4 world_matrix;
     mat4 normal_matrix;
@@ -74,6 +86,7 @@ private:
     static GLint model_projection_loc;
     static GLint model_world_loc;
     static GLint normals_loc;
+    static GLint has_color_loc;
 
     static Camera *active_cam;
     static BufferMan *bufferman;
