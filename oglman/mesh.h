@@ -13,6 +13,7 @@
 
 using glm::vec3;
 using glm::mat4;
+using std::vector;
 
 // forward class
 class ShaderMan;
@@ -53,8 +54,8 @@ public:
     void setVao(GLuint v);
     void deleteVao();
 
-    void setDrawMode(GLenum mode);
-    void setWorldMatrix(mat4 mat);
+    void setDrawMode(const GLenum &mode);
+    void setWorldMatrix(const mat4 &mat);
 
     static void setCamera(Camera *c);
     static void setShaderMan(ShaderMan *man);
@@ -67,14 +68,14 @@ public:
     void enableFlatColor();
     void disableFlatColor();
     bool hasFlatColor() const;
-    void setFlatColor(const glm::vec3 &color);
+    void setFlatColor(const vec3 &color);
     vec3 getFlatColor() const;
 
 protected:
-    std::vector<vec3> vertices;
-    std::vector<vec3> colors;
-    std::vector<vec3> normals;
-    std::vector<GLushort> indices;
+    vector<vec3> vertices;
+    vector<vec3> colors;
+    vector<vec3> normals;
+    vector<GLushort> indices;
 
 private:
     GLuint vao;

@@ -33,11 +33,11 @@ void main()
 //    float I_s = pow(dot(N, H), 60);
 
     if (hasVertexColor) {
-        diffuseLight = vec4(vec3(I_d) * vertcolor, 1);
-        specularLight = vec4(vec3(I_s) * vertcolor, 1);
+        diffuseLight = vec4(I_d * vertcolor, 1);
+        specularLight = vec4(I_s * vertcolor, 1);
     } else if (hasFlatColor) {
-        diffuseLight = vec4(vec3(I_d) * flatColor, 1);
-        specularLight = vec4(vec3(I_s) * flatColor, 1);
+        diffuseLight = vec4(I_d * flatColor, 1);
+        specularLight = vec4(I_s * flatColor, 1);
     } else {
         diffuseLight = vec4(vec3(I_d), 1);
         specularLight = vec4(vec3(I_s), 1);

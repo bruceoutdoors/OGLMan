@@ -47,18 +47,10 @@ void Mesh::draw()
     glUniformMatrix4fv(model_projection_loc, 1,
                        GL_FALSE, &model2projection[0][0]);
 
-    if(hasVertexColor()) {
-        glUniform1f(has_vertex_color_loc, GL_TRUE);
-    } else {
-        glUniform1f(has_vertex_color_loc, GL_FALSE);
-    }
+    glUniform1f(has_vertex_color_loc, isVertexColor);
+    glUniform1f(has_flat_color_loc, isFlatColor);
 
-    if (hasFlatColor()) {
-        glUniform1f(has_flat_color_loc, GL_TRUE);
-        glUniform3fv(flat_color_loc, 1, &flat_color[0]);
-    } else {
-        glUniform1f(has_flat_color_loc, GL_FALSE);
-    }
+    if (isFlatColor) { glUniform3fv(flat_color_loc, 1, &flat_color[0]); }
 
     glDrawElements(DRAW_MODE, indices.size(), GL_UNSIGNED_SHORT, (void*)index_buffer_offset);
 }
@@ -167,12 +159,12 @@ void Mesh::deleteVao()
     glDeleteVertexArrays(1, &vao);
 }
 
-void Mesh::setDrawMode(GLenum mode)
+void Mesh::setDrawMode(const GLenum &mode)
 {
     DRAW_MODE = mode;
 }
 
-void Mesh::setWorldMatrix(glm::mat4 mat)
+void Mesh::setWorldMatrix(const mat4 &mat)
 {
     world_matrix = mat;
     normal_matrix = glm::transpose(glm::inverse(world_matrix));
