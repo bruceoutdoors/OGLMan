@@ -203,6 +203,10 @@ bool OpenGLWindow::keyboardEventHandler(int key)
         shadermanSetup();
         break;
 
+    case sf::Keyboard::Num4:
+        Mesh::hasWireframeMode() ? Mesh::disableWirefameMode() : Mesh::enableWirefameMode();
+        break;
+
     case sf::Keyboard::U:
         light_position.z += LIGHT_MOVE;
         break;

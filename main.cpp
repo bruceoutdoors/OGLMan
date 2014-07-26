@@ -12,6 +12,7 @@ int main()
             << "|   ESC                     => exit                             |\n"
             << "|   F11                     => toggle fullscreen                |\n"
             << "|   c                       => toggle camera orbit/viewer       |\n"
+            << "|   4                       => toggle shading/wireframe mode    |\n"
             << "|   7                       => toggle lights                    |\n"
             << "|                                                               |\n"
             << "| Mouse:                                                        |\n"

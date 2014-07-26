@@ -17,6 +17,7 @@ GLint Mesh::normals_loc;
 GLint Mesh::has_vertex_color_loc;
 GLint Mesh::has_flat_color_loc;
 GLint Mesh::flat_color_loc;
+bool Mesh::isWireframeMode = false;
 
 Mesh::Mesh()
 {
@@ -51,6 +52,14 @@ void Mesh::draw()
     glUniform1f(has_flat_color_loc, isFlatColor);
 
     if (isFlatColor) { glUniform3fv(flat_color_loc, 1, &flat_color[0]); }
+
+    if (isWireframeMode) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDisable(GL_CULL_FACE);
+    } else {
+        glPolygonMode(GL_FRONT, GL_FILL);
+        glEnable(GL_CULL_FACE);
+    }
 
     glDrawElements(DRAW_MODE, indices.size(), GL_UNSIGNED_SHORT, (void*)index_buffer_offset);
 }
@@ -189,6 +198,21 @@ void Mesh::setShaderMan(ShaderMan *man)
 void Mesh::setBufferMan(BufferMan *man)
 {
     bufferman = man;
+}
+
+void Mesh::enableWirefameMode()
+{
+    isWireframeMode = true;
+}
+
+void Mesh::disableWirefameMode()
+{
+    isWireframeMode = false;
+}
+
+bool Mesh::hasWireframeMode()
+{
+    return isWireframeMode;
 }
 
 void Mesh::enableVertexColor()

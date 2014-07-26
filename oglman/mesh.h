@@ -61,6 +61,10 @@ public:
     static void setShaderMan(ShaderMan *man);
     static void setBufferMan(BufferMan *man);
 
+    static void enableWirefameMode();
+    static void disableWirefameMode();
+    static bool hasWireframeMode();
+
     void enableVertexColor();
     void disableVertexColor();
     bool hasVertexColor() const;
@@ -99,6 +103,7 @@ private:
     static GLint has_vertex_color_loc;
     static GLint has_flat_color_loc;
     static GLint flat_color_loc;
+    static bool isWireframeMode;
 
     static Camera *active_cam;
     static BufferMan *bufferman;
