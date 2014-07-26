@@ -44,4 +44,6 @@ INCLUDEPATH += C:/SFML-2.1/include
 
 OTHER_FILES += \
     shaders/default.frag \
-    shaders/default.vert
+    shaders/default.vert \
+    shaders/flat.frag \
+    shaders/flat.vert

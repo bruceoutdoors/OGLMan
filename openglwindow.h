@@ -24,10 +24,14 @@ class OpenGLWindow : public sf::Window
         void renderScene();
         virtual void draw() = 0;
         virtual void init() = 0;
+        void setupLights();
+        void shadermanSetup();
 
     protected:
         GLvoid resizeGL(GLsizei width, GLsizei height);
-        ShaderMan *shaderman;
+        ShaderMan *active_shader;
+        ShaderMan *flat_shader;
+        ShaderMan *default_shader;
         BufferMan *bufferman;
         Camera *active_camera;
         Arcball *arcball;
@@ -42,13 +46,15 @@ class OpenGLWindow : public sf::Window
         bool handleEvents();
         bool keyboardEventHandler(int key);
 
-        bool m_fullscreen;
+        bool isFullscreen;
+        bool isLightOn;
         sf::VideoMode m_mode;
         sf::String m_title;
 
         GLint ambientLightUniformLocation;
         GLint lightPositionUniformLocation;
         GLint eyePositionWorldUniformLocation;
+
 
 };
 

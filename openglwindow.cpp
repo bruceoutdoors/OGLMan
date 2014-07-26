@@ -15,12 +15,16 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
 {
     m_title = title;
     m_mode = mode;
-    m_fullscreen = false;
+    isFullscreen = false;
+    isLightOn = true;
 
     light_position = vec3(0.0f, 3.0f, 1.0f);
     ambientLight = vec4(0.05f, 0.05f, 0.05f ,1.0f);
 
-    shaderman = new ShaderMan("shaders/default");
+    std::string shader_dir = "../sfml-opengl/shaders/";
+    default_shader = new ShaderMan(shader_dir + "default");
+    flat_shader = new ShaderMan(shader_dir + "flat");
+
     bufferman = new BufferMan();
 
     arcball = new Arcball();
@@ -30,16 +34,14 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
 
     Mesh::setCamera(active_camera);
     Mesh::setBufferMan(bufferman);
-    Mesh::setShaderMan(shaderman);
 
-    eyePositionWorldUniformLocation = shaderman->getUniformLoc("eyePositionWorld");
-    ambientLightUniformLocation = shaderman->getUniformLoc("ambientLight");
-    lightPositionUniformLocation = shaderman->getUniformLoc("lightPosition");
+    shadermanSetup();
 }
 
 OpenGLWindow::~OpenGLWindow()
 {
-    delete shaderman;
+    delete default_shader;
+    delete flat_shader;
     delete bufferman;
     delete arcball;
     delete walkcam;
@@ -47,9 +49,9 @@ OpenGLWindow::~OpenGLWindow()
 
 void OpenGLWindow::toggleFullscreen()
 {
-    m_fullscreen = !m_fullscreen;
+    isFullscreen = !isFullscreen;
 
-    if (m_fullscreen) {
+    if (isFullscreen) {
         create(sf::VideoMode::getDesktopMode(), m_title, sf::Style::Fullscreen);
         resizeGL(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
     } else {
@@ -61,7 +63,7 @@ void OpenGLWindow::toggleFullscreen()
     setupGL();
 
     // use the program
-    shaderman->use();
+    active_shader->use();
 
     // recreating the window causes the buffers to get cleared so we need to
     // add the data back again.
@@ -98,14 +100,34 @@ void OpenGLWindow::renderScene()
 {
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
 
-    vec3 eyePositionWorld = active_camera->getEye();
-    glUniform4fv(ambientLightUniformLocation, 1, &ambientLight[0]);
-    glUniform3fv(lightPositionUniformLocation, 1, &light_position[0]);
-    glUniform3fv(eyePositionWorldUniformLocation, 1, &eyePositionWorld[0]);
+    if (isLightOn) {
+        vec3 eyePositionWorld = active_camera->getEye();
+        glUniform4fv(ambientLightUniformLocation, 1, &ambientLight[0]);
+        glUniform3fv(lightPositionUniformLocation, 1, &light_position[0]);
+        glUniform3fv(eyePositionWorldUniformLocation, 1, &eyePositionWorld[0]);
+    }
 
     draw();
 
     display();
+}
+
+void OpenGLWindow::setupLights()
+{
+    eyePositionWorldUniformLocation = active_shader->getUniformLoc("eyePositionWorld");
+    ambientLightUniformLocation = active_shader->getUniformLoc("ambientLight");
+    lightPositionUniformLocation = active_shader->getUniformLoc("lightPosition");
+}
+
+void OpenGLWindow::shadermanSetup()
+{
+    if (isLightOn) {
+        active_shader = default_shader;
+        setupLights();
+    } else {
+        active_shader = flat_shader;
+    }
+    Mesh::setShaderMan(active_shader);
 }
 
 GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)
@@ -174,6 +196,11 @@ bool OpenGLWindow::keyboardEventHandler(int key)
         active_camera == arcball ? active_camera = walkcam : active_camera = arcball;
         // update the mesh's Camera pointer
         Mesh::setCamera(active_camera);
+        break;
+
+    case sf::Keyboard::Num7:
+        isLightOn = !isLightOn;
+        shadermanSetup();
         break;
 
     case sf::Keyboard::U:
