@@ -3,6 +3,7 @@
 in vec3 vertexPositionWorld;
 in vec3 vertcolor;
 in vec3 N;
+in vec2 UV;
 
 uniform vec3 lightPosition;
 uniform vec3 eyePositionWorld;
@@ -11,6 +12,9 @@ uniform vec3 flatColor;
 
 uniform bool hasVertexColor;
 uniform bool hasFlatColor;
+uniform bool hasTexture;
+
+uniform sampler2D textureSampler;
 
 void main()
 {
@@ -32,7 +36,11 @@ void main()
 //    vec3 H = normalize(L+V);
 //    float I_s = pow(dot(N, H), 60);
 
-    if (hasVertexColor) {
+    if (hasTexture) {
+      vec4 texcolor = texture2D(textureSampler, UV).rgba;
+      diffuseLight = I_d * texcolor;
+      specularLight = I_s * texcolor;
+    } else if (hasVertexColor) {
         diffuseLight = vec4(I_d * vertcolor, 1);
         specularLight = vec4(I_s * vertcolor, 1);
     } else if (hasFlatColor) {

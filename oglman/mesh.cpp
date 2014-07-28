@@ -3,6 +3,7 @@
 #include "shaderman.h"
 #include "bufferman.h"
 #include "objreader.h"
+#include "texture.h"
 
 #include <cstring>
 
@@ -12,12 +13,14 @@ using glm::mat4;
 
 Camera *Mesh::active_cam = NULL;
 BufferMan *Mesh::bufferman = NULL;
+ShaderMan *Mesh::shaderman = NULL;
 
 GLint Mesh::model_projection_loc;
 GLint Mesh::model_world_loc;
 GLint Mesh::normals_loc;
 GLint Mesh::has_vertex_color_loc;
 GLint Mesh::has_flat_color_loc;
+GLint Mesh::has_texture_loc;
 GLint Mesh::flat_color_loc;
 bool Mesh::isWireframeMode = false;
 
@@ -31,6 +34,9 @@ Mesh::Mesh()
     bufferman->addShape(this);
     isVertexColor = false;
     isFlatColor = false;
+    isTextured = false;
+
+    texture = nullptr;
 }
 
 Mesh::Mesh(std::string path) : Mesh()
@@ -47,6 +53,7 @@ Mesh::Mesh(std::string path) : Mesh()
 Mesh::~Mesh()
 {
     deleteVao();
+    if (texture != nullptr) { delete texture; }
 }
 
 void Mesh::draw()
@@ -63,6 +70,7 @@ void Mesh::draw()
 
     glUniform1f(has_vertex_color_loc, isVertexColor);
     glUniform1f(has_flat_color_loc, isFlatColor);
+    glUniform1f(has_texture_loc, isTextured);
 
     if (isFlatColor) { glUniform3fv(flat_color_loc, 1, &flat_color[0]); }
 
@@ -74,7 +82,15 @@ void Mesh::draw()
         glEnable(GL_CULL_FACE);
     }
 
+    if (hasTexture()) { texture->use(); }
+
     glDrawElements(DRAW_MODE, indices.size(), GL_UNSIGNED_SHORT, (void*)index_buffer_offset);
+}
+
+void Mesh::setTexture(const std::string &path)
+{
+    texture = new Texture(path);
+    enableTexture();
 }
 
 GLsizeiptr Mesh::getArrayBufferSize() const
@@ -221,13 +237,18 @@ void Mesh::setCamera(Camera *c)
 
 void Mesh::setShaderMan(ShaderMan *man)
 {
-    model_projection_loc = man->getUniformLoc("modelToProjectionMatrix");
-    model_world_loc = man->getUniformLoc("modelToWorldMatrix");
-    normals_loc = man->getUniformLoc("normalMatrix");
-    has_vertex_color_loc = man->getUniformLoc("hasVertexColor");
-    has_flat_color_loc = man->getUniformLoc("hasFlatColor");
-    flat_color_loc = man->getUniformLoc("flatColor");
-    man->use();
+    shaderman = man;
+
+    model_projection_loc = shaderman->getUniformLoc("modelToProjectionMatrix");
+    model_world_loc = shaderman->getUniformLoc("modelToWorldMatrix");
+    normals_loc = shaderman->getUniformLoc("normalMatrix");
+    has_vertex_color_loc = shaderman->getUniformLoc("hasVertexColor");
+    has_flat_color_loc = shaderman->getUniformLoc("hasFlatColor");
+    has_texture_loc = shaderman->getUniformLoc("hasTexture");
+    flat_color_loc = shaderman->getUniformLoc("flatColor");
+    Texture::setTextureSamplerLoc(shaderman->getUniformLoc("textureSampler"));
+
+    shaderman->use();
 }
 
 void Mesh::setBufferMan(BufferMan *man)
@@ -294,6 +315,22 @@ bool Mesh::hasUv() const
 {
     return !uvs.empty();
 }
+bool Mesh::hasTexture() const
+{
+    return isTextured;
+}
+
+void Mesh::enableTexture()
+{
+    isTextured = true;
+}
+
+void Mesh::disableTexture()
+{
+    isTextured = false;
+}
+
+
 
 
 

@@ -17,7 +17,8 @@ SOURCES += main.cpp \
     primitives/plane.cpp \
     oglman/walkcam.cpp \
     oglman/arcball.cpp \
-    oglman/objreader.cpp
+    oglman/objreader.cpp \
+    oglman/texture.cpp
 
 HEADERS += \
     myglwindow.h \
@@ -33,7 +34,8 @@ HEADERS += \
     primitives/plane.h \
     oglman/walkcam.h \
     oglman/arcball.h \
-    oglman/objreader.h
+    oglman/objreader.h \
+    oglman/texture.h
 
 
 QMAKE_CXXFLAGS += -std=c++11

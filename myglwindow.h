@@ -16,7 +16,8 @@ public:
     void init();
 
 private:
-    Mesh *cube;
+    Mesh *cube2;
+    Cube *cube;
     Mesh *monkey;
     Plane *plane;
     Arrow *arrow;

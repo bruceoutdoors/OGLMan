@@ -9,6 +9,7 @@ MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWind
 
 MyGLWindow::~MyGLWindow()
 {
+    delete cube2;
     delete cube;
     delete monkey;
     delete plane;
@@ -21,20 +22,22 @@ void MyGLWindow::draw()
                 glm::translate(light_position) *
                 glm::scale(mat4(1.0f), vec3(0.3f)));
     cube->draw();
+
+    cube->enableFlatColor();
+    cube->setFlatColor(vec3(1.0f,1.0f,0.0f));
     cube->setWorldMatrix(
                 glm::translate(vec3(-3.0f, 1.0f, 0.0f)) *
                 glm::rotate(-40.0f, vec3(1.0f, 0.0f, 0.0f)) *
                 glm::rotate(25.0f, vec3(0.0f, 1.0f, 0.0f)));
     cube->draw();
+    cube->disableFlatColor();
 
-    cube->enableFlatColor();
-    cube->setFlatColor(vec3(1.0f,1.0f,0.0f));
-    cube->setWorldMatrix(
+    cube2->setWorldMatrix(
                 glm::translate(vec3(2.0f, 1.0f, 1.0f)) *
                 glm::rotate(-30.0f, vec3(0.0f, 1.0f, 0.0f)) *
                 glm::scale(mat4(1.0f), vec3(0.7f)));
-    cube->draw();
-    cube->disableFlatColor();
+    cube2->draw();
+
 
     arrow->setWorldMatrix(
                 glm::translate(vec3(-1.0f, 2.0f, 2.0f)) *
@@ -51,8 +54,14 @@ void MyGLWindow::draw()
 void MyGLWindow::init()
 {
     std::string resource_dir = "./resource/";
-    cube = new Mesh(resource_dir + "cube.obj");
+
+    cube2 = new Mesh(resource_dir + "cube.obj");
+    cube2->setTexture(resource_dir + "cube-texture.jpg");
+
     monkey = new Mesh(resource_dir + "suzanne-triangulated.obj");
+    monkey->setTexture(resource_dir + "monkey-texture.jpg");
+
+    cube = new Cube();
     plane = new Plane(10);
     arrow = new Arrow();
 

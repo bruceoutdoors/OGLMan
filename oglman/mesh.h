@@ -21,6 +21,7 @@ using std::vector;
 class ShaderMan;
 class Camera;
 class BufferMan;
+class Texture;
 
 class Mesh
 {
@@ -64,14 +65,6 @@ public:
     void setDrawMode(const GLenum &mode);
     void setWorldMatrix(const mat4 &mat);
 
-    static void setCamera(Camera *c);
-    static void setShaderMan(ShaderMan *man);
-    static void setBufferMan(BufferMan *man);
-
-    static void enableWirefameMode();
-    static void disableWirefameMode();
-    static bool hasWireframeMode();
-
     void enableVertexColor();
     void disableVertexColor();
     bool hasVertexColor() const;
@@ -83,6 +76,19 @@ public:
     vec3 getFlatColor() const;
 
     bool hasUv() const;
+
+    void setTexture(const std::string &path);
+    bool hasTexture() const;
+    void enableTexture();
+    void disableTexture();
+
+    static void setCamera(Camera *c);
+    static void setShaderMan(ShaderMan *man);
+    static void setBufferMan(BufferMan *man);
+
+    static void enableWirefameMode();
+    static void disableWirefameMode();
+    static bool hasWireframeMode();
 
 protected:
     vector<vec3> vertices;
@@ -102,6 +108,9 @@ private:
 
     bool isVertexColor;
     bool isFlatColor;
+    bool isTextured;
+
+    Texture *texture;
 
     vec3 flat_color;
 
@@ -113,11 +122,13 @@ private:
     static GLint normals_loc;
     static GLint has_vertex_color_loc;
     static GLint has_flat_color_loc;
+    static GLint has_texture_loc;
     static GLint flat_color_loc;
     static bool isWireframeMode;
 
     static Camera *active_cam;
     static BufferMan *bufferman;
+    static ShaderMan *shaderman;
 };
 
 #endif // SHAPE_H
