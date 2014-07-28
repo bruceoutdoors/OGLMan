@@ -16,7 +16,8 @@ SOURCES += main.cpp \
     primitives/cube.cpp \
     primitives/plane.cpp \
     oglman/walkcam.cpp \
-    oglman/arcball.cpp
+    oglman/arcball.cpp \
+    oglman/objreader.cpp
 
 HEADERS += \
     myglwindow.h \
@@ -31,8 +32,8 @@ HEADERS += \
     primitives/cube.h \
     primitives/plane.h \
     oglman/walkcam.h \
-    oglman/arcball.h
-
+    oglman/arcball.h \
+    oglman/objreader.h
 
 
 QMAKE_CXXFLAGS += -std=c++11
@@ -47,3 +48,5 @@ OTHER_FILES += \
     shaders/default.vert \
     shaders/flat.frag \
     shaders/flat.vert
+
+DESTDIR = $$_PRO_FILE_PWD_/build

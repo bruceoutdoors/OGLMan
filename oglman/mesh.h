@@ -3,6 +3,7 @@
 
 #include <GL/glew.h>
 #include <vector>
+#include <string>
 #include <glm/glm.hpp>
 
 #define PROCESS_ARRAY(a, v) v.insert(v.end(), &a[0], &a[sizeof(a)/sizeof(*a)]);
@@ -11,6 +12,7 @@
 #define STORE_COLORS(c)   PROCESS_ARRAY(c, colors);
 #define STORE_INDICES(i)  PROCESS_ARRAY(i, indices);
 
+using glm::vec2;
 using glm::vec3;
 using glm::mat4;
 using std::vector;
@@ -24,28 +26,33 @@ class Mesh
 {
 public:
     Mesh();
+    Mesh(std::string path);
     virtual ~Mesh();
     virtual void store() {}
     void draw();
 
+    GLsizeiptr getArrayBufferSize() const;
     GLsizeiptr getVertexBufferSize() const;
-    GLsizeiptr getVertexBufferSubSize() const;
+    GLsizeiptr getUvBufferSize() const;
     GLsizeiptr getIndexBufferSize() const;
 
     const vec3* getVertexAddress() const;
     const vec3* getNormalAddress() const;
     const vec3* getColorAddress() const;
     const GLushort* getIndexAddress() const;
+    const vec2* getUvAddress() const;
 
     void setIndexBufferOffset(GLuint offset);
     void setVertexBufferOffset(GLuint offset);
     void setNormalBufferOffset(GLuint offset);
     void setColorBufferOffset(GLuint offset);
+    void setUvBufferOffset(GLuint offset);
 
     GLuint getIndexBufferOffset() const;
     GLuint getVertexBufferOffset() const;
     GLuint getNormalBufferOffset() const;
     GLuint getColorBufferOffset() const;
+    GLuint getUvBufferOffset() const;
 
     GLuint getNumIndices() const;
     GLuint getNumVertices() const;
@@ -75,10 +82,13 @@ public:
     void setFlatColor(const vec3 &color);
     vec3 getFlatColor() const;
 
+    bool hasUv() const;
+
 protected:
     vector<vec3> vertices;
     vector<vec3> colors;
     vector<vec3> normals;
+    vector<vec2> uvs;
     vector<GLushort> indices;
 
 private:
@@ -88,6 +98,7 @@ private:
     GLuint vertex_buffer_offset;
     GLuint normal_buffer_offset;
     GLuint color_buffer_offset;
+    GLuint uv_buffer_offset;
 
     bool isVertexColor;
     bool isFlatColor;

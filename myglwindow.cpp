@@ -10,6 +10,7 @@ MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWind
 MyGLWindow::~MyGLWindow()
 {
     delete cube;
+    delete monkey;
     delete plane;
     delete arrow;
 }
@@ -40,12 +41,18 @@ void MyGLWindow::draw()
                 glm::rotate(-150.0f, vec3(0.0f, 1.0f, 0.0f)));
     arrow->draw();
 
+    monkey->setWorldMatrix(
+                glm::translate(vec3(0.0f, 1.0f, -2.0f)));
+    monkey->draw();
+
     plane->draw();
 }
 
 void MyGLWindow::init()
 {
-    cube = new Cube();
+    std::string resource_dir = "./resource/";
+    cube = new Mesh(resource_dir + "cube.obj");
+    monkey = new Mesh(resource_dir + "suzanne-triangulated.obj");
     plane = new Plane(10);
     arrow = new Arrow();
 

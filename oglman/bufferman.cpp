@@ -4,6 +4,7 @@
 const int POSITION_IDX = 0;
 const int COLOR_IDX    = 1;
 const int NORMAL_IDX   = 2;
+const int UV_IDX       = 3;
 
 BufferMan::BufferMan()
 {
@@ -37,7 +38,7 @@ void BufferMan::setupBuffers()
         for(Mesh *s : shapes) {
             s->store();
             index_buffer_size += s->getIndexBufferSize();
-            vertex_buffer_size += s->getVertexBufferSize();
+            vertex_buffer_size += s->getArrayBufferSize();
             num_vertices += s->getNumVertices();
         }
     } else {
@@ -55,19 +56,26 @@ void BufferMan::setupBuffers()
         // add vertices:
         offset = vertex_buffer->addData(
                     s->getVertexAddress(),
-                    s->getVertexBufferSubSize());
+                    s->getVertexBufferSize());
         s->setVertexBufferOffset(offset);
         // add normals:
         offset = vertex_buffer->addData(
                     s->getNormalAddress(),
-                    s->getVertexBufferSubSize());
+                    s->getVertexBufferSize());
         s->setNormalBufferOffset(offset);
         if (s->hasVertexColor()) {
             // add colors:
             offset = vertex_buffer->addData(
                         s->getColorAddress(),
-                        s->getVertexBufferSubSize());
+                        s->getVertexBufferSize());
             s->setColorBufferOffset(offset);
+        }
+        if (s->hasUv()) {
+            // add uvs:
+            offset = vertex_buffer->addData(
+                        s->getUvAddress(),
+                        s->getUvBufferSize());
+            s->setUvBufferOffset(offset);
         }
         // add indices:
         offset = index_buffer->addData(
@@ -95,6 +103,11 @@ GLuint BufferMan::setupVAO(Mesh *s)
     if (s->hasVertexColor()) {
         glEnableVertexAttribArray(COLOR_IDX);
         glVertexAttribPointer(COLOR_IDX, 3, GL_FLOAT, GL_FALSE, 0, (void*)s->getColorBufferOffset());
+    }
+
+    if (s->hasUv()) {
+        glEnableVertexAttribArray(UV_IDX);
+        glVertexAttribPointer(UV_IDX, 2, GL_FLOAT, GL_FALSE, 0, (void*)s->getUvBufferOffset());
     }
 
     glBindBuffer(vertex_buffer->getType(), vertex_buffer->getID());

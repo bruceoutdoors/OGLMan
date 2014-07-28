@@ -21,7 +21,7 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Wi
     light_position = vec3(0.0f, 3.0f, 1.0f);
     ambientLight = vec4(0.05f, 0.05f, 0.05f ,1.0f);
 
-    std::string shader_dir = "../sfml-opengl/shaders/";
+    std::string shader_dir = "./shaders/";
     default_shader = new ShaderMan(shader_dir + "default");
     flat_shader = new ShaderMan(shader_dir + "flat");
 

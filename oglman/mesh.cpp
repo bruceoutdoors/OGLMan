@@ -2,9 +2,11 @@
 #include "camera.h"
 #include "shaderman.h"
 #include "bufferman.h"
+#include "objreader.h"
 
 #include <cstring>
 
+using glm::vec2;
 using glm::vec3;
 using glm::mat4;
 
@@ -29,6 +31,17 @@ Mesh::Mesh()
     bufferman->addShape(this);
     isVertexColor = false;
     isFlatColor = false;
+}
+
+Mesh::Mesh(std::string path) : Mesh()
+{
+    ObjReader::loadOBJIndexed(path.c_str(),
+                              vertices,
+                              uvs,
+                              normals,
+                              indices);
+
+
 }
 
 Mesh::~Mesh()
@@ -64,18 +77,25 @@ void Mesh::draw()
     glDrawElements(DRAW_MODE, indices.size(), GL_UNSIGNED_SHORT, (void*)index_buffer_offset);
 }
 
-GLsizeiptr Mesh::getVertexBufferSize() const
+GLsizeiptr Mesh::getArrayBufferSize() const
 {
-    GLuint size = vertices.size() + normals.size();
+    // vertex and normal buffer size, which is the same:
+    GLuint size = getVertexBufferSize() * 2;
 
-    if (hasVertexColor()) { size += colors.size(); }
+    if (hasVertexColor()) { size += getVertexBufferSize(); }
+    if (hasUv())          { size += getUvBufferSize(); }
 
-    return (size) * sizeof(vec3);
+    return size;
 }
 
-GLsizeiptr Mesh::getVertexBufferSubSize() const
+GLsizeiptr Mesh::getVertexBufferSize() const
 {
     return vertices.size() * sizeof(vec3);
+}
+
+GLsizeiptr Mesh::getUvBufferSize() const
+{
+    return uvs.size() * sizeof(vec2);
 }
 
 GLsizeiptr Mesh::getIndexBufferSize() const
@@ -103,6 +123,11 @@ const GLushort *Mesh::getIndexAddress() const
     return indices.data();
 }
 
+const glm::vec2 *Mesh::getUvAddress() const
+{
+    return uvs.data();
+}
+
 void Mesh::setIndexBufferOffset(GLuint offset)
 {
     index_buffer_offset = offset;
@@ -123,6 +148,11 @@ void Mesh::setColorBufferOffset(GLuint offset)
     color_buffer_offset = offset;
 }
 
+void Mesh::setUvBufferOffset(GLuint offset)
+{
+    uv_buffer_offset = offset;
+}
+
 GLuint Mesh::getIndexBufferOffset() const
 {
     return index_buffer_offset;
@@ -141,6 +171,11 @@ GLuint Mesh::getNormalBufferOffset() const
 GLuint Mesh::getColorBufferOffset() const
 {
     return color_buffer_offset;
+}
+
+GLuint Mesh::getUvBufferOffset() const
+{
+    return uv_buffer_offset;
 }
 
 GLuint Mesh::getNumIndices() const
@@ -253,6 +288,11 @@ void Mesh::setFlatColor(const glm::vec3 &color)
 glm::vec3 Mesh::getFlatColor() const
 {
     return flat_color;
+}
+
+bool Mesh::hasUv() const
+{
+    return !uvs.empty();
 }
 
 
