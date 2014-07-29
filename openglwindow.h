@@ -29,6 +29,7 @@ class OpenGLWindow : public sf::Window
 
     protected:
         GLvoid resizeGL(GLsizei width, GLsizei height);
+        void wireframeToggle();
         ShaderMan *active_shader;
         ShaderMan *flat_shader;
         ShaderMan *default_shader;
@@ -46,10 +47,11 @@ class OpenGLWindow : public sf::Window
         bool handleEvents();
         bool keyboardEventHandler(int key);
 
-        bool isFullscreen;
-        bool isLightOn;
         sf::VideoMode m_mode;
         sf::String m_title;
+        bool isFullscreen;
+        bool isLightOn;
+        bool isWireframeMode;
 
         GLint ambientLightUniformLocation;
         GLint lightPositionUniformLocation;

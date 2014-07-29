@@ -11,11 +11,13 @@ const float LIGHT_MOVE = 0.1f;
 const float ZOOM_SPEED = 1.0f;
 const float PAN_SPEED = 0.05f;
 
-OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) : sf::Window(mode, title)
+OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) :
+    sf::Window(mode, title),
+    m_mode(mode),
+    m_title(title),
+    isFullscreen(false),
+    isWireframeMode(false)
 {
-    m_title = title;
-    m_mode = mode;
-    isFullscreen = false;
     isLightOn = true;
 
     light_position = vec3(0.0f, 3.0f, 1.0f);
@@ -137,6 +139,18 @@ GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)
     active_camera->setAspectRatio(aspect_ratio);
 }
 
+void OpenGLWindow::wireframeToggle()
+{
+    isWireframeMode = !isWireframeMode;
+    if (isWireframeMode) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDisable(GL_CULL_FACE);
+    } else {
+        glPolygonMode(GL_FRONT, GL_FILL);
+        glEnable(GL_CULL_FACE);
+    }
+}
+
 bool OpenGLWindow::handleEvents()
 {
     sf::Event e;
@@ -204,7 +218,7 @@ bool OpenGLWindow::keyboardEventHandler(int key)
         break;
 
     case sf::Keyboard::Num4:
-        Mesh::hasWireframeMode() ? Mesh::disableWirefameMode() : Mesh::enableWirefameMode();
+        wireframeToggle();
         break;
 
     case sf::Keyboard::U:

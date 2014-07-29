@@ -86,10 +86,6 @@ public:
     static void setShaderMan(ShaderMan *man);
     static void setBufferMan(BufferMan *man);
 
-    static void enableWirefameMode();
-    static void disableWirefameMode();
-    static bool hasWireframeMode();
-
 protected:
     vector<vec3> vertices;
     vector<vec3> colors;
@@ -124,7 +120,6 @@ private:
     static GLint has_flat_color_loc;
     static GLint has_texture_loc;
     static GLint flat_color_loc;
-    static bool isWireframeMode;
 
     static Camera *active_cam;
     static BufferMan *bufferman;
