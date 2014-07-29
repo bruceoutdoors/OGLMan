@@ -128,7 +128,6 @@ private:
 
     static Camera *active_cam;
     static BufferMan *bufferman;
-    static ShaderMan *shaderman;
 };
 
 #endif // SHAPE_H

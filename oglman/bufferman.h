@@ -21,10 +21,10 @@ private:
     GLuint setupVAO(Mesh *s);
 
     GLuint index_buffer_size;
-    GLuint vertex_buffer_size;
+    GLuint array_buffer_size;
     GLuint num_vertices;
     std::vector<Mesh*> shapes;
-    Buffer *vertex_buffer;
+    Buffer *array_buffer;
     Buffer *index_buffer;
 
     bool is_setup;

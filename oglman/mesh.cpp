@@ -13,7 +13,6 @@ using glm::mat4;
 
 Camera *Mesh::active_cam = NULL;
 BufferMan *Mesh::bufferman = NULL;
-ShaderMan *Mesh::shaderman = NULL;
 
 GLint Mesh::model_projection_loc;
 GLint Mesh::model_world_loc;
@@ -46,8 +45,6 @@ Mesh::Mesh(std::string path) : Mesh()
                               uvs,
                               normals,
                               indices);
-
-
 }
 
 Mesh::~Mesh()
@@ -237,18 +234,16 @@ void Mesh::setCamera(Camera *c)
 
 void Mesh::setShaderMan(ShaderMan *man)
 {
-    shaderman = man;
+    model_projection_loc = man->getUniformLoc("modelToProjectionMatrix");
+    model_world_loc = man->getUniformLoc("modelToWorldMatrix");
+    normals_loc = man->getUniformLoc("normalMatrix");
+    has_vertex_color_loc = man->getUniformLoc("hasVertexColor");
+    has_flat_color_loc = man->getUniformLoc("hasFlatColor");
+    has_texture_loc = man->getUniformLoc("hasTexture");
+    flat_color_loc = man->getUniformLoc("flatColor");
+    Texture::setTextureSamplerLoc(man->getUniformLoc("textureSampler"));
 
-    model_projection_loc = shaderman->getUniformLoc("modelToProjectionMatrix");
-    model_world_loc = shaderman->getUniformLoc("modelToWorldMatrix");
-    normals_loc = shaderman->getUniformLoc("normalMatrix");
-    has_vertex_color_loc = shaderman->getUniformLoc("hasVertexColor");
-    has_flat_color_loc = shaderman->getUniformLoc("hasFlatColor");
-    has_texture_loc = shaderman->getUniformLoc("hasTexture");
-    flat_color_loc = shaderman->getUniformLoc("flatColor");
-    Texture::setTextureSamplerLoc(shaderman->getUniformLoc("textureSampler"));
-
-    shaderman->use();
+    man->use();
 }
 
 void Mesh::setBufferMan(BufferMan *man)

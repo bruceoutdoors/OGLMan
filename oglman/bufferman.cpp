@@ -11,14 +11,14 @@ BufferMan::BufferMan()
     glewInit();
 
     index_buffer_size = 0;
-    vertex_buffer_size = 0;
+    array_buffer_size = 0;
     num_vertices = 0;
     is_setup = false;
 }
 
 BufferMan::~BufferMan()
 {
-    delete vertex_buffer;
+    delete array_buffer;
     delete index_buffer;
 }
 
@@ -38,41 +38,41 @@ void BufferMan::setupBuffers()
         for(Mesh *s : shapes) {
             s->store();
             index_buffer_size += s->getIndexBufferSize();
-            vertex_buffer_size += s->getArrayBufferSize();
+            array_buffer_size += s->getArrayBufferSize();
             num_vertices += s->getNumVertices();
         }
     } else {
         // calling this function past the 1st time will readd the data
         // to the graphics card
-        delete vertex_buffer;
+        delete array_buffer;
         delete index_buffer;
     }
 
-    vertex_buffer = new Buffer(GL_ARRAY_BUFFER, vertex_buffer_size);
+    array_buffer = new Buffer(GL_ARRAY_BUFFER, array_buffer_size);
     index_buffer = new Buffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_size);
 
     GLuint offset;
     for(Mesh *s : shapes) {
         // add vertices:
-        offset = vertex_buffer->addData(
+        offset = array_buffer->addData(
                     s->getVertexAddress(),
                     s->getVertexBufferSize());
         s->setVertexBufferOffset(offset);
         // add normals:
-        offset = vertex_buffer->addData(
+        offset = array_buffer->addData(
                     s->getNormalAddress(),
                     s->getVertexBufferSize());
         s->setNormalBufferOffset(offset);
         if (s->hasVertexColor()) {
             // add colors:
-            offset = vertex_buffer->addData(
+            offset = array_buffer->addData(
                         s->getColorAddress(),
                         s->getVertexBufferSize());
             s->setColorBufferOffset(offset);
         }
         if (s->hasUv()) {
             // add uvs:
-            offset = vertex_buffer->addData(
+            offset = array_buffer->addData(
                         s->getUvAddress(),
                         s->getUvBufferSize());
             s->setUvBufferOffset(offset);
@@ -110,7 +110,7 @@ GLuint BufferMan::setupVAO(Mesh *s)
         glVertexAttribPointer(UV_IDX, 2, GL_FLOAT, GL_FALSE, 0, (void*)s->getUvBufferOffset());
     }
 
-    glBindBuffer(vertex_buffer->getType(), vertex_buffer->getID());
+    glBindBuffer(array_buffer->getType(), array_buffer->getID());
     glBindBuffer(index_buffer->getType(), index_buffer->getID());
 
     return vao;
