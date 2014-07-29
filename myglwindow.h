@@ -19,6 +19,7 @@ private:
     Mesh *cube2;
     Cube *cube;
     Mesh *monkey;
+    Mesh *elephant;
     Plane *plane;
     Arrow *arrow;
 };

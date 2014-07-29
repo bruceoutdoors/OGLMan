@@ -12,6 +12,7 @@ MyGLWindow::~MyGLWindow()
     delete cube2;
     delete cube;
     delete monkey;
+    delete elephant;
     delete plane;
     delete arrow;
 }
@@ -45,8 +46,14 @@ void MyGLWindow::draw()
     arrow->draw();
 
     monkey->setWorldMatrix(
-                glm::translate(vec3(0.0f, 1.0f, -2.0f)));
+                glm::translate(vec3(-2.0f, 1.0f, -2.8f)));
     monkey->draw();
+
+    elephant->setWorldMatrix(
+                glm::translate(vec3(1.2f, 0.0f, -1.5f)) *
+                glm::rotate(-25.0f, vec3(0.0f, 1.0f, 0.0f)) *
+                glm::scale(mat4(1.0f), vec3(0.15f)));
+    elephant->draw();
 
     plane->draw();
 }
@@ -60,6 +67,9 @@ void MyGLWindow::init()
 
     monkey = new Mesh(resource_dir + "suzanne-triangulated.obj");
     monkey->setTexture(resource_dir + "monkey-texture.jpg");
+
+    elephant = new Mesh(resource_dir + "elephant-triangulated.obj");
+    elephant->setTexture(resource_dir + "elephant-texture-1024.jpg");
 
     cube = new Cube();
     plane = new Plane(10);
