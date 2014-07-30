@@ -40,8 +40,14 @@ HEADERS += \
 
 QMAKE_CXXFLAGS += -std=c++11
 
-LIBS += -lopengl32 -lglu32 -lglew32
-LIBS += -LC:/SFML-2.1/lib/ -lsfml-graphics -lsfml-window -lsfml-system
+win32 {
+	LIBS += -lopengl32 -lglu32 -lglew32
+	LIBS += -LC:/SFML-2.1/lib/ -lsfml-graphics -lsfml-window -lsfml-system
+}
+
+unix {
+	LIBS += -lGL -lGLU -lGLEW -lsfml-graphics -lsfml-window -lsfml-system
+}
 
 INCLUDEPATH += C:/SFML-2.1/include
 
