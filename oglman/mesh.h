@@ -63,7 +63,6 @@ public:
     void deleteVao();
 
     void setDrawMode(const GLenum &mode);
-    void setWorldMatrix(const mat4 &mat);
 
     void enableVertexColor();
     void disableVertexColor();
@@ -85,6 +84,27 @@ public:
     static void setCamera(Camera *c);
     static void setShaderMan(ShaderMan *man);
     static void setBufferMan(BufferMan *man);
+
+    // transformations:
+    GLfloat getScale() const;
+    GLfloat getRotateX() const;
+    GLfloat getRotateY() const;
+    GLfloat getRotateZ() const;
+    GLfloat getTranslateX() const;
+    GLfloat getTranslateY() const;
+    GLfloat getTranslateZ() const;
+
+    void setScale(const GLfloat &value);
+    void setRotateX(const GLfloat &value);
+    void setRotateY(const GLfloat &value);
+    void setRotateZ(const GLfloat &value);
+    void setTranslateX(const GLfloat &value);
+    void setTranslateY(const GLfloat &value);
+    void setTranslateZ(const GLfloat &value);
+
+    void setWorldMatrix(const mat4 &mat);
+    void updateWorldMatrix();
+    void resetTransformations();
 
 protected:
     vector<vec3> vertices;
@@ -123,6 +143,16 @@ private:
 
     static Camera *active_cam;
     static BufferMan *bufferman;
+
+    GLfloat rotateX;
+    GLfloat rotateY;
+    GLfloat rotateZ;
+
+    GLfloat translateX;
+    GLfloat translateY;
+    GLfloat translateZ;
+
+    GLfloat scale;
 };
 
 #endif // SHAPE_H

@@ -1,7 +1,5 @@
 #include "myglwindow.h"
-
 #include <glm/gtx/transform.hpp>
-#include <glm/gtc/matrix_transform.hpp>
 
 MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWindow(mode, title)
 {
@@ -45,16 +43,8 @@ void MyGLWindow::draw()
                 glm::rotate(-150.0f, vec3(0.0f, 1.0f, 0.0f)));
     arrow->draw();
 
-    monkey->setWorldMatrix(
-                glm::translate(vec3(-2.0f, 1.0f, -2.8f)));
     monkey->draw();
-
-    elephant->setWorldMatrix(
-                glm::translate(vec3(1.2f, 0.0f, -1.5f)) *
-                glm::rotate(-25.0f, vec3(0.0f, 1.0f, 0.0f)) *
-                glm::scale(mat4(1.0f), vec3(0.15f)));
     elephant->draw();
-
     plane->draw();
 }
 
@@ -68,8 +58,17 @@ void MyGLWindow::init()
     monkey = new Mesh(resource_dir + "suzanne-triangulated.obj");
     monkey->setTexture(resource_dir + "monkey-texture.jpg");
 
+    monkey->setTranslateX(-2.0f);
+    monkey->setTranslateY(1.0f);
+    monkey->setTranslateZ(-2.8f);
+
     elephant = new Mesh(resource_dir + "elephant-triangulated.obj");
     elephant->setTexture(resource_dir + "elephant-texture-1024.jpg");
+
+    elephant->setTranslateX(1.2f);
+    elephant->setTranslateZ(-1.5f);
+    elephant->setRotateY(-25);
+    elephant->setScale(0.15f);
 
     cube = new Cube();
     plane = new Plane(10);

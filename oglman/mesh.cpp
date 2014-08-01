@@ -5,11 +5,17 @@
 #include "objreader.h"
 #include "texture.h"
 
+#include <glm/gtx/transform.hpp>
+#include <glm/gtc/matrix_transform.hpp>
 #include <cstring>
 
 using glm::vec2;
 using glm::vec3;
 using glm::mat4;
+
+const vec3 X_AXIS = vec3(1,0,0);
+const vec3 Y_AXIS = vec3(0,1,0);
+const vec3 Z_AXIS = vec3(0,0,1);
 
 Camera *Mesh::active_cam = NULL;
 BufferMan *Mesh::bufferman = NULL;
@@ -26,7 +32,7 @@ Mesh::Mesh()
 {
     glewInit();
 
-    setWorldMatrix(glm::mat4());
+    resetTransformations();
     DRAW_MODE = GL_TRIANGLES;
 
     bufferman->addShape(this);
@@ -74,10 +80,18 @@ void Mesh::draw()
     glDrawElements(DRAW_MODE, indices.size(), GL_UNSIGNED_SHORT, (void*)index_buffer_offset);
 }
 
-void Mesh::setTexture(const std::string &path)
+void Mesh::setShaderMan(ShaderMan *man)
 {
-    texture = new Texture(path);
-    enableTexture();
+    model_projection_loc = man->getUniformLoc("modelToProjectionMatrix");
+    model_world_loc = man->getUniformLoc("modelToWorldMatrix");
+    normals_loc = man->getUniformLoc("normalMatrix");
+    has_vertex_color_loc = man->getUniformLoc("hasVertexColor");
+    has_flat_color_loc = man->getUniformLoc("hasFlatColor");
+    has_texture_loc = man->getUniformLoc("hasTexture");
+    flat_color_loc = man->getUniformLoc("flatColor");
+    Texture::setTextureSamplerLoc(man->getUniformLoc("textureSampler"));
+
+    man->use();
 }
 
 GLsizeiptr Mesh::getArrayBufferSize() const
@@ -89,6 +103,31 @@ GLsizeiptr Mesh::getArrayBufferSize() const
     if (hasUv())          { size += getUvBufferSize(); }
 
     return size;
+}
+
+void Mesh::updateWorldMatrix()
+{
+    // rotation order is XYZ, for now...
+    world_matrix =
+            glm::translate(vec3(translateX, translateY, translateZ)) *
+            glm::rotate(rotateZ, Z_AXIS) *
+            glm::rotate(rotateY, Y_AXIS) *
+            glm::rotate(rotateX, X_AXIS) *
+            glm::scale(vec3(scale));
+}
+
+void Mesh::resetTransformations()
+{
+    world_matrix = glm::mat4();
+    rotateX = rotateY = rotateZ
+            = translateX = translateY = translateZ = 0;
+    scale = 1;
+}
+
+void Mesh::setTexture(const std::string &path)
+{
+    texture = new Texture(path);
+    enableTexture();
 }
 
 GLsizeiptr Mesh::getVertexBufferSize() const
@@ -222,23 +261,82 @@ void Mesh::setCamera(Camera *c)
     active_cam = c;
 }
 
-void Mesh::setShaderMan(ShaderMan *man)
-{
-    model_projection_loc = man->getUniformLoc("modelToProjectionMatrix");
-    model_world_loc = man->getUniformLoc("modelToWorldMatrix");
-    normals_loc = man->getUniformLoc("normalMatrix");
-    has_vertex_color_loc = man->getUniformLoc("hasVertexColor");
-    has_flat_color_loc = man->getUniformLoc("hasFlatColor");
-    has_texture_loc = man->getUniformLoc("hasTexture");
-    flat_color_loc = man->getUniformLoc("flatColor");
-    Texture::setTextureSamplerLoc(man->getUniformLoc("textureSampler"));
-
-    man->use();
-}
-
 void Mesh::setBufferMan(BufferMan *man)
 {
     bufferman = man;
+}
+
+GLfloat Mesh::getScale() const
+{
+    return scale;
+}
+
+void Mesh::setScale(const GLfloat &value)
+{
+    scale = value;
+    updateWorldMatrix();
+}
+
+GLfloat Mesh::getRotateX() const
+{
+    return rotateX;
+}
+
+void Mesh::setRotateX(const GLfloat &value)
+{
+    rotateX = value;
+    updateWorldMatrix();
+}
+GLfloat Mesh::getRotateY() const
+{
+    return rotateY;
+}
+
+void Mesh::setRotateY(const GLfloat &value)
+{
+    rotateY = value;
+    updateWorldMatrix();
+}
+GLfloat Mesh::getRotateZ() const
+{
+    return rotateZ;
+}
+
+void Mesh::setRotateZ(const GLfloat &value)
+{
+    rotateZ = value;
+    updateWorldMatrix();
+}
+
+GLfloat Mesh::getTranslateX() const
+{
+    return translateX;
+}
+
+void Mesh::setTranslateX(const GLfloat &value)
+{
+    translateX = value;
+    updateWorldMatrix();
+}
+GLfloat Mesh::getTranslateY() const
+{
+    return translateY;
+}
+
+void Mesh::setTranslateY(const GLfloat &value)
+{
+    translateY = value;
+    updateWorldMatrix();
+}
+GLfloat Mesh::getTranslateZ() const
+{
+    return translateZ;
+}
+
+void Mesh::setTranslateZ(const GLfloat &value)
+{
+    translateZ = value;
+    updateWorldMatrix();
 }
 
 void Mesh::enableVertexColor()
@@ -299,8 +397,3 @@ void Mesh::disableTexture()
 {
     isTextured = false;
 }
-
-
-
-
-
