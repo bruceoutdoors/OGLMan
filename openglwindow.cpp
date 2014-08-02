@@ -47,6 +47,8 @@ OpenGLWindow::~OpenGLWindow()
     delete walkcam;
 }
 
+void OpenGLWindow::guiDraw() { }
+
 void OpenGLWindow::toggleFullscreen()
 {
     isFullscreen = !isFullscreen;
@@ -92,13 +94,16 @@ void OpenGLWindow::setup()
 
 void OpenGLWindow::setupGL()
 {
-    glEnable(GL_DEPTH_TEST);
     glEnable(GL_CULL_FACE);
 }
 
 void OpenGLWindow::renderScene()
 {
+    glEnable(GL_DEPTH_TEST);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
+
+    // use shader program as it will nullified later to draw the GUI
+    active_shader->use();
 
     if (isLightOn) {
         vec3 eyePositionWorld = active_camera->getEye();
@@ -107,8 +112,22 @@ void OpenGLWindow::renderScene()
         glUniform3fv(eyePositionWorldUniformLocation, 1, &eyePositionWorld[0]);
     }
 
+    if (isWireframeMode) {
+        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+        glDisable(GL_CULL_FACE);
+    }
     draw();
+    // return back to drawing triangles, or GUI will get
+    // drawn as lines
+    if (isWireframeMode) {
+        glPolygonMode(GL_FRONT, GL_FILL);
+        glEnable(GL_CULL_FACE);
+    }
 
+    // unbound any shader programs, or GUI will not render
+    glUseProgram(0);
+
+    guiDraw();
     display();
 }
 
@@ -140,13 +159,6 @@ GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)
 void OpenGLWindow::wireframeToggle()
 {
     isWireframeMode = !isWireframeMode;
-    if (isWireframeMode) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glDisable(GL_CULL_FACE);
-    } else {
-        glPolygonMode(GL_FRONT, GL_FILL);
-        glEnable(GL_CULL_FACE);
-    }
 }
 
 

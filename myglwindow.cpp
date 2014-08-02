@@ -1,5 +1,6 @@
 #include "myglwindow.h"
 #include <glm/gtx/transform.hpp>
+#include <iostream>
 
 const float LIGHT_MOVE = 0.1f;
 const float ZOOM_SPEED = 1.0f;
@@ -7,6 +8,17 @@ const float PAN_SPEED = 0.05f;
 
 MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWindow(mode, title)
 {
+    isWindowSelect = false;
+
+    setActive();
+    auto window = sfg::Window::Create();
+    window->SetTitle("An amazing title");
+    test_label = sfg::Label::Create("Hello I am a window\nthat serves to occupy\nspace" );
+    window->Add(test_label);
+    desktop.Add(window);
+
+    window->GetSignal(sfg::Widget::OnMouseEnter).Connect(std::bind(&MyGLWindow::onWindowMove, this));
+    window->GetSignal(sfg::Widget::OnMouseLeave).Connect(std::bind(&MyGLWindow::onWindowMoveRelease, this));
 }
 
 MyGLWindow::~MyGLWindow()
@@ -98,6 +110,7 @@ bool MyGLWindow::handleEvents()
 {
     sf::Event e;
     while (this->pollEvent(e)) {
+        desktop.HandleEvent(e);
         switch (e.type) {
         case sf::Event::Closed:
             this->close();
@@ -115,6 +128,7 @@ bool MyGLWindow::handleEvents()
             break;
 
         case sf::Event::MouseMoved:
+            if (isWindowSelect) break;
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 active_camera->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
             } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
@@ -123,6 +137,7 @@ bool MyGLWindow::handleEvents()
             break;
 
         case sf::Event::MouseWheelMoved:
+            if (isWindowSelect) break;
             if (e.mouseWheel.delta > 0) {
                 active_camera->moveForward(ZOOM_SPEED);
             } else {
@@ -136,6 +151,14 @@ bool MyGLWindow::handleEvents()
         }
     }
     return false;
+}
+
+void MyGLWindow::guiDraw()
+{
+    // disable depth test so SFGUI can render
+    glDisable(GL_DEPTH_TEST);
+    desktop.Update(1.0f);
+    sfgui.Display(*this);
 }
 
 bool MyGLWindow::keyboardEventHandler(int key)
@@ -185,4 +208,16 @@ bool MyGLWindow::keyboardEventHandler(int key)
     }
 
     return false;
+}
+
+void MyGLWindow::onWindowMove()
+{
+//    std::cout << "window is selected!!" << std::endl;
+    isWindowSelect = true;
+}
+
+void MyGLWindow::onWindowMoveRelease()
+{
+//    std::cout << "window is released!!" << std::endl;
+    isWindowSelect = false;
 }

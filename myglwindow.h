@@ -7,6 +7,8 @@
 #include "primitives/arrow.h"
 #include "primitives/plane.h"
 
+#include <SFGUI/SFGUI.hpp>
+
 class MyGLWindow : public OpenGLWindow
 {
 public:
@@ -15,9 +17,16 @@ public:
     void draw();
     void init();
     bool handleEvents();
+    void guiDraw();
 
 private:
     bool keyboardEventHandler(int key);
+    void onWindowMove();
+    void onWindowMoveRelease();
+
+    sfg::SFGUI sfgui;
+    sfg::Desktop desktop;
+    sfg::Label::Ptr test_label;
 
     Mesh *cube2;
     Cube *cube;
@@ -25,6 +34,8 @@ private:
     Mesh *elephant;
     Plane *plane;
     Arrow *arrow;
+
+    bool isWindowSelect;
 };
 
 #endif // MYGLWINDOW_H

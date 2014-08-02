@@ -112,6 +112,6 @@ GLuint BufferMan::setupVAO(Mesh *s)
 
     glBindBuffer(array_buffer->getType(), array_buffer->getID());
     glBindBuffer(index_buffer->getType(), index_buffer->getID());
-
+    glBindVertexArray(0);
     return vao;
 }

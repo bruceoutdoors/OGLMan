@@ -78,6 +78,7 @@ void Mesh::draw()
     if (hasTexture()) { texture->use(); }
 
     glDrawElements(DRAW_MODE, indices.size(), GL_UNSIGNED_SHORT, (void*)index_buffer_offset);
+    glBindVertexArray(0); // don't forget this!
 }
 
 void Mesh::setShaderMan(ShaderMan *man)

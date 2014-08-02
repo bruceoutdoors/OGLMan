@@ -22,6 +22,7 @@ class OpenGLWindow : public sf::Window
         virtual void draw() = 0;
         virtual void init() = 0;
         virtual bool handleEvents() = 0;
+        virtual void guiDraw();
         void wireframeToggle();
         void toggleFullscreen();
         void run();
