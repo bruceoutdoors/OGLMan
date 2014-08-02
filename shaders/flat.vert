@@ -1,13 +1,11 @@
-#version 130
-
-in vec4 vertexPositionModel;
-in vec3 vertexColor;
-in vec2 vertexUV;
+attribute vec4 vertexPositionModel;
+attribute vec3 vertexColor;
+attribute vec2 vertexUV;
 
 uniform mat4 modelToProjectionMatrix;
 
-out vec3 vertcolor;
-out vec2 UV;
+varying vec3 vertcolor;
+varying vec2 UV;
 
 void main()
 {

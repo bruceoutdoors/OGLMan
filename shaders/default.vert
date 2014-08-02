@@ -1,18 +1,16 @@
-#version 130
-
-in vec4 vertexPositionModel;
-in vec3 vertexColor;
-in vec3 normalModel;
-in vec2 vertexUV;
+attribute vec4 vertexPositionModel;
+attribute vec3 vertexColor;
+attribute vec3 normalModel;
+attribute vec2 vertexUV;
 
 uniform mat4 modelToProjectionMatrix;
 uniform mat4 modelToWorldMatrix;
 uniform mat4 normalMatrix;
 
-out vec3 vertexPositionWorld;
-out vec3 vertcolor;
-out vec3 N;
-out vec2 UV;
+varying vec3 vertexPositionWorld;
+varying vec3 vertcolor;
+varying vec3 N;
+varying vec2 UV;
 
 void main()
 {
