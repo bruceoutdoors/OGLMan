@@ -1,8 +1,8 @@
-#version 430
+#version 130
 
-in layout(location = 0) vec4 vertexPositionModel;
-in layout(location = 1) vec3 vertexColor;
-in layout(location = 3) vec2 vertexUV;
+in vec4 vertexPositionModel;
+in vec3 vertexColor;
+in vec2 vertexUV;
 
 uniform mat4 modelToProjectionMatrix;
 
