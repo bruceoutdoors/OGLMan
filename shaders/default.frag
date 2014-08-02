@@ -1,7 +1,9 @@
-varying vec3 vertexPositionWorld;
-varying vec3 vertcolor;
-varying vec3 N;
-varying vec2 UV;
+#version 130
+
+in vec3 vertexPositionWorld;
+in vec3 vertcolor;
+in vec3 N;
+in vec2 UV;
 
 uniform vec3 lightPosition;
 uniform vec3 eyePositionWorld;

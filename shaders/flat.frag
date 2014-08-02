@@ -1,5 +1,7 @@
-varying vec3 vertcolor;
-varying vec2 UV;
+#version 130
+
+in vec3 vertcolor;
+in vec2 UV;
 
 uniform vec3 flatColor;
 
