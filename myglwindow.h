@@ -14,8 +14,11 @@ public:
     virtual ~MyGLWindow();
     void draw();
     void init();
+    bool handleEvents();
 
 private:
+    bool keyboardEventHandler(int key);
+
     Mesh *cube2;
     Cube *cube;
     Mesh *monkey;

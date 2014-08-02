@@ -15,21 +15,25 @@
 class OpenGLWindow : public sf::Window
 {
     public:
-        OpenGLWindow(sf::VideoMode mode, const sf::String &title);
+        OpenGLWindow(sf::VideoMode mode,
+                     const sf::String &title,
+                     unsigned int style = sf::Style::Default);
         virtual ~OpenGLWindow();
+        virtual void draw() = 0;
+        virtual void init() = 0;
+        virtual bool handleEvents() = 0;
+        void wireframeToggle();
         void toggleFullscreen();
         void run();
         void setup();
         void setupGL();
         void renderScene();
-        virtual void draw() = 0;
-        virtual void init() = 0;
         void setupLights();
         void shadermanSetup();
 
     protected:
         GLvoid resizeGL(GLsizei width, GLsizei height);
-        void wireframeToggle();
+
         ShaderMan *active_shader;
         ShaderMan *flat_shader;
         ShaderMan *default_shader;
@@ -42,22 +46,17 @@ class OpenGLWindow : public sf::Window
         glm::vec4 ambientLight;
         glm::vec2 oldMousePosition;
 
+        bool isLightOn;
+        bool isFullscreen;
+        bool isWireframeMode;
 
     private:
-        bool handleEvents();
-        bool keyboardEventHandler(int key);
-
         sf::VideoMode m_mode;
         sf::String m_title;
-        bool isFullscreen;
-        bool isLightOn;
-        bool isWireframeMode;
 
         GLint ambientLightUniformLocation;
         GLint lightPositionUniformLocation;
         GLint eyePositionWorldUniformLocation;
-
-
 };
 
 #endif // OPENGLWINDOW_H

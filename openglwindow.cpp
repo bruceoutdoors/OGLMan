@@ -7,12 +7,10 @@ using glm::vec2;
 using glm::vec3;
 using glm::vec4;
 
-const float LIGHT_MOVE = 0.1f;
-const float ZOOM_SPEED = 1.0f;
-const float PAN_SPEED = 0.05f;
-
-OpenGLWindow::OpenGLWindow(sf::VideoMode mode, const sf::String &title) :
-    sf::Window(mode, title),
+OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
+                           const sf::String &title,
+                           unsigned int style) :
+    sf::Window(mode, title, style),
     m_mode(mode),
     m_title(title),
     isFullscreen(false),
@@ -151,96 +149,5 @@ void OpenGLWindow::wireframeToggle()
     }
 }
 
-bool OpenGLWindow::handleEvents()
-{
-    sf::Event e;
-    while (this->pollEvent(e)) {
-        switch (e.type) {
-        case sf::Event::Closed:
-            this->close();
-            return true;
-            break;
 
-        // Resize event : adjust viewport
-        case sf::Event::Resized:
-            resizeGL(e.size.width, e.size.height);
-            break;
-
-        // Handle keyboard events
-        case sf::Event::KeyPressed:
-            if (keyboardEventHandler(e.key.code)) return true;
-            break;
-
-        case sf::Event::MouseMoved:
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                active_camera->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
-            } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-                active_camera->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
-            }
-            break;
-
-        case sf::Event::MouseWheelMoved:
-            if (e.mouseWheel.delta > 0) {
-                active_camera->moveForward(ZOOM_SPEED);
-            } else {
-                active_camera->moveForward(-ZOOM_SPEED);
-            }
-            break;
-
-
-        default:
-            break; // suppress enum not handled warnings
-        }
-    }
-    return false;
-}
-
-bool OpenGLWindow::keyboardEventHandler(int key)
-{
-    switch (key) {
-    case sf::Keyboard::Escape:
-        this->close();
-        return true;
-
-    case sf::Keyboard::F11:
-        toggleFullscreen();
-        break;
-
-    case sf::Keyboard::C:
-        active_camera == arcball ? active_camera = walkcam : active_camera = arcball;
-        // update the mesh's Camera pointer
-        Mesh::setCamera(active_camera);
-        break;
-
-    case sf::Keyboard::Num7:
-        isLightOn = !isLightOn;
-        shadermanSetup();
-        break;
-
-    case sf::Keyboard::Num4:
-        wireframeToggle();
-        break;
-
-    case sf::Keyboard::U:
-        light_position.z += LIGHT_MOVE;
-        break;
-    case sf::Keyboard::J:
-        light_position.z -= LIGHT_MOVE;
-        break;
-    case sf::Keyboard::H:
-        light_position.x -= LIGHT_MOVE;
-        break;
-    case sf::Keyboard::K:
-        light_position.x += LIGHT_MOVE;
-        break;
-    case sf::Keyboard::O:
-        light_position.y += LIGHT_MOVE;
-        break;
-    case sf::Keyboard::L:
-        light_position.y -= LIGHT_MOVE;
-        break;
-    }
-
-    return false;
-}
 
