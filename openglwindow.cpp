@@ -26,13 +26,6 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
     flat_shader = new ShaderMan(shader_dir + "flat");
 
     bufferman = new BufferMan();
-
-    arcball = new Arcball();
-    walkcam = new WalkCam();
-
-    active_camera = arcball;
-
-    Mesh::setCamera(active_camera);
     Mesh::setBufferMan(bufferman);
 
     shadermanSetup();
@@ -43,11 +36,7 @@ OpenGLWindow::~OpenGLWindow()
     delete default_shader;
     delete flat_shader;
     delete bufferman;
-    delete arcball;
-    delete walkcam;
 }
-
-void OpenGLWindow::guiDraw() { }
 
 void OpenGLWindow::toggleFullscreen()
 {
@@ -127,6 +116,8 @@ void OpenGLWindow::renderScene()
     // unbound any shader programs, or GUI will not render
     glUseProgram(0);
 
+    // disable depth test so SFGUI can render
+    glDisable(GL_DEPTH_TEST);
     guiDraw();
     display();
 }
@@ -147,6 +138,18 @@ void OpenGLWindow::shadermanSetup()
         active_shader = flat_shader;
     }
     Mesh::setShaderMan(active_shader);
+}
+
+void OpenGLWindow::setActiveCamera(Camera *cam)
+{
+    active_camera = cam;
+    // update the mesh's Camera pointer
+    Mesh::setCamera(active_camera);
+}
+
+Camera *OpenGLWindow::getActiveCamera() const
+{
+    return active_camera;
 }
 
 GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)

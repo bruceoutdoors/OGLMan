@@ -6,6 +6,8 @@
 #include "primitives/cube.h"
 #include "primitives/arrow.h"
 #include "primitives/plane.h"
+#include "oglman/arcball.h"
+#include "oglman/walkcam.h"
 
 #include <SFGUI/SFGUI.hpp>
 
@@ -27,6 +29,9 @@ private:
     sfg::SFGUI sfgui;
     sfg::Desktop desktop;
     sfg::Label::Ptr test_label;
+
+    Arcball *arcball;
+    WalkCam *walkcam;
 
     Mesh *cube2;
     Cube *cube;

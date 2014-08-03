@@ -8,8 +8,7 @@
 
 #include "oglman/shaderman.h"
 #include "oglman/bufferman.h"
-#include "oglman/arcball.h"
-#include "oglman/walkcam.h"
+#include "oglman/camera.h"
 #include "oglman/mesh.h"
 
 class OpenGLWindow : public sf::Window
@@ -22,7 +21,7 @@ class OpenGLWindow : public sf::Window
         virtual void draw() = 0;
         virtual void init() = 0;
         virtual bool handleEvents() = 0;
-        virtual void guiDraw();
+        virtual void guiDraw() {}
         void wireframeToggle();
         void toggleFullscreen();
         void run();
@@ -31,6 +30,8 @@ class OpenGLWindow : public sf::Window
         void renderScene();
         void setupLights();
         void shadermanSetup();
+        void setActiveCamera(Camera *cam);
+        Camera *getActiveCamera() const;
 
     protected:
         GLvoid resizeGL(GLsizei width, GLsizei height);
@@ -40,8 +41,6 @@ class OpenGLWindow : public sf::Window
         ShaderMan *default_shader;
         BufferMan *bufferman;
         Camera *active_camera;
-        Arcball *arcball;
-        WalkCam *walkcam;
 
         glm::vec3 light_position;
         glm::vec4 ambientLight;
@@ -54,6 +53,7 @@ class OpenGLWindow : public sf::Window
     private:
         sf::VideoMode m_mode;
         sf::String m_title;
+
 
         GLint ambientLightUniformLocation;
         GLint lightPositionUniformLocation;

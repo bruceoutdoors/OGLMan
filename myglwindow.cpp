@@ -19,6 +19,10 @@ MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWind
 
     window->GetSignal(sfg::Widget::OnMouseEnter).Connect(std::bind(&MyGLWindow::onWindowMove, this));
     window->GetSignal(sfg::Widget::OnMouseLeave).Connect(std::bind(&MyGLWindow::onWindowMoveRelease, this));
+
+    arcball = new Arcball();
+    walkcam = new WalkCam();
+    setActiveCamera(arcball);
 }
 
 MyGLWindow::~MyGLWindow()
@@ -29,6 +33,9 @@ MyGLWindow::~MyGLWindow()
     delete elephant;
     delete plane;
     delete arrow;
+
+    delete arcball;
+    delete walkcam;
 }
 
 void MyGLWindow::draw()
@@ -155,8 +162,6 @@ bool MyGLWindow::handleEvents()
 
 void MyGLWindow::guiDraw()
 {
-    // disable depth test so SFGUI can render
-    glDisable(GL_DEPTH_TEST);
     desktop.Update(1.0f);
     sfgui.Display(*this);
 }
@@ -173,9 +178,7 @@ bool MyGLWindow::keyboardEventHandler(int key)
         break;
 
     case sf::Keyboard::C:
-        active_camera == arcball ? active_camera = walkcam : active_camera = arcball;
-        // update the mesh's Camera pointer
-        Mesh::setCamera(active_camera);
+        getActiveCamera() == arcball ? setActiveCamera(walkcam) : setActiveCamera(arcball);
         break;
 
     case sf::Keyboard::Num7:
