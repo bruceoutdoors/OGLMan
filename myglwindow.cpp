@@ -137,18 +137,18 @@ bool MyGLWindow::handleEvents()
         case sf::Event::MouseMoved:
             if (isWindowSelect) break;
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                active_camera->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
+                getActiveCamera()->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
             } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-                active_camera->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
+                getActiveCamera()->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
             }
             break;
 
         case sf::Event::MouseWheelMoved:
             if (isWindowSelect) break;
             if (e.mouseWheel.delta > 0) {
-                active_camera->moveForward(ZOOM_SPEED);
+                getActiveCamera()->moveForward(ZOOM_SPEED);
             } else {
-                active_camera->moveForward(-ZOOM_SPEED);
+                getActiveCamera()->moveForward(-ZOOM_SPEED);
             }
             break;
 

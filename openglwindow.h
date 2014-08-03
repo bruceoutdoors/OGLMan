@@ -40,7 +40,6 @@ class OpenGLWindow : public sf::Window
         ShaderMan *flat_shader;
         ShaderMan *default_shader;
         BufferMan *bufferman;
-        Camera *active_camera;
 
         glm::vec3 light_position;
         glm::vec4 ambientLight;
@@ -54,6 +53,7 @@ class OpenGLWindow : public sf::Window
         sf::VideoMode m_mode;
         sf::String m_title;
 
+        Camera *active_camera;
 
         GLint ambientLightUniformLocation;
         GLint lightPositionUniformLocation;
