@@ -182,8 +182,7 @@ bool MyGLWindow::keyboardEventHandler(int key)
         break;
 
     case sf::Keyboard::Num7:
-        isLightOn = !isLightOn;
-        shadermanSetup();
+        hasLights() ? offLights() : onLights();
         break;
 
     case sf::Keyboard::Num4:

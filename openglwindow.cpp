@@ -152,6 +152,23 @@ Camera *OpenGLWindow::getActiveCamera() const
     return active_camera;
 }
 
+void OpenGLWindow::onLights()
+{
+    isLightOn = true;
+    shadermanSetup();
+}
+
+void OpenGLWindow::offLights()
+{
+    isLightOn = false;
+    shadermanSetup();
+}
+
+bool OpenGLWindow::hasLights() const
+{
+    return isLightOn;
+}
+
 GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)
 {
     glViewport(0, 0, width, height);         // Reset the current viewport
