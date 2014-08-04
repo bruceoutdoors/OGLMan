@@ -46,8 +46,6 @@ class OpenGLWindow : public sf::Window
         glm::vec2 oldMousePosition;
 
         bool isLightOn;
-        bool isFullscreen;
-        bool isWireframeMode;
 
     private:
         sf::VideoMode m_mode;
@@ -58,6 +56,9 @@ class OpenGLWindow : public sf::Window
         GLint ambientLightUniformLocation;
         GLint lightPositionUniformLocation;
         GLint eyePositionWorldUniformLocation;
+
+        bool isFullscreen;
+        bool isWireframeMode;
 };
 
 #endif // OPENGLWINDOW_H
