@@ -22,7 +22,6 @@ class OpenGLWindow : public sf::Window
         virtual void init() = 0;
         virtual bool handleEvents() = 0;
         virtual void guiDraw() {}
-        void wireframeToggle();
         void toggleFullscreen();
         void run();
         void setup();
@@ -37,6 +36,12 @@ class OpenGLWindow : public sf::Window
         void offLights();
         bool hasLights() const;
 
+        bool hasWireframeMode() const;
+
+        void wireframeDisplay();
+        void shadedDisplay();
+        void flatShadeDisplay();
+
     protected:
         GLvoid resizeGL(GLsizei width, GLsizei height);
 
@@ -48,6 +53,9 @@ class OpenGLWindow : public sf::Window
         glm::vec3 light_position;
         glm::vec4 ambientLight;
         glm::vec2 oldMousePosition;
+
+        void wireframeModeOn();
+        void wireframeModeOff();
 
 
     private:

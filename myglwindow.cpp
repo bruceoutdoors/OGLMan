@@ -179,14 +179,17 @@ bool MyGLWindow::keyboardEventHandler(int key)
 
     case sf::Keyboard::C:
         getActiveCamera() == arcball ? setActiveCamera(walkcam) : setActiveCamera(arcball);
+
+    case sf::Keyboard::Num4:
+        wireframeDisplay();
         break;
 
     case sf::Keyboard::Num7:
-        hasLights() ? offLights() : onLights();
+        shadedDisplay();
         break;
 
-    case sf::Keyboard::Num4:
-        wireframeToggle();
+    case sf::Keyboard::Num8:
+        flatShadeDisplay();
         break;
 
     case sf::Keyboard::U:

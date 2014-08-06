@@ -27,8 +27,16 @@ GLint Mesh::has_vertex_color_loc;
 GLint Mesh::has_flat_color_loc;
 GLint Mesh::has_texture_loc;
 GLint Mesh::flat_color_loc;
+GLint Mesh::has_wireframe_mode_loc;
+GLint Mesh::wireframe_color_loc;
+bool  Mesh::isWireframeMode;
 
-Mesh::Mesh()
+vec3 Mesh::wireframe_color;
+
+Mesh::Mesh() :
+    isVertexColor(false),
+    isFlatColor(false),
+    isTextured(false)
 {
     glewInit();
 
@@ -36,9 +44,7 @@ Mesh::Mesh()
     DRAW_MODE = GL_TRIANGLES;
 
     bufferman->addShape(this);
-    isVertexColor = false;
-    isFlatColor = false;
-    isTextured = false;
+
 
     texture = nullptr;
 }
@@ -73,6 +79,7 @@ void Mesh::draw()
     glUniform1f(has_vertex_color_loc, isVertexColor);
     glUniform1f(has_flat_color_loc, isFlatColor);
     glUniform1f(has_texture_loc, isTextured);
+    glUniform1f(has_wireframe_mode_loc, isWireframeMode);
 
     if (isFlatColor) { glUniform3fv(flat_color_loc, 1, &flat_color[0]); }
     if (hasTexture()) { texture->use(); }
@@ -90,6 +97,9 @@ void Mesh::setShaderMan(ShaderMan *man)
     has_flat_color_loc = man->getUniformLoc("hasFlatColor");
     has_texture_loc = man->getUniformLoc("hasTexture");
     flat_color_loc = man->getUniformLoc("flatColor");
+    has_wireframe_mode_loc = man->getUniformLoc("hasWireframeMode");
+    wireframe_color_loc = man->getUniformLoc("wireframeColor");
+
     Texture::setTextureSamplerLoc(man->getUniformLoc("textureSampler"));
 
     man->use();
@@ -123,6 +133,17 @@ void Mesh::resetTransformations()
     rotateX = rotateY = rotateZ
             = translateX = translateY = translateZ = 0;
     scale = 1;
+}
+
+vec3 Mesh::getWireframeColor()
+{
+    return wireframe_color;
+}
+
+void Mesh::setWireframeColor(const vec3 &value)
+{
+    wireframe_color = value;
+    glUniform3fv(wireframe_color_loc, 1, &wireframe_color[0]);
 }
 
 void Mesh::setTexture(const std::string &path)
@@ -265,6 +286,11 @@ void Mesh::setCamera(Camera *c)
 void Mesh::setBufferMan(BufferMan *man)
 {
     bufferman = man;
+}
+
+void Mesh::setWireframeMode(bool val)
+{
+    isWireframeMode = val;
 }
 
 GLfloat Mesh::getScale() const

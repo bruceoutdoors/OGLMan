@@ -238,12 +238,16 @@ bool ElephantWindow::keyboardEventHandler(int key)
         toggleFullscreen();
         break;
 
-    case sf::Keyboard::Num7:
-        hasLights() ? offLights() : onLights();
+    case sf::Keyboard::Num4:
+        wireframeDisplay();
         break;
 
-    case sf::Keyboard::Num4:
-        wireframeToggle();
+    case sf::Keyboard::Num7:
+        shadedDisplay();
+        break;
+
+    case sf::Keyboard::Num8:
+        flatShadeDisplay();
         break;
 
     }

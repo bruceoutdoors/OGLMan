@@ -84,6 +84,7 @@ public:
     static void setCamera(Camera *c);
     static void setShaderMan(ShaderMan *man);
     static void setBufferMan(BufferMan *man);
+    static void setWireframeMode(bool val);
 
     // transformations:
     GLfloat getScale() const;
@@ -105,6 +106,9 @@ public:
     void setWorldMatrix(const mat4 &mat);
     void updateWorldMatrix();
     void resetTransformations();
+
+    static vec3 getWireframeColor();
+    static void setWireframeColor(const vec3 &value);
 
 protected:
     vector<vec3> vertices;
@@ -140,6 +144,11 @@ private:
     static GLint has_flat_color_loc;
     static GLint has_texture_loc;
     static GLint flat_color_loc;
+    static GLint has_wireframe_mode_loc;
+    static GLint wireframe_color_loc;
+
+    static bool isWireframeMode;
+    static vec3 wireframe_color;
 
     static Camera *active_cam;
     static BufferMan *bufferman;

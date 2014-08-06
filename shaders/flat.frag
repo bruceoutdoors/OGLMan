@@ -4,16 +4,20 @@ in vec3 vertcolor;
 in vec2 UV;
 
 uniform vec3 flatColor;
+uniform vec3 wireframeColor;
 
 uniform bool hasVertexColor;
 uniform bool hasFlatColor;
 uniform bool hasTexture;
+uniform bool hasWireframeMode;
 
 uniform sampler2D textureSampler;
 
 void main()
 {
-    if (hasTexture) {
+    if (hasWireframeMode) {
+        gl_FragColor = vec4(wireframeColor, 1.0);
+    } else if (hasTexture) {
         gl_FragColor = texture2D(textureSampler, UV).rgba;
     } else if (hasVertexColor) {
         gl_FragColor = vec4(vertcolor, 1.0);

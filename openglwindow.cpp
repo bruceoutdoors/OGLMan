@@ -100,17 +100,11 @@ void OpenGLWindow::renderScene()
         glUniform3fv(eyePositionWorldUniformLocation, 1, &eyePositionWorld[0]);
     }
 
-    if (isWireframeMode) {
-        glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-        glDisable(GL_CULL_FACE);
-    }
+    if (hasWireframeMode()) wireframeModeOn();
     draw();
     // return back to drawing triangles, or GUI will get
     // drawn as lines
-    if (isWireframeMode) {
-        glPolygonMode(GL_FRONT, GL_FILL);
-        glEnable(GL_CULL_FACE);
-    }
+    if (hasWireframeMode()) wireframeModeOff();
 
     // unbound any shader programs, or GUI will not render
     glUseProgram(0);
@@ -137,6 +131,7 @@ void OpenGLWindow::shadermanSetup()
         active_shader = flat_shader;
     }
     Mesh::setShaderMan(active_shader);
+    Mesh::setWireframeColor(vec3(.5f,.5f,1));
 }
 
 void OpenGLWindow::setActiveCamera(Camera *cam)
@@ -168,17 +163,46 @@ bool OpenGLWindow::hasLights() const
     return isLightOn;
 }
 
+bool OpenGLWindow::hasWireframeMode() const
+{
+    return isWireframeMode;
+}
+
+void OpenGLWindow::wireframeDisplay()
+{
+    isWireframeMode = true;
+    offLights();
+}
+
+void OpenGLWindow::shadedDisplay()
+{
+    isWireframeMode = false;
+    onLights();
+}
+
+void OpenGLWindow::flatShadeDisplay()
+{
+    isWireframeMode = false;
+    offLights();
+}
+
+void OpenGLWindow::wireframeModeOn()
+{
+    Mesh::setWireframeMode(true);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    glDisable(GL_CULL_FACE);
+}
+
+void OpenGLWindow::wireframeModeOff()
+{
+    Mesh::setWireframeMode(false);
+    glPolygonMode(GL_FRONT, GL_FILL);
+    glEnable(GL_CULL_FACE);
+}
+
 GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)
 {
     glViewport(0, 0, width, height);         // Reset the current viewport
     float aspect_ratio = ((float)width)/height;
     active_camera->setAspectRatio(aspect_ratio);
 }
-
-void OpenGLWindow::wireframeToggle()
-{
-    isWireframeMode = !isWireframeMode;
-}
-
-
-
