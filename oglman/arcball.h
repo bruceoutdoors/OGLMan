@@ -34,6 +34,8 @@ private:
     float pitch;
     float yaw;
     float distance;
+    float pan_horizontal;
+    float pan_vertical;
     vec3 aim;
 };
 

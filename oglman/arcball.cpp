@@ -16,6 +16,8 @@ const vec3 Y_AXIS = vec3(0,1,0);
 Arcball::Arcball(float dist) :
     pitch(0),
     yaw(0),
+    pan_horizontal(0),
+    pan_vertical(0),
     aim(vec3(0,0,0))
 {
     distance = dist;
@@ -44,12 +46,14 @@ void Arcball::moveForward(float speed)
 
 void Arcball::moveRight(float speed)
 {
-    // TODO: what is side?
+    pan_horizontal -= speed;
+    updateTransformation();
 }
 
 void Arcball::moveUp(float speed)
 {
-    // TODO: what is up?
+    pan_vertical -= speed;
+    updateTransformation();
 }
 
 glm::vec3 Arcball::getAim() const
@@ -99,7 +103,7 @@ void Arcball::setDistance(float val)
 void Arcball::updateTransformation()
 {
     view =
-            glm::translate(vec3(0,0,-distance)) *
+            glm::translate(vec3(pan_horizontal, pan_vertical, -distance)) *
             glm::rotate(pitch, X_AXIS) *
             glm::rotate(yaw, Y_AXIS) *
             glm::translate(-aim);
@@ -108,7 +112,7 @@ void Arcball::updateTransformation()
             glm::translate(aim) *
             glm::rotate(pitch, X_AXIS) *
             glm::rotate(yaw, Y_AXIS) *
-            glm::translate(vec3(0,0,-distance)) *
+            glm::translate(vec3(-pan_horizontal, -pan_vertical, -distance)) *
             vec4(0,0,0,1);
 
     // to solve gimbal lock, a separate transformation is created
@@ -116,7 +120,7 @@ void Arcball::updateTransformation()
     vec4 getY =
             glm::translate(aim) *
             glm::rotate(pitch, X_AXIS) *
-            glm::translate(vec3(0,0,-distance)) *
+            glm::translate(vec3(-pan_horizontal, -pan_vertical, -distance)) *
             vec4(0,0,0,1);
 
     eye = vec3(getXZ.x, getY.y, -getXZ.z);
