@@ -33,9 +33,7 @@ MyGLWindow::~MyGLWindow()
 
 void MyGLWindow::draw()
 {
-    cube->setWorldMatrix(
-                glm::translate(light_position) *
-                glm::scale(mat4(1.0f), vec3(0.3f)));
+    cube->setTranslate(light_position);
 }
 
 void MyGLWindow::init()
@@ -72,25 +70,25 @@ void MyGLWindow::init()
     plane = new Plane(10);
     arrow = new Arrow();
 
+    cube->setScale(0.3f);
     cube_instance1 = new Mesh(cube);
 
-    cube2->setWorldMatrix(
-                glm::translate(vec3(2.0f, 1.0f, 1.0f)) *
-                glm::rotate(-30.0f, vec3(0.0f, 1.0f, 0.0f)) *
-                glm::scale(mat4(1.0f), vec3(0.7f)));
+    cube_instance1->select();
+    monkey_instance1->select();
 
-
+    cube2->setTranslate(vec3(2.0f, 1.0f, 1.0f));
+    cube2->setRotateY(-30);
+    cube2->setScale(0.7f);
 
     cube_instance1->enableFlatColor();
     cube_instance1->setFlatColor(vec3(1.0f,1.0f,0.0f));
-    cube_instance1->setWorldMatrix(
-                glm::translate(vec3(-3.0f, 1.0f, 0.0f)) *
-                glm::rotate(-40.0f, vec3(1.0f, 0.0f, 0.0f)) *
-                glm::rotate(25.0f, vec3(0.0f, 1.0f, 0.0f)));
+    cube_instance1->setTranslateX(-3.0f);
+    cube_instance1->setTranslateY(1.0f);
+    cube_instance1->setRotateX(-40);
+    cube_instance1->setRotateY(25);
 
-    arrow->setWorldMatrix(
-                glm::translate(vec3(-1.0f, 2.0f, 2.0f)) *
-                glm::rotate(-150.0f, vec3(0.0f, 1.0f, 0.0f)));
+    arrow->setTranslate(vec3(-1.0f, 2.0f, 2.0f));
+    arrow->setRotateY(-150);
     arrow->enableVertexColor();
 
     plane->enableFlatColor();

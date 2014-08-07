@@ -7,6 +7,8 @@ using glm::vec2;
 using glm::vec3;
 using glm::vec4;
 
+const vec3 select_color = vec3(1);
+
 OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
                            const sf::String &title,
                            unsigned int style) :
@@ -95,9 +97,9 @@ void OpenGLWindow::renderScene()
 
     if (isLightOn) {
         vec3 eyePositionWorld = active_camera->getEye();
-        glUniform4fv(ambientLightUniformLocation, 1, &ambientLight[0]);
-        glUniform3fv(lightPositionUniformLocation, 1, &light_position[0]);
-        glUniform3fv(eyePositionWorldUniformLocation, 1, &eyePositionWorld[0]);
+        glUniform4fv(ambientLight_loc, 1, &ambientLight[0]);
+        glUniform3fv(lightPosition_loc, 1, &light_position[0]);
+        glUniform3fv(eyePositionWorld_loc, 1, &eyePositionWorld[0]);
     }
 
     if (hasWireframeMode()) wireframeModeOn();
@@ -107,20 +109,23 @@ void OpenGLWindow::renderScene()
     // drawn as lines
     if (hasWireframeMode()) wireframeModeOff();
 
-    // unbound any shader programs, or GUI will not render
-    glUseProgram(0);
+    drawSelectHighlight();
 
     // disable depth test so SFGUI can render
     glDisable(GL_DEPTH_TEST);
+
+    // unbound any shader programs, or GUI will not render
+    glUseProgram(0);
+
     guiDraw();
     display();
 }
 
 void OpenGLWindow::setupLights()
 {
-    eyePositionWorldUniformLocation = active_shader->getUniformLoc("eyePositionWorld");
-    ambientLightUniformLocation = active_shader->getUniformLoc("ambientLight");
-    lightPositionUniformLocation = active_shader->getUniformLoc("lightPosition");
+    eyePositionWorld_loc = active_shader->getUniformLoc("eyePositionWorld");
+    ambientLight_loc = active_shader->getUniformLoc("ambientLight");
+    lightPosition_loc = active_shader->getUniformLoc("lightPosition");
 }
 
 void OpenGLWindow::shadermanSetup()
@@ -131,8 +136,14 @@ void OpenGLWindow::shadermanSetup()
     } else {
         active_shader = flat_shader;
     }
+
+    isSelectRender_loc = active_shader->getUniformLoc("isSelectRender");
+    selectColor_loc = active_shader->getUniformLoc("selectColor");
+
     Mesh::setShaderMan(active_shader);
     Mesh::setWireframeColor(vec3(.5f,.5f,1));
+
+    glUniform3fv(selectColor_loc, 1, &select_color[0]);
 }
 
 void OpenGLWindow::setActiveCamera(Camera *cam)
@@ -199,6 +210,24 @@ void OpenGLWindow::wireframeModeOff()
     Mesh::setWireframeMode(false);
     glPolygonMode(GL_FRONT, GL_FILL);
     glEnable(GL_CULL_FACE);
+}
+
+void OpenGLWindow::drawSelectHighlight()
+{
+    wasLightOn = isLightOn;
+    if (isLightOn) offLights();
+
+    glUniform1f(isSelectRender_loc, true);
+    glLineWidth(1.5f);
+    glDisable(GL_CULL_FACE);
+    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
+    bufferman->drawSelected();
+    glPolygonMode(GL_FRONT, GL_FILL);
+    glEnable(GL_CULL_FACE);
+    glLineWidth(1);
+    glUniform1f(isSelectRender_loc, false);
+
+    if (wasLightOn) onLights();
 }
 
 GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)

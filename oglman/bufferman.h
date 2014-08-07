@@ -14,6 +14,7 @@ public:
     BufferMan();
     ~BufferMan();
     void draw();
+    void drawSelected();
     void addShape(Mesh *s);
     GLuint getTotalVectices() const;
     void setupBuffers();

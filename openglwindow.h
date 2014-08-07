@@ -57,6 +57,7 @@ class OpenGLWindow : public sf::Window
         void wireframeModeOn();
         void wireframeModeOff();
 
+        void drawSelectHighlight();
 
     private:
         sf::VideoMode m_mode;
@@ -64,13 +65,16 @@ class OpenGLWindow : public sf::Window
 
         Camera *active_camera;
 
-        GLint ambientLightUniformLocation;
-        GLint lightPositionUniformLocation;
-        GLint eyePositionWorldUniformLocation;
+        GLint ambientLight_loc;
+        GLint lightPosition_loc;
+        GLint eyePositionWorld_loc;
+        GLint isSelectRender_loc;
+        GLint selectColor_loc;
 
         bool isFullscreen;
         bool isWireframeMode;
         bool isLightOn;
+        bool wasLightOn;
 };
 
 #endif // OPENGLWINDOW_H

@@ -89,6 +89,7 @@ public:
     static void setWireframeMode(bool val);
     static vec3 getWireframeColor();
     static void setWireframeColor(const vec3 &value);
+    static bool hasWireframeMode();
 
     // transformations:
     GLfloat getScale() const;
@@ -103,11 +104,11 @@ public:
     void setRotateX(const GLfloat &value);
     void setRotateY(const GLfloat &value);
     void setRotateZ(const GLfloat &value);
+    void setTranslate(const vec3 &t);
     void setTranslateX(const GLfloat &value);
     void setTranslateY(const GLfloat &value);
     void setTranslateZ(const GLfloat &value);
 
-    void setWorldMatrix(const mat4 &mat);
     void updateWorldMatrix();
     void resetTransformations();
 
@@ -116,6 +117,10 @@ public:
 
     bool getVisibility() const;
     void setVisibility(bool value);
+
+    void select();
+    void deselect();
+    bool isSelect() const;
 
 protected:
     vector<vec3> vertices;
@@ -138,6 +143,7 @@ private:
     bool isTextured;
     bool isInstanced;
     bool isVisible;
+    bool isSelected;
 
     Texture *texture;
     Mesh *parent_mesh;
@@ -147,14 +153,14 @@ private:
     mat4 world_matrix;
     mat4 normal_matrix;
 
-    static GLint model_projection_loc;
-    static GLint model_world_loc;
-    static GLint has_vertex_color_loc;
-    static GLint has_flat_color_loc;
-    static GLint has_texture_loc;
-    static GLint flat_color_loc;
-    static GLint has_wireframe_mode_loc;
-    static GLint wireframe_color_loc;
+    static GLint modelToProjectionMatrix_loc;
+    static GLint modelToWorldMatrix_loc;
+    static GLint hasVertexColor_loc;
+    static GLint hasFlatColor_loc;
+    static GLint hasTexture_loc;
+    static GLint flatColor_loc;
+    static GLint hasWireframeMode_loc;
+    static GLint wireframeColor_loc;
 
     static bool isWireframeMode;
     static vec3 wireframe_color;

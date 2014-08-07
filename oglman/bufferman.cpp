@@ -26,7 +26,21 @@ BufferMan::~BufferMan()
 
 void BufferMan::draw()
 {
-    for (Mesh *s : shapes) s->draw();
+    for (Mesh *s : shapes) {
+        // if in wireframe mode, skip drawing selected objects
+        if (Mesh::hasWireframeMode() && s->isSelect()) continue;
+
+        s->draw();
+    }
+}
+
+void BufferMan::drawSelected()
+{
+    for (Mesh *s : shapes) {
+        if (s->isSelect()) {
+            s->draw();
+        }
+    }
 }
 
 void BufferMan::addShape(Mesh *s)

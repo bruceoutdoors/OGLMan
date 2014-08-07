@@ -21,14 +21,14 @@ const vec3 Z_AXIS = vec3(0,0,1);
 Camera *Mesh::active_cam = NULL;
 BufferMan *Mesh::bufferman = NULL;
 
-GLint Mesh::model_projection_loc;
-GLint Mesh::model_world_loc;
-GLint Mesh::has_vertex_color_loc;
-GLint Mesh::has_flat_color_loc;
-GLint Mesh::has_texture_loc;
-GLint Mesh::flat_color_loc;
-GLint Mesh::has_wireframe_mode_loc;
-GLint Mesh::wireframe_color_loc;
+GLint Mesh::modelToProjectionMatrix_loc;
+GLint Mesh::modelToWorldMatrix_loc;
+GLint Mesh::hasVertexColor_loc;
+GLint Mesh::hasFlatColor_loc;
+GLint Mesh::hasTexture_loc;
+GLint Mesh::flatColor_loc;
+GLint Mesh::hasWireframeMode_loc;
+GLint Mesh::wireframeColor_loc;
 bool  Mesh::isWireframeMode;
 
 vec3 Mesh::wireframe_color;
@@ -38,7 +38,8 @@ Mesh::Mesh() :
     isFlatColor(false),
     isTextured(false),
     isInstanced(false),
-    isVisible(true)
+    isVisible(true),
+    isSelected(false)
 {
     resetTransformations();
     DRAW_MODE = GL_TRIANGLES;
@@ -75,17 +76,17 @@ void Mesh::draw()
     mat4 model2projection = active_cam->getViewProjectionMatrix() * world_matrix;
 
     glBindVertexArray(vao);
-    glUniformMatrix4fv(model_world_loc, 1,
+    glUniformMatrix4fv(modelToWorldMatrix_loc, 1,
                        GL_FALSE, &world_matrix[0][0]);
-    glUniformMatrix4fv(model_projection_loc, 1,
+    glUniformMatrix4fv(modelToProjectionMatrix_loc, 1,
                        GL_FALSE, &model2projection[0][0]);
 
-    glUniform1f(has_vertex_color_loc, isVertexColor);
-    glUniform1f(has_flat_color_loc, isFlatColor);
-    glUniform1f(has_texture_loc, isTextured);
-    glUniform1f(has_wireframe_mode_loc, isWireframeMode);
+    glUniform1f(hasVertexColor_loc, isVertexColor);
+    glUniform1f(hasFlatColor_loc, isFlatColor);
+    glUniform1f(hasTexture_loc, isTextured);
+    glUniform1f(hasWireframeMode_loc, isWireframeMode);
 
-    if (isFlatColor) { glUniform3fv(flat_color_loc, 1, &flat_color[0]); }
+    if (isFlatColor) { glUniform3fv(flatColor_loc, 1, &flat_color[0]); }
     if (hasTexture()) { texture->use(); }
 
     glDrawElements(DRAW_MODE, getNumIndices(), GL_UNSIGNED_SHORT, (void*)getIndexBufferOffset());
@@ -94,14 +95,14 @@ void Mesh::draw()
 
 void Mesh::setShaderMan(ShaderMan *man)
 {
-    model_projection_loc = man->getUniformLoc("modelToProjectionMatrix");
-    model_world_loc = man->getUniformLoc("modelToWorldMatrix");
-    has_vertex_color_loc = man->getUniformLoc("hasVertexColor");
-    has_flat_color_loc = man->getUniformLoc("hasFlatColor");
-    has_texture_loc = man->getUniformLoc("hasTexture");
-    flat_color_loc = man->getUniformLoc("flatColor");
-    has_wireframe_mode_loc = man->getUniformLoc("hasWireframeMode");
-    wireframe_color_loc = man->getUniformLoc("wireframeColor");
+    modelToProjectionMatrix_loc = man->getUniformLoc("modelToProjectionMatrix");
+    modelToWorldMatrix_loc = man->getUniformLoc("modelToWorldMatrix");
+    hasVertexColor_loc = man->getUniformLoc("hasVertexColor");
+    hasFlatColor_loc = man->getUniformLoc("hasFlatColor");
+    hasTexture_loc = man->getUniformLoc("hasTexture");
+    flatColor_loc = man->getUniformLoc("flatColor");
+    hasWireframeMode_loc = man->getUniformLoc("hasWireframeMode");
+    wireframeColor_loc = man->getUniformLoc("wireframeColor");
 
     Texture::setTextureSamplerLoc(man->getUniformLoc("textureSampler"));
 
@@ -157,6 +158,21 @@ void Mesh::setVisibility(bool value)
     isVisible = value;
 }
 
+void Mesh::select()
+{
+    isSelected = true;
+}
+
+void Mesh::deselect()
+{
+    isSelected = false;
+}
+
+bool Mesh::isSelect() const
+{
+    return isSelected;
+}
+
 
 vec3 Mesh::getWireframeColor()
 {
@@ -166,7 +182,12 @@ vec3 Mesh::getWireframeColor()
 void Mesh::setWireframeColor(const vec3 &value)
 {
     wireframe_color = value;
-    glUniform3fv(wireframe_color_loc, 1, &wireframe_color[0]);
+    glUniform3fv(wireframeColor_loc, 1, &wireframe_color[0]);
+}
+
+bool Mesh::hasWireframeMode()
+{
+    return isWireframeMode;
 }
 
 void Mesh::setTexture(const std::string &path)
@@ -299,11 +320,6 @@ void Mesh::setDrawMode(const GLenum &mode)
     DRAW_MODE = mode;
 }
 
-void Mesh::setWorldMatrix(const mat4 &mat)
-{
-    world_matrix = mat;
-}
-
 void Mesh::setCamera(Camera *c)
 {
     active_cam = c;
@@ -358,6 +374,14 @@ GLfloat Mesh::getRotateZ() const
 void Mesh::setRotateZ(const GLfloat &value)
 {
     rotateZ = value;
+    updateWorldMatrix();
+}
+
+void Mesh::setTranslate(const vec3 &t)
+{
+    translateX = t.x;
+    translateY = t.y;
+    translateZ = t.z;
     updateWorldMatrix();
 }
 
