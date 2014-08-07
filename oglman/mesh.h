@@ -114,6 +114,9 @@ public:
     bool isInstance() const;
     void setupInstance();
 
+    bool getVisibility() const;
+    void setVisibility(bool value);
+
 protected:
     vector<vec3> vertices;
     vector<vec3> colors;
@@ -134,6 +137,7 @@ private:
     bool isFlatColor;
     bool isTextured;
     bool isInstanced;
+    bool isVisible;
 
     Texture *texture;
     Mesh *parent_mesh;

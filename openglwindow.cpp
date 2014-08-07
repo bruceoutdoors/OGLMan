@@ -102,6 +102,7 @@ void OpenGLWindow::renderScene()
 
     if (hasWireframeMode()) wireframeModeOn();
     draw();
+    bufferman->draw();
     // return back to drawing triangles, or GUI will get
     // drawn as lines
     if (hasWireframeMode()) wireframeModeOff();

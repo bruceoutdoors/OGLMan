@@ -27,15 +27,6 @@ MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWind
 
 MyGLWindow::~MyGLWindow()
 {
-    delete cube2;
-    delete cube;
-    delete cube_instance1;
-    delete monkey;
-    delete monkey_instance1;
-    delete elephant;
-    delete plane;
-    delete arrow;
-
     delete arcball;
     delete walkcam;
 }
@@ -45,16 +36,6 @@ void MyGLWindow::draw()
     cube->setWorldMatrix(
                 glm::translate(light_position) *
                 glm::scale(mat4(1.0f), vec3(0.3f)));
-    cube->draw();
-    cube_instance1->draw();
-    cube2->draw();
-
-    arrow->draw();
-
-    monkey->draw();
-    monkey_instance1->draw();
-    elephant->draw();
-    plane->draw();
 }
 
 void MyGLWindow::init()
@@ -84,6 +65,8 @@ void MyGLWindow::init()
     elephant->setTranslateZ(-1.5f);
     elephant->setRotateY(-25);
     elephant->setScale(0.15f);
+
+//    elephant->setVisibility(false);
 
     cube = new Cube();
     plane = new Plane(10);

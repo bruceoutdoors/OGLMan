@@ -37,7 +37,8 @@ Mesh::Mesh() :
     isVertexColor(false),
     isFlatColor(false),
     isTextured(false),
-    isInstanced(false)
+    isInstanced(false),
+    isVisible(true)
 {
     resetTransformations();
     DRAW_MODE = GL_TRIANGLES;
@@ -70,6 +71,7 @@ Mesh::~Mesh()
 
 void Mesh::draw()
 {
+    if (!isVisible) return;
     mat4 model2projection = active_cam->getViewProjectionMatrix() * world_matrix;
 
     glBindVertexArray(vao);
@@ -145,6 +147,16 @@ void Mesh::setupInstance()
 {
     vao = parent_mesh->getVao();
 }
+bool Mesh::getVisibility() const
+{
+    return isVisible;
+}
+
+void Mesh::setVisibility(bool value)
+{
+    isVisible = value;
+}
+
 
 vec3 Mesh::getWireframeColor()
 {

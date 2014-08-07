@@ -18,8 +18,15 @@ BufferMan::BufferMan()
 
 BufferMan::~BufferMan()
 {
+    for (Mesh *s : shapes) delete s;
+
     delete array_buffer;
     delete index_buffer;
+}
+
+void BufferMan::draw()
+{
+    for (Mesh *s : shapes) s->draw();
 }
 
 void BufferMan::addShape(Mesh *s)

@@ -21,15 +21,11 @@ ElephantWindow::ElephantWindow(sf::VideoMode mode, const sf::String &title)
 
 ElephantWindow::~ElephantWindow()
 {
-    delete elephant;
-    delete plane;
     delete clock;
 }
 
 void ElephantWindow::draw()
 {
-    elephant->draw();
-    plane->draw();
 }
 
 void ElephantWindow::init()
