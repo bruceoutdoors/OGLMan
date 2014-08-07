@@ -38,7 +38,7 @@ Mesh::Mesh() :
     isVertexColor(false),
     isFlatColor(false),
     isTextured(false),
-    isInstanced(false),
+    isInstanced(false)
 {
     resetTransformations();
     DRAW_MODE = GL_TRIANGLES;
