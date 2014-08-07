@@ -73,9 +73,8 @@ void OpenGLWindow::run()
 
 void OpenGLWindow::setup()
 {
-    setupGL();
-
     init();
+    setupGL();
 
     bufferman->setupBuffers();
     resizeGL(getSize().x, getSize().y);
