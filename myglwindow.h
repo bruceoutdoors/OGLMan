@@ -2,6 +2,8 @@
 #define MYGLWINDOW_H
 
 #include "openglwindow.h"
+#include "transformpanel.h"
+#include "camerapanel.h"
 
 #include "primitives/cube.h"
 #include "primitives/arrow.h"
@@ -23,13 +25,20 @@ public:
 
 private:
     bool keyboardEventHandler(int key);
+    void guiSetup();
+    void addWindow(sfg::Widget::Ptr widget,
+                   sf::String title = "Default Title",
+                   float x = 0, float y = 0);
     void onWindowMove();
     void onWindowMoveRelease();
 
     sfg::SFGUI sfgui;
     sfg::Desktop desktop;
     sfg::Label::Ptr test_label;
+    sfg::TransformPanel::Ptr transform_panel;
+    sfg::CameraPanel::Ptr camera_panel;
 
+    sf::Clock *clock;
     Arcball *arcball;
     WalkCam *walkcam;
 

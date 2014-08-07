@@ -2,6 +2,7 @@
 #define CAMERA_H
 
 #include <glm/glm.hpp>
+#include <string>
 
 using glm::vec2;
 using glm::vec3;
@@ -37,6 +38,9 @@ public:
     void setFarPlane(float plane);
     void setFocalLength(float focal_length);
 
+    std::string getName() const;
+    void setName(const std::string &value);
+
 protected:
     vec3 eye;
     vec2 old_mouse_position;
@@ -45,6 +49,7 @@ protected:
 private:
     void updateProjection();
 
+    std::string name;
     float fov;
     float near_plane;
     float far_plane;

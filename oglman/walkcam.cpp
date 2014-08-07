@@ -15,6 +15,8 @@ WalkCam::WalkCam()
     setEye(vec3(0, 0, 0));
 
     updateSideVector();
+
+    setName("Default Walkcam");
 }
 
 void WalkCam::mouseDrag(const vec2 &new_mouse_position)

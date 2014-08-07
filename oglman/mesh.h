@@ -117,6 +117,9 @@ public:
     void deselect();
     bool isSelect() const;
 
+    std::string getName() const;
+    void setName(const std::string &value);
+
 protected:
     vector<vec3> vertices;
     vector<vec3> colors;
@@ -139,6 +142,7 @@ private:
     bool isInstanced;
     bool isVisible;
     bool isSelected;
+    std::string name;
 
     Texture *texture;
     Mesh *parent_mesh;

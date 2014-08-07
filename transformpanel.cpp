@@ -11,7 +11,9 @@ TransformPanel::Ptr TransformPanel::Create()
     ptr->SetRowSpacings( 5.f );
     ptr->SetColumnSpacings( 5.f );
 
-    ptr->attachLabel("Selected Mesh: ", 0, 0, 4, 1);
+    ptr->mesh_name = sfg::Label::Create("Selected Mesh: None");
+    ptr->Attach(ptr->mesh_name, sf::Rect<sf::Uint32>(0, 0, 4, 1),
+            sfg::Table::FILL, sfg::Table::FILL );
     ptr->attachLabel("Translate:", 0, 1, 1, 1, ALIGN_RIGHT);
     ptr->attachLabel("Rotation:",  0, 2, 1, 1, ALIGN_RIGHT);
     ptr->attachLabel("Scale:",     0, 3, 1, 1, ALIGN_RIGHT);
@@ -82,6 +84,8 @@ void TransformPanel::setActiveMesh(Mesh *value)
     spin_group[3]->SetValue(active_mesh->getRotateX());
     spin_group[4]->SetValue(active_mesh->getRotateY());
     spin_group[5]->SetValue(active_mesh->getRotateZ());
+
+    mesh_name->SetText("Selected Mesh: " + active_mesh->getName());
 }
 
 void TransformPanel::onTranslateX()

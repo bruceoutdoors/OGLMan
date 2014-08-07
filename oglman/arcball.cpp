@@ -23,6 +23,8 @@ Arcball::Arcball(float dist) :
     distance = dist;
 
     updateTransformation();
+
+    setName("Default Arcball");
 }
 
 void Arcball::mouseDrag(const vec2 &new_mouse_position)

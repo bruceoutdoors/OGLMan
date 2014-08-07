@@ -109,6 +109,16 @@ void Camera::updateProjection()
 {
     projection = glm::perspective(fov, aspect_ratio, near_plane, far_plane);
 }
+std::string Camera::getName() const
+{
+    return name;
+}
+
+void Camera::setName(const std::string &value)
+{
+    name = value;
+}
+
 
 void Camera::setEye(const vec3 &p)
 {

@@ -41,7 +41,6 @@ private:
     // GUI:
     sfg::SFGUI sfgui;
     sfg::Desktop desktop;
-    sfg::Table::Ptr table;
     sfg::TransformPanel::Ptr transform_panel;
     sfg::CameraPanel::Ptr camera_panel;
 

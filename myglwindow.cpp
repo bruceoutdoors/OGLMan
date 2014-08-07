@@ -9,16 +9,7 @@ const float PAN_SPEED = 0.05f;
 MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWindow(mode, title)
 {
     isWindowSelect = false;
-
-    setActive();
-    auto window = sfg::Window::Create();
-    window->SetTitle("An amazing title");
-    test_label = sfg::Label::Create("Hello I am a window\nthat serves to occupy\nspace" );
-    window->Add(test_label);
-    desktop.Add(window);
-
-    window->GetSignal(sfg::Widget::OnMouseEnter).Connect(std::bind(&MyGLWindow::onWindowMove, this));
-    window->GetSignal(sfg::Widget::OnMouseLeave).Connect(std::bind(&MyGLWindow::onWindowMoveRelease, this));
+    clock = new sf::Clock();
 
     arcball = new Arcball();
     walkcam = new WalkCam();
@@ -27,6 +18,7 @@ MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWind
 
 MyGLWindow::~MyGLWindow()
 {
+    delete clock;
     delete arcball;
     delete walkcam;
 }
@@ -74,7 +66,6 @@ void MyGLWindow::init()
     cube_instance1 = new Mesh(cube);
 
     cube_instance1->select();
-    monkey_instance1->select();
 
     cube2->setTranslate(vec3(2.0f, 1.0f, 1.0f));
     cube2->setRotateY(-30);
@@ -103,6 +94,38 @@ void MyGLWindow::init()
     arcball->setPitch(20);
     arcball->setYaw(5);
     arcball->setDistance(10);
+
+    guiSetup();
+}
+
+void MyGLWindow::guiSetup()
+{
+    setActive();
+
+    transform_panel = sfg::TransformPanel::Create();
+    transform_panel->setActiveMesh(cube_instance1);
+
+    camera_panel = sfg::CameraPanel::Create();
+    camera_panel->setActiveCamera(getActiveCamera());
+
+    addWindow(transform_panel, "Transform tools");
+    addWindow(camera_panel, "Camera Controls", 0, 180);
+}
+
+void MyGLWindow::addWindow(sfg::Widget::Ptr widget, sf::String title,  float x, float y)
+{
+    auto window = sfg::Window::Create();
+    window->SetStyle(window->GetStyle() ^ sfg::Window::RESIZE);
+    window->SetTitle(title);
+    window->SetPosition(sf::Vector2f(x,y));
+    window->Add(widget);
+
+    window->GetSignal(sfg::Widget::OnMouseEnter).Connect(
+                std::bind(&MyGLWindow::onWindowMove, this));
+    window->GetSignal(sfg::Widget::OnMouseLeave).Connect(
+                std::bind(&MyGLWindow::onWindowMoveRelease, this));
+
+    desktop.Add(window);
 }
 
 bool MyGLWindow::handleEvents()
@@ -154,7 +177,13 @@ bool MyGLWindow::handleEvents()
 
 void MyGLWindow::guiDraw()
 {
-    desktop.Update(1.0f);
+    // Update the GUI every 1ms
+    if( clock->getElapsedTime().asMicroseconds() >= 1000 ) {
+        auto delta = static_cast<float>( clock->getElapsedTime().asMicroseconds() ) / 1000000.f;
+        // Update() takes the elapsed time in seconds.
+        desktop.Update(delta);
+        clock->restart();
+    }
     sfgui.Display(*this);
 }
 
@@ -171,6 +200,8 @@ bool MyGLWindow::keyboardEventHandler(int key)
 
     case sf::Keyboard::C:
         getActiveCamera() == arcball ? setActiveCamera(walkcam) : setActiveCamera(arcball);
+        camera_panel->setActiveCamera(getActiveCamera());
+        break;
 
     case sf::Keyboard::Num4:
         wireframeDisplay();

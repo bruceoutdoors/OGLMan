@@ -18,6 +18,7 @@ public:
 private:
     Mesh *active_mesh;
     std::vector<sfg::SpinButton::Ptr> spin_group;
+    sfg::Label::Ptr mesh_name;
     sfg::Scale::Ptr scale_slider;
     sfg::Label::Ptr scale_label;
     sfg::Button::Ptr reset_trans_button;

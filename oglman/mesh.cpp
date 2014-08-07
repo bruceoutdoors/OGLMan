@@ -34,7 +34,8 @@ Mesh::Mesh() :
     isTextured(false),
     isInstanced(false),
     isVisible(true),
-    isSelected(false)
+    isSelected(false),
+    name("Default Mesh Name")
 {
     resetTransformations();
     DRAW_MODE = GL_TRIANGLES;
@@ -164,6 +165,16 @@ bool Mesh::isSelect() const
 {
     return isSelected;
 }
+std::string Mesh::getName() const
+{
+    return name;
+}
+
+void Mesh::setName(const std::string &value)
+{
+    name = value;
+}
+
 
 void Mesh::setTexture(const std::string &path)
 {
