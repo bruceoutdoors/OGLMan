@@ -12,6 +12,10 @@ Uses modified Obj reader code from http://www.opengl-tutorial.org/
 - GLEW 1.10.1 (MinGW version) to manage OpenGL function calls.
 - Qt Creator 3.1.1, though not using Qt
 - GLM 0.9.5.4 (OpenGL Mathematics)
+- SFGUI 0.2.3 (modified version)
+- C++11 compiler
+
+The dependencies (MinGW 4.8) are bundled together with the project files. I did this because it's convenient, and the SFGUI here has been slightly tampered with; It will fail if you use your own build. 
 
 ### Setup Instructions
 After the inital configuring part is done in Qt Creator, 

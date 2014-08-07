@@ -49,15 +49,15 @@ HEADERS += \
 QMAKE_CXXFLAGS += -std=c++11
 
 win32 {
-    LIBS += -lopengl32 -lglu32 -lglew32
-    LIBS += -LC:/SFML-2.1/lib/ -lsfml-graphics -lsfml-window -lsfml-system -lsfgui
+    LIBS += -lopengl32 -lglu32
+    LIBS += -L$$_PRO_FILE_PWD_/dependencies/lib-mingw/ -lglew32 -lsfml-graphics -lsfml-window -lsfml-system -lsfgui
 }
 
 unix {
     LIBS += -lGL -lGLU -lGLEW -lsfml-graphics -lsfml-window -lsfml-system -lsfgui
 }
 
-INCLUDEPATH += C:/SFML-2.1/include
+INCLUDEPATH += $$_PRO_FILE_PWD_/dependencies/include
 
 OTHER_FILES += \
     shaders/default.frag \
