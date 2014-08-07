@@ -23,7 +23,6 @@ BufferMan *Mesh::bufferman = NULL;
 
 GLint Mesh::model_projection_loc;
 GLint Mesh::model_world_loc;
-GLint Mesh::normals_loc;
 GLint Mesh::has_vertex_color_loc;
 GLint Mesh::has_flat_color_loc;
 GLint Mesh::has_texture_loc;
@@ -74,8 +73,6 @@ void Mesh::draw()
     mat4 model2projection = active_cam->getViewProjectionMatrix() * world_matrix;
 
     glBindVertexArray(vao);
-    glUniformMatrix4fv(normals_loc, 1,
-                       GL_FALSE, &normal_matrix[0][0]);
     glUniformMatrix4fv(model_world_loc, 1,
                        GL_FALSE, &world_matrix[0][0]);
     glUniformMatrix4fv(model_projection_loc, 1,
@@ -97,7 +94,6 @@ void Mesh::setShaderMan(ShaderMan *man)
 {
     model_projection_loc = man->getUniformLoc("modelToProjectionMatrix");
     model_world_loc = man->getUniformLoc("modelToWorldMatrix");
-    normals_loc = man->getUniformLoc("normalMatrix");
     has_vertex_color_loc = man->getUniformLoc("hasVertexColor");
     has_flat_color_loc = man->getUniformLoc("hasFlatColor");
     has_texture_loc = man->getUniformLoc("hasTexture");
@@ -294,7 +290,6 @@ void Mesh::setDrawMode(const GLenum &mode)
 void Mesh::setWorldMatrix(const mat4 &mat)
 {
     world_matrix = mat;
-    normal_matrix = glm::transpose(glm::inverse(world_matrix));
 }
 
 void Mesh::setCamera(Camera *c)

@@ -145,7 +145,6 @@ private:
 
     static GLint model_projection_loc;
     static GLint model_world_loc;
-    static GLint normals_loc;
     static GLint has_vertex_color_loc;
     static GLint has_flat_color_loc;
     static GLint has_texture_loc;
