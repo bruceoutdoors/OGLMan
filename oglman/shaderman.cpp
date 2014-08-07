@@ -9,6 +9,11 @@ using std::string;
 using glm::vec3;
 using glm::vec4;
 
+const int POSITION_IDX = 0;
+const int COLOR_IDX    = 1;
+const int NORMAL_IDX   = 2;
+const int UV_IDX       = 3;
+
 // delegating constructor (C++11)
 ShaderMan::ShaderMan(string shader_path) :
     ShaderMan(shader_path + ".vert",
@@ -29,6 +34,11 @@ ShaderMan::ShaderMan(string vert_path, string frag_path)
     assert(fragment_shader->loadFile(frag_path));
     fragment_shader->compile();
     glAttachShader(programID, fragment_shader->getID());
+
+    glBindAttribLocation(programID, POSITION_IDX, "vertexPositionModel");
+    glBindAttribLocation(programID, COLOR_IDX, "vertexColor");
+    glBindAttribLocation(programID, NORMAL_IDX, "normalModel");
+    glBindAttribLocation(programID, UV_IDX, "vertexUV");
 
     glLinkProgram(programID);
 
