@@ -18,7 +18,8 @@ SOURCES += main.cpp \
     oglman/walkcam.cpp \
     oglman/arcball.cpp \
     oglman/objreader.cpp \
-    oglman/texture.cpp
+    oglman/texture.cpp \
+    elephantwindow.cpp
 
 HEADERS += \
     myglwindow.h \
@@ -35,7 +36,8 @@ HEADERS += \
     oglman/walkcam.h \
     oglman/arcball.h \
     oglman/objreader.h \
-    oglman/texture.h
+    oglman/texture.h \
+    elephantwindow.h
 
 
 QMAKE_CXXFLAGS += -std=c++11

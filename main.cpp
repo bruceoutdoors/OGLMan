@@ -1,4 +1,5 @@
 #include "myglwindow.h"
+#include "elephantwindow.h"
 #include <iostream>
 
 int main()
@@ -21,7 +22,10 @@ int main()
             << "|   Scroll Wheel            => zoom in/out                      |\n"
             << "|                                                               |\n"
             << "*****************************************************************\n";
-    MyGLWindow *myWindow = new MyGLWindow(
+//    MyGLWindow *myWindow = new MyGLWindow(
+//                sf::VideoMode(800, 600, 32),
+//                "Test SFML OpenGL Window");
+    ElephantWindow *myWindow = new ElephantWindow(
                 sf::VideoMode(800, 600, 32),
                 "Test SFML OpenGL Window");
     myWindow->run();
