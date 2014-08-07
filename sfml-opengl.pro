@@ -19,7 +19,10 @@ SOURCES += main.cpp \
     oglman/arcball.cpp \
     oglman/objreader.cpp \
     oglman/texture.cpp \
-    elephantwindow.cpp
+    elephantwindow.cpp \
+    panelwidget.cpp \
+    transformpanel.cpp \
+    camerapanel.cpp
 
 HEADERS += \
     myglwindow.h \
@@ -37,7 +40,10 @@ HEADERS += \
     oglman/arcball.h \
     oglman/objreader.h \
     oglman/texture.h \
-    elephantwindow.h
+    elephantwindow.h \
+    panelwidget.h \
+    transformpanel.h \
+    camerapanel.h
 
 
 QMAKE_CXXFLAGS += -std=c++11
