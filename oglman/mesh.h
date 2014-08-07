@@ -86,11 +86,6 @@ public:
     static void setShaderMan(ShaderMan *man);
     static void setBufferMan(BufferMan *man);
 
-    static void setWireframeMode(bool val);
-    static vec3 getWireframeColor();
-    static void setWireframeColor(const vec3 &value);
-    static bool hasWireframeMode();
-
     // transformations:
     GLfloat getScale() const;
     GLfloat getRotateX() const;
@@ -159,11 +154,6 @@ private:
     static GLint hasFlatColor_loc;
     static GLint hasTexture_loc;
     static GLint flatColor_loc;
-    static GLint hasWireframeMode_loc;
-    static GLint wireframeColor_loc;
-
-    static bool isWireframeMode;
-    static vec3 wireframe_color;
 
     static Camera *active_cam;
     static BufferMan *bufferman;

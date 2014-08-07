@@ -8,6 +8,7 @@ using glm::vec3;
 using glm::vec4;
 
 const vec3 select_color = vec3(1);
+const vec3 wireframe_color = vec3(.5,.5,1);
 
 OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
                            const sf::String &title,
@@ -102,12 +103,15 @@ void OpenGLWindow::renderScene()
         glUniform3fv(eyePositionWorld_loc, 1, &eyePositionWorld[0]);
     }
 
-    if (hasWireframeMode()) wireframeModeOn();
-    draw();
-    bufferman->draw();
-    // return back to drawing triangles, or GUI will get
-    // drawn as lines
-    if (hasWireframeMode()) wireframeModeOff();
+    if (hasWireframeMode()) {
+        wireframeModeOn();
+        draw();
+        bufferman->draw(true);
+        wireframeModeOff();
+    } else {
+        draw();
+        bufferman->draw();
+    }
 
     drawSelectHighlight();
 
@@ -139,11 +143,13 @@ void OpenGLWindow::shadermanSetup()
 
     isSelectRender_loc = active_shader->getUniformLoc("isSelectRender");
     selectColor_loc = active_shader->getUniformLoc("selectColor");
+    hasWireframeMode_loc = active_shader->getUniformLoc("hasWireframeMode");
+    wireframeColor_loc = active_shader->getUniformLoc("wireframeColor");
 
     Mesh::setShaderMan(active_shader);
-    Mesh::setWireframeColor(vec3(.5f,.5f,1));
 
     glUniform3fv(selectColor_loc, 1, &select_color[0]);
+    glUniform3fv(wireframeColor_loc, 1, &wireframe_color[0]);
 }
 
 void OpenGLWindow::setActiveCamera(Camera *cam)
@@ -200,14 +206,14 @@ void OpenGLWindow::flatShadeDisplay()
 
 void OpenGLWindow::wireframeModeOn()
 {
-    Mesh::setWireframeMode(true);
+    glUniform1f(hasWireframeMode_loc, true);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDisable(GL_CULL_FACE);
 }
 
 void OpenGLWindow::wireframeModeOff()
 {
-    Mesh::setWireframeMode(false);
+    glUniform1f(hasWireframeMode_loc, false);
     glPolygonMode(GL_FRONT, GL_FILL);
     glEnable(GL_CULL_FACE);
 }

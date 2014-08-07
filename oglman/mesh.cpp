@@ -27,11 +27,6 @@ GLint Mesh::hasVertexColor_loc;
 GLint Mesh::hasFlatColor_loc;
 GLint Mesh::hasTexture_loc;
 GLint Mesh::flatColor_loc;
-GLint Mesh::hasWireframeMode_loc;
-GLint Mesh::wireframeColor_loc;
-bool  Mesh::isWireframeMode;
-
-vec3 Mesh::wireframe_color;
 
 Mesh::Mesh() :
     isVertexColor(false),
@@ -84,7 +79,6 @@ void Mesh::draw()
     glUniform1f(hasVertexColor_loc, isVertexColor);
     glUniform1f(hasFlatColor_loc, isFlatColor);
     glUniform1f(hasTexture_loc, isTextured);
-    glUniform1f(hasWireframeMode_loc, isWireframeMode);
 
     if (isFlatColor) { glUniform3fv(flatColor_loc, 1, &flat_color[0]); }
     if (hasTexture()) { texture->use(); }
@@ -101,8 +95,6 @@ void Mesh::setShaderMan(ShaderMan *man)
     hasFlatColor_loc = man->getUniformLoc("hasFlatColor");
     hasTexture_loc = man->getUniformLoc("hasTexture");
     flatColor_loc = man->getUniformLoc("flatColor");
-    hasWireframeMode_loc = man->getUniformLoc("hasWireframeMode");
-    wireframeColor_loc = man->getUniformLoc("wireframeColor");
 
     Texture::setTextureSamplerLoc(man->getUniformLoc("textureSampler"));
 
@@ -171,23 +163,6 @@ void Mesh::deselect()
 bool Mesh::isSelect() const
 {
     return isSelected;
-}
-
-
-vec3 Mesh::getWireframeColor()
-{
-    return wireframe_color;
-}
-
-void Mesh::setWireframeColor(const vec3 &value)
-{
-    wireframe_color = value;
-    glUniform3fv(wireframeColor_loc, 1, &wireframe_color[0]);
-}
-
-bool Mesh::hasWireframeMode()
-{
-    return isWireframeMode;
 }
 
 void Mesh::setTexture(const std::string &path)
@@ -328,11 +303,6 @@ void Mesh::setCamera(Camera *c)
 void Mesh::setBufferMan(BufferMan *man)
 {
     bufferman = man;
-}
-
-void Mesh::setWireframeMode(bool val)
-{
-    isWireframeMode = val;
 }
 
 GLfloat Mesh::getScale() const

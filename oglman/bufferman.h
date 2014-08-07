@@ -13,7 +13,7 @@ class BufferMan
 public:
     BufferMan();
     ~BufferMan();
-    void draw();
+    void draw(bool isWireframe = false);
     void drawSelected();
     void addShape(Mesh *s);
     GLuint getTotalVectices() const;

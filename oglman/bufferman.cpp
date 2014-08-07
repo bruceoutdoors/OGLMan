@@ -24,11 +24,11 @@ BufferMan::~BufferMan()
     delete index_buffer;
 }
 
-void BufferMan::draw()
+void BufferMan::draw(bool isWireframe)
 {
     for (Mesh *s : shapes) {
         // if in wireframe mode, skip drawing selected objects
-        if (Mesh::hasWireframeMode() && s->isSelect()) continue;
+        if (isWireframe && s->isSelect()) continue;
 
         s->draw();
     }

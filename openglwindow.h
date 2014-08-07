@@ -68,6 +68,8 @@ class OpenGLWindow : public sf::Window
         GLint ambientLight_loc;
         GLint lightPosition_loc;
         GLint eyePositionWorld_loc;
+        GLint hasWireframeMode_loc;
+        GLint wireframeColor_loc;
         GLint isSelectRender_loc;
         GLint selectColor_loc;
 
