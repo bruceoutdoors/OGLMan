@@ -35,7 +35,9 @@ private:
 
     Mesh *cube2;
     Cube *cube;
+    Mesh *cube_instance1;
     Mesh *monkey;
+    Mesh *monkey_instance1;
     Mesh *elephant;
     Plane *plane;
     Arrow *arrow;

@@ -27,6 +27,7 @@ class Mesh
 {
 public:
     Mesh();
+    Mesh(Mesh *m);
     Mesh(std::string path);
     virtual ~Mesh();
     virtual void store() {}
@@ -84,7 +85,10 @@ public:
     static void setCamera(Camera *c);
     static void setShaderMan(ShaderMan *man);
     static void setBufferMan(BufferMan *man);
+
     static void setWireframeMode(bool val);
+    static vec3 getWireframeColor();
+    static void setWireframeColor(const vec3 &value);
 
     // transformations:
     GLfloat getScale() const;
@@ -107,8 +111,8 @@ public:
     void updateWorldMatrix();
     void resetTransformations();
 
-    static vec3 getWireframeColor();
-    static void setWireframeColor(const vec3 &value);
+    bool isInstance() const;
+    void setupInstance();
 
 protected:
     vector<vec3> vertices;
@@ -129,8 +133,10 @@ private:
     bool isVertexColor;
     bool isFlatColor;
     bool isTextured;
+    bool isInstanced;
 
     Texture *texture;
+    Mesh *parent_mesh;
 
     vec3 flat_color;
 

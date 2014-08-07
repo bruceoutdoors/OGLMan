@@ -29,7 +29,9 @@ MyGLWindow::~MyGLWindow()
 {
     delete cube2;
     delete cube;
+    delete cube_instance1;
     delete monkey;
+    delete monkey_instance1;
     delete elephant;
     delete plane;
     delete arrow;
@@ -44,29 +46,13 @@ void MyGLWindow::draw()
                 glm::translate(light_position) *
                 glm::scale(mat4(1.0f), vec3(0.3f)));
     cube->draw();
-
-    cube->enableFlatColor();
-    cube->setFlatColor(vec3(1.0f,1.0f,0.0f));
-    cube->setWorldMatrix(
-                glm::translate(vec3(-3.0f, 1.0f, 0.0f)) *
-                glm::rotate(-40.0f, vec3(1.0f, 0.0f, 0.0f)) *
-                glm::rotate(25.0f, vec3(0.0f, 1.0f, 0.0f)));
-    cube->draw();
-    cube->disableFlatColor();
-
-    cube2->setWorldMatrix(
-                glm::translate(vec3(2.0f, 1.0f, 1.0f)) *
-                glm::rotate(-30.0f, vec3(0.0f, 1.0f, 0.0f)) *
-                glm::scale(mat4(1.0f), vec3(0.7f)));
+    cube_instance1->draw();
     cube2->draw();
 
-
-    arrow->setWorldMatrix(
-                glm::translate(vec3(-1.0f, 2.0f, 2.0f)) *
-                glm::rotate(-150.0f, vec3(0.0f, 1.0f, 0.0f)));
     arrow->draw();
 
     monkey->draw();
+    monkey_instance1->draw();
     elephant->draw();
     plane->draw();
 }
@@ -85,6 +71,12 @@ void MyGLWindow::init()
     monkey->setTranslateY(1.0f);
     monkey->setTranslateZ(-2.8f);
 
+    monkey_instance1 = new Mesh(monkey);
+    monkey_instance1->setScale(0.6f);
+    monkey_instance1->setTranslateY(1.0f);
+    monkey_instance1->setTranslateZ(2.2f);
+    monkey_instance1->setRotateX(-180);
+
     elephant = new Mesh(resource_dir + "elephant-triangulated.obj");
     elephant->setTexture(resource_dir + "elephant-texture-1024.jpg");
 
@@ -97,6 +89,25 @@ void MyGLWindow::init()
     plane = new Plane(10);
     arrow = new Arrow();
 
+    cube_instance1 = new Mesh(cube);
+
+    cube2->setWorldMatrix(
+                glm::translate(vec3(2.0f, 1.0f, 1.0f)) *
+                glm::rotate(-30.0f, vec3(0.0f, 1.0f, 0.0f)) *
+                glm::scale(mat4(1.0f), vec3(0.7f)));
+
+
+
+    cube_instance1->enableFlatColor();
+    cube_instance1->setFlatColor(vec3(1.0f,1.0f,0.0f));
+    cube_instance1->setWorldMatrix(
+                glm::translate(vec3(-3.0f, 1.0f, 0.0f)) *
+                glm::rotate(-40.0f, vec3(1.0f, 0.0f, 0.0f)) *
+                glm::rotate(25.0f, vec3(0.0f, 1.0f, 0.0f)));
+
+    arrow->setWorldMatrix(
+                glm::translate(vec3(-1.0f, 2.0f, 2.0f)) *
+                glm::rotate(-150.0f, vec3(0.0f, 1.0f, 0.0f)));
     arrow->enableVertexColor();
 
     plane->enableFlatColor();

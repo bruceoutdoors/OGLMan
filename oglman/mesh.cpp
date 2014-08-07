@@ -8,6 +8,7 @@
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <cstring>
+#include <iostream>
 
 using glm::vec2;
 using glm::vec3;
@@ -36,17 +37,21 @@ vec3 Mesh::wireframe_color;
 Mesh::Mesh() :
     isVertexColor(false),
     isFlatColor(false),
-    isTextured(false)
+    isTextured(false),
+    isInstanced(false),
 {
-    glewInit();
-
     resetTransformations();
     DRAW_MODE = GL_TRIANGLES;
 
     bufferman->addShape(this);
 
-
     texture = nullptr;
+}
+
+Mesh::Mesh(Mesh *m) : Mesh()
+{
+    parent_mesh = m;
+    isInstanced = true;
 }
 
 Mesh::Mesh(std::string path) : Mesh()
@@ -60,7 +65,7 @@ Mesh::Mesh(std::string path) : Mesh()
 
 Mesh::~Mesh()
 {
-    deleteVao();
+    if (!isInstance()) deleteVao();
     if (texture != nullptr) { delete texture; }
 }
 
@@ -84,7 +89,7 @@ void Mesh::draw()
     if (isFlatColor) { glUniform3fv(flat_color_loc, 1, &flat_color[0]); }
     if (hasTexture()) { texture->use(); }
 
-    glDrawElements(DRAW_MODE, indices.size(), GL_UNSIGNED_SHORT, (void*)index_buffer_offset);
+    glDrawElements(DRAW_MODE, getNumIndices(), GL_UNSIGNED_SHORT, (void*)getIndexBufferOffset());
     glBindVertexArray(0); // don't forget this!
 }
 
@@ -133,6 +138,16 @@ void Mesh::resetTransformations()
     rotateX = rotateY = rotateZ
             = translateX = translateY = translateZ = 0;
     scale = 1;
+}
+
+bool Mesh::isInstance() const
+{
+    return isInstanced;
+}
+
+void Mesh::setupInstance()
+{
+    vao = parent_mesh->getVao();
 }
 
 vec3 Mesh::getWireframeColor()
@@ -219,6 +234,8 @@ void Mesh::setUvBufferOffset(GLuint offset)
 
 GLuint Mesh::getIndexBufferOffset() const
 {
+    if (isInstance()) return parent_mesh->getIndexBufferOffset();
+
     return index_buffer_offset;
 }
 
@@ -244,6 +261,8 @@ GLuint Mesh::getUvBufferOffset() const
 
 GLuint Mesh::getNumIndices() const
 {
+    if (isInstance()) return parent_mesh->getNumIndices();
+
     return indices.size();
 }
 

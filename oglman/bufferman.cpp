@@ -53,38 +53,42 @@ void BufferMan::setupBuffers()
 
     GLuint offset;
     for(Mesh *s : shapes) {
-        // add vertices:
-        offset = array_buffer->addData(
-                    s->getVertexAddress(),
-                    s->getVertexBufferSize());
-        s->setVertexBufferOffset(offset);
-        // add normals:
-        offset = array_buffer->addData(
-                    s->getNormalAddress(),
-                    s->getVertexBufferSize());
-        s->setNormalBufferOffset(offset);
-        if (s->hasVertexColor()) {
-            // add colors:
+        if (s->isInstance()) {
+            s->setupInstance();
+        } else {
+            // add vertices:
             offset = array_buffer->addData(
-                        s->getColorAddress(),
+                        s->getVertexAddress(),
                         s->getVertexBufferSize());
-            s->setColorBufferOffset(offset);
-        }
-        if (s->hasUv()) {
-            // add uvs:
+            s->setVertexBufferOffset(offset);
+            // add normals:
             offset = array_buffer->addData(
-                        s->getUvAddress(),
-                        s->getUvBufferSize());
-            s->setUvBufferOffset(offset);
-        }
-        // add indices:
-        offset = index_buffer->addData(
-                    s->getIndexAddress(),
-                    s->getIndexBufferSize());
-        s->setIndexBufferOffset(offset);
+                        s->getNormalAddress(),
+                        s->getVertexBufferSize());
+            s->setNormalBufferOffset(offset);
+            if (s->hasVertexColor()) {
+                // add colors:
+                offset = array_buffer->addData(
+                            s->getColorAddress(),
+                            s->getVertexBufferSize());
+                s->setColorBufferOffset(offset);
+            }
+            if (s->hasUv()) {
+                // add uvs:
+                offset = array_buffer->addData(
+                            s->getUvAddress(),
+                            s->getUvBufferSize());
+                s->setUvBufferOffset(offset);
+            }
+            // add indices:
+            offset = index_buffer->addData(
+                        s->getIndexAddress(),
+                        s->getIndexBufferSize());
+            s->setIndexBufferOffset(offset);
 
-        if(is_setup) s->deleteVao();
-        s->setVao(setupVAO(s));
+            if(is_setup) s->deleteVao();
+            s->setVao(setupVAO(s));
+        }
     }
 
     if(!is_setup) is_setup = true;
