@@ -4,6 +4,12 @@
 
 namespace sfg {
 
+const sf::String DEFAULT_MSG = "Selected Mesh: None";
+
+TransformPanel::TransformPanel() :
+    active_mesh(nullptr)
+{}
+
 TransformPanel::Ptr TransformPanel::Create()
 {
     Ptr ptr = std::make_shared<TransformPanel>();
@@ -11,7 +17,7 @@ TransformPanel::Ptr TransformPanel::Create()
     ptr->SetRowSpacings( 5.f );
     ptr->SetColumnSpacings( 5.f );
 
-    ptr->mesh_name = sfg::Label::Create("Selected Mesh: None");
+    ptr->mesh_name = sfg::Label::Create(DEFAULT_MSG);
     ptr->Attach(ptr->mesh_name, sf::Rect<sf::Uint32>(0, 0, 4, 1),
             sfg::Table::FILL, sfg::Table::FILL );
     ptr->attachLabel("Translate:", 0, 1, 1, 1, ALIGN_RIGHT);
@@ -20,8 +26,8 @@ TransformPanel::Ptr TransformPanel::Create()
 
     // setup spin group
     ptr->spin_group.resize(6);
-    for(int i = 0; i <= 2; i++) ptr->setupSpinButton(ptr->spin_group[i], -50, 50, 0.25f, 2);
-    for(int i = 3; i <= 5; i++) ptr->setupSpinButton(ptr->spin_group[i], -360, 360, 5, 0);
+    for(int i = 0; i <= 2; i++) ptr->setupSpinButton(ptr->spin_group[i], -10000, 10000, 0.25f, 2);
+    for(int i = 3; i <= 5; i++) ptr->setupSpinButton(ptr->spin_group[i], -36000, 36000, 5, 0);
 
     // add spin group to table:
     int k = 0;
@@ -32,7 +38,7 @@ TransformPanel::Ptr TransformPanel::Create()
         }
     }
 
-    ptr->scale_slider = sfg::Scale::Create(0, 1, 0.01f);
+    ptr->scale_slider = sfg::Scale::Create(0, 10, 0.01f);
     ptr->scale_label = sfg::Label::Create("0.00");
 
     ptr->Attach(ptr->scale_slider, sf::Rect<sf::Uint32>(1, 3, 2, 1),
@@ -65,6 +71,7 @@ TransformPanel::Ptr TransformPanel::Create()
 
     return ptr;
 }
+
 Mesh *TransformPanel::getActiveMesh() const
 {
     return active_mesh;
@@ -73,6 +80,12 @@ Mesh *TransformPanel::getActiveMesh() const
 void TransformPanel::setActiveMesh(Mesh *value)
 {
     active_mesh = value;
+
+    if (!hasActiveMesh()) {
+        mesh_name->SetText(DEFAULT_MSG);
+        onResetTransformations();
+        return;
+    }
 
     scale_slider->GetAdjustment()->SetValue(active_mesh->getScale());
     scale_label->SetText(floatToString(active_mesh->getScale()));
@@ -88,40 +101,52 @@ void TransformPanel::setActiveMesh(Mesh *value)
     mesh_name->SetText("Selected Mesh: " + active_mesh->getName());
 }
 
+bool TransformPanel::hasActiveMesh() const
+{
+    return active_mesh != nullptr;
+}
+
 void TransformPanel::onTranslateX()
 {
+    if (!hasActiveMesh()) return;
     active_mesh->setTranslateX(spin_group[0]->GetValue());
 }
 
 void TransformPanel::onTranslateY()
 {
+    if (!hasActiveMesh()) return;
     active_mesh->setTranslateY(spin_group[1]->GetValue());
 }
 
 void TransformPanel::onTranslateZ()
 {
+    if (!hasActiveMesh()) return;
     active_mesh->setTranslateZ(spin_group[2]->GetValue());
 }
 
 void TransformPanel::onRotateX()
 {
+    if (!hasActiveMesh()) return;
     active_mesh->setRotateX(spin_group[3]->GetValue());
 }
 
 void TransformPanel::onRotateY()
 {
+    if (!hasActiveMesh()) return;
     active_mesh->setRotateY(spin_group[4]->GetValue());
 }
 
 void TransformPanel::onRotateZ()
 {
+    if (!hasActiveMesh()) return;
     active_mesh->setRotateZ(spin_group[5]->GetValue());
 }
 
 void TransformPanel::onScale()
 {
+    scale_label->SetText(floatToString(scale_slider->GetAdjustment()->GetValue()));
+    if (!hasActiveMesh()) return;
     active_mesh->setScale(scale_slider->GetAdjustment()->GetValue());
-    scale_label->SetText(floatToString(active_mesh->getScale()));
 }
 
 void TransformPanel::onResetTransformations()

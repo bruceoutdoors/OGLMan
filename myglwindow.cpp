@@ -34,15 +34,23 @@ void MyGLWindow::init()
 
     cube2 = new Mesh(resource_dir + "cube.obj");
     cube2->setTexture(resource_dir + "cube-texture.jpg");
+    cube2->setName("Textured Cube");
+
+    cube2->setTranslate(vec3(2.0f, 1.0f, 1.0f));
+    cube2->setRotateY(-30);
+    cube2->setScale(0.7f);
 
     monkey = new Mesh(resource_dir + "suzanne-triangulated.obj");
     monkey->setTexture(resource_dir + "monkey-texture.jpg");
-
+    monkey->setName("Blender's Suzzane");
     monkey->setTranslateX(-2.0f);
     monkey->setTranslateY(1.0f);
     monkey->setTranslateZ(-2.8f);
 
     monkey_instance1 = new Mesh(monkey);
+    monkey_instance1->setName("Suzzane Instance");
+    monkey_instance1->enableFlatColor();
+    monkey_instance1->setFlatColor(vec3(.7,.4,.7));
     monkey_instance1->setScale(0.6f);
     monkey_instance1->setTranslateY(1.0f);
     monkey_instance1->setTranslateZ(2.2f);
@@ -50,7 +58,7 @@ void MyGLWindow::init()
 
     elephant = new Mesh(resource_dir + "elephant-triangulated.obj");
     elephant->setTexture(resource_dir + "elephant-texture-1024.jpg");
-
+    elephant->setName("Gook the elephant");
     elephant->setTranslateX(1.2f);
     elephant->setTranslateZ(-1.5f);
     elephant->setRotateY(-25);
@@ -59,31 +67,28 @@ void MyGLWindow::init()
 //    elephant->setVisibility(false);
 
     cube = new Cube();
-    plane = new Plane(10);
-    arrow = new Arrow();
-
+    cube->setName("Cube mesh");
     cube->setScale(0.3f);
+
+    plane = new Plane(10);
+    plane->setName("Plane mesh");
+    plane->enableFlatColor();
+    plane->setFlatColor(vec3(0.6f,0.8f,1.0f));
+
+    arrow = new Arrow();
+    arrow->setName("Arrow (Vertex Colored)");
+    arrow->setTranslate(vec3(-1.0f, 2.0f, 2.0f));
+    arrow->setRotateY(-150);
+    arrow->enableVertexColor();
+
     cube_instance1 = new Mesh(cube);
-
-    cube_instance1->select();
-
-    cube2->setTranslate(vec3(2.0f, 1.0f, 1.0f));
-    cube2->setRotateY(-30);
-    cube2->setScale(0.7f);
-
+    cube_instance1->setName("Cube instance");
     cube_instance1->enableFlatColor();
     cube_instance1->setFlatColor(vec3(1.0f,1.0f,0.0f));
     cube_instance1->setTranslateX(-3.0f);
     cube_instance1->setTranslateY(1.0f);
     cube_instance1->setRotateX(-40);
     cube_instance1->setRotateY(25);
-
-    arrow->setTranslate(vec3(-1.0f, 2.0f, 2.0f));
-    arrow->setRotateY(-150);
-    arrow->enableVertexColor();
-
-    plane->enableFlatColor();
-    plane->setFlatColor(vec3(0.6f,0.8f,1.0f));
 
     // set fish eye lens:
 //    active_camera->setFocalLength(10);
@@ -103,13 +108,18 @@ void MyGLWindow::guiSetup()
     setActive();
 
     transform_panel = sfg::TransformPanel::Create();
-    transform_panel->setActiveMesh(cube_instance1);
 
     camera_panel = sfg::CameraPanel::Create();
     camera_panel->setActiveCamera(getActiveCamera());
 
+    outliner = sfg::Outliner::Create(bufferman);
+
+    outliner->GetSignal(sfg::Outliner::OnSelect).Connect(
+                std::bind(&MyGLWindow::onOutlinerSelect, this));
+
     addWindow(transform_panel, "Transform tools");
-    addWindow(camera_panel, "Camera Controls", 0, 180);
+    addWindow(camera_panel, "Camera Controls", 0, 185);
+    addWindow(outliner->getBox(), "Outliner", 0, 350);
 }
 
 void MyGLWindow::addWindow(sfg::Widget::Ptr widget, sf::String title,  float x, float y)
@@ -248,4 +258,17 @@ void MyGLWindow::onWindowMoveRelease()
 {
 //    std::cout << "window is released!!" << std::endl;
     isWindowSelect = false;
+}
+
+void MyGLWindow::onOutlinerSelect()
+{
+    if (outliner->getSelectedMesh() != nullptr) {
+        std::cout << "You have selected: "
+                  << outliner->getSelectedMesh()->getName()
+                  << std::endl;
+    } else {
+        std::cout << "Nothing is selected." << std::endl;
+    }
+
+    transform_panel->setActiveMesh(outliner->getSelectedMesh());
 }

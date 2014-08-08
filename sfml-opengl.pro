@@ -22,7 +22,8 @@ SOURCES += main.cpp \
     elephantwindow.cpp \
     panelwidget.cpp \
     transformpanel.cpp \
-    camerapanel.cpp
+    camerapanel.cpp \
+    outliner.cpp
 
 HEADERS += \
     myglwindow.h \
@@ -43,7 +44,8 @@ HEADERS += \
     elephantwindow.h \
     panelwidget.h \
     transformpanel.h \
-    camerapanel.h
+    camerapanel.h \
+    outliner.h
 
 
 QMAKE_CXXFLAGS += -std=c++11

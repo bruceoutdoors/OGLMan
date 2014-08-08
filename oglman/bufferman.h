@@ -4,9 +4,8 @@
 #include <GL/glew.h>
 #include <vector>
 
-#include "mesh.h"
-
 class Buffer; //forward class
+class Mesh;
 
 class BufferMan
 {
@@ -15,9 +14,14 @@ public:
     ~BufferMan();
     void draw(bool isWireframe = false);
     void drawSelected();
+    void deselectAll();
     void addShape(Mesh *s);
     GLuint getTotalVectices() const;
     void setupBuffers();
+
+    typedef std::vector<Mesh*>::iterator It;
+    It getMeshesBegin();
+    It getMeshesEnd();
 
 private:
     GLuint setupVAO(Mesh *s);
@@ -25,7 +29,7 @@ private:
     GLuint index_buffer_size;
     GLuint array_buffer_size;
     GLuint num_vertices;
-    std::vector<Mesh*> shapes;
+    std::vector<Mesh*> meshes;
     Buffer *array_buffer;
     Buffer *index_buffer;
 

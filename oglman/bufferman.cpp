@@ -1,5 +1,6 @@
 #include "bufferman.h"
 #include "buffer.h"
+#include "mesh.h"
 
 const int POSITION_IDX = 0;
 const int COLOR_IDX    = 1;
@@ -18,7 +19,7 @@ BufferMan::BufferMan()
 
 BufferMan::~BufferMan()
 {
-    for (Mesh *s : shapes) delete s;
+    for (Mesh *s : meshes) delete s;
 
     delete array_buffer;
     delete index_buffer;
@@ -26,7 +27,7 @@ BufferMan::~BufferMan()
 
 void BufferMan::draw(bool isWireframe)
 {
-    for (Mesh *s : shapes) {
+    for (Mesh *s : meshes) {
         // if in wireframe mode, skip drawing selected objects
         if (isWireframe && s->isSelect()) continue;
 
@@ -36,16 +37,25 @@ void BufferMan::draw(bool isWireframe)
 
 void BufferMan::drawSelected()
 {
-    for (Mesh *s : shapes) {
+    for (Mesh *s : meshes) {
         if (s->isSelect()) {
             s->draw();
         }
     }
 }
 
+void BufferMan::deselectAll()
+{
+    for (Mesh *s : meshes) {
+        if (s->isSelect()) {
+            s->deselect();
+        }
+    }
+}
+
 void BufferMan::addShape(Mesh *s)
 {
-    shapes.push_back(s);
+    meshes.push_back(s);
 }
 
 GLuint BufferMan::getTotalVectices() const
@@ -56,7 +66,7 @@ GLuint BufferMan::getTotalVectices() const
 void BufferMan::setupBuffers()
 {
     if(!is_setup) {
-        for(Mesh *s : shapes) {
+        for(Mesh *s : meshes) {
             s->store();
             index_buffer_size += s->getIndexBufferSize();
             array_buffer_size += s->getArrayBufferSize();
@@ -73,7 +83,7 @@ void BufferMan::setupBuffers()
     index_buffer = new Buffer(GL_ELEMENT_ARRAY_BUFFER, index_buffer_size);
 
     GLuint offset;
-    for(Mesh *s : shapes) {
+    for(Mesh *s : meshes) {
         if (s->isInstance()) {
             s->setupInstance();
         } else {
@@ -113,6 +123,16 @@ void BufferMan::setupBuffers()
     }
 
     if(!is_setup) is_setup = true;
+}
+
+BufferMan::It BufferMan::getMeshesBegin()
+{
+    return meshes.begin();
+}
+
+BufferMan::It BufferMan::getMeshesEnd()
+{
+    return meshes.end();
 }
 
 GLuint BufferMan::setupVAO(Mesh *s)

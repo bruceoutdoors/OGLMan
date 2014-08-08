@@ -4,6 +4,7 @@
 #include "openglwindow.h"
 #include "transformpanel.h"
 #include "camerapanel.h"
+#include "outliner.h"
 
 #include "primitives/cube.h"
 #include "primitives/arrow.h"
@@ -37,6 +38,7 @@ private:
     sfg::Label::Ptr test_label;
     sfg::TransformPanel::Ptr transform_panel;
     sfg::CameraPanel::Ptr camera_panel;
+    sfg::Outliner::Ptr outliner;
 
     sf::Clock *clock;
     Arcball *arcball;
@@ -52,6 +54,9 @@ private:
     Arrow *arrow;
 
     bool isWindowSelect;
+
+    // slots:
+    void onOutlinerSelect();
 };
 
 #endif // MYGLWINDOW_H

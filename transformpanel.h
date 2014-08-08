@@ -10,10 +10,12 @@ class TransformPanel : public PanelWidget
 {
 public:
     typedef std::shared_ptr<TransformPanel> Ptr;
+    TransformPanel();
     static Ptr Create();
 
     Mesh *getActiveMesh() const;
     void setActiveMesh(Mesh *value);
+    bool hasActiveMesh() const;
 
 private:
     Mesh *active_mesh;
