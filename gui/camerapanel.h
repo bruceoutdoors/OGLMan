@@ -16,9 +16,10 @@ public:
     void setActiveCamera(Camera *value);
 
 private:
-    sfg::SpinButton::Ptr focal_length;
-    sfg::SpinButton::Ptr near_plane;
-    sfg::SpinButton::Ptr far_plane;
+    SpinButton::Ptr focal_length;
+    SpinButton::Ptr near_plane;
+    SpinButton::Ptr far_plane;
+    Label::Ptr camera_name;
 
     Camera *active_camera;
 

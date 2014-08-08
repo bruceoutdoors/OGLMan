@@ -10,7 +10,9 @@ CameraPanel::Ptr CameraPanel::Create()
     ptr->SetRowSpacings( 5.f );
     ptr->SetColumnSpacings( 5.f );
 
-    ptr->attachLabel("Active Camera: ", 0, 0, 2, 1);
+    ptr->camera_name = Label::Create("Active Camera: None Selected");
+    ptr->Attach(ptr->camera_name, sf::Rect<sf::Uint32>(0, 0, 2, 1),
+         sfg::Table::FILL, sfg::Table::FILL );
     ptr->attachLabel("Focal length:", 0, 1, 1, 1, ALIGN_RIGHT);
     ptr->attachLabel("Near plane:",   0, 2, 1, 1, ALIGN_RIGHT);
     ptr->attachLabel("Far plane:",    0, 3, 1, 1, ALIGN_RIGHT);
@@ -46,6 +48,7 @@ void CameraPanel::setActiveCamera(Camera *value)
     focal_length->SetValue(active_camera->getFocalLength());
     near_plane->SetValue(active_camera->getNearPlane());
     far_plane->SetValue(active_camera->getFarPlane());
+    camera_name->SetText("Active Camera: " + active_camera->getName());
 }
 
 void CameraPanel::onFocalLength()
