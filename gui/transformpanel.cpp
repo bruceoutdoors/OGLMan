@@ -38,7 +38,7 @@ TransformPanel::Ptr TransformPanel::Create()
         }
     }
 
-    ptr->scale_slider = sfg::Scale::Create(0, 10, 0.01f);
+    ptr->scale_slider = sfg::Scale::Create(0, 5, 0.01f);
     ptr->scale_label = sfg::Label::Create("0.00");
 
     ptr->Attach(ptr->scale_slider, sf::Rect<sf::Uint32>(1, 3, 2, 1),

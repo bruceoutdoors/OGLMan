@@ -25,7 +25,7 @@ MyGLWindow::~MyGLWindow()
 
 void MyGLWindow::draw()
 {
-    cube->setTranslate(light_position);
+//    cube->setTranslate(light_position);
 }
 
 void MyGLWindow::init()
@@ -67,7 +67,10 @@ void MyGLWindow::init()
 //    elephant->setVisibility(false);
 
     cube = new Cube();
-    cube->setName("Cube mesh");
+    cube->setName("Green cube mesh");
+    cube->setTranslate(vec3(-.5,2,0));
+    cube->enableFlatColor();
+    cube->setFlatColor(vec3(.1,.5,.2));
     cube->setScale(0.3f);
 
     plane = new Plane(10);
@@ -262,13 +265,13 @@ void MyGLWindow::onWindowMoveRelease()
 
 void MyGLWindow::onOutlinerSelect()
 {
-    if (outliner->getSelectedMesh() != nullptr) {
-        std::cout << "You have selected: "
-                  << outliner->getSelectedMesh()->getName()
-                  << std::endl;
-    } else {
-        std::cout << "Nothing is selected." << std::endl;
-    }
+//    if (outliner->getSelectedMesh() != nullptr) {
+//        std::cout << "You have selected: "
+//                  << outliner->getSelectedMesh()->getName()
+//                  << std::endl;
+//    } else {
+//        std::cout << "Nothing is selected." << std::endl;
+//    }
 
     transform_panel->setActiveMesh(outliner->getSelectedMesh());
 }

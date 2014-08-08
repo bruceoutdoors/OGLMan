@@ -28,7 +28,7 @@ int main()
                 "Test SFML OpenGL Window");
 //    ElephantWindow *myWindow = new ElephantWindow(
 //                sf::VideoMode(800, 600, 32),
-//                "Test SFML OpenGL Window");
+//                "Gook the elephant");
     myWindow->run();
     delete myWindow;
 
