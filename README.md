@@ -3,7 +3,7 @@ OGLMan
 
 OGLMan ("OpenGL Manager") is a bunch of convenience classes that ease the management of shaders, buffers and meshes in the modern shader based OpenGL. I created these to help me understand how OpenGL works. 
 
-This program is tested with Windows 8.1 and MinGW 4.8.
+This program is tested with Windows 8.1 (MinGW 4.8) and Manjaro Linux XFCE.
 
 Uses modified Obj reader code from http://www.opengl-tutorial.org/
 
@@ -15,7 +15,7 @@ Uses modified Obj reader code from http://www.opengl-tutorial.org/
 - SFGUI 0.2.3 (modified version)
 - C++11 compiler
 
-The dependencies (MinGW 4.8) are bundled together with the project files. I did this because it's convenient, and the SFGUI here has been slightly tampered with; It will fail if you use your own build. 
+The dependencies for Windows MinGW 4.8 are bundled together with the project files. I did this because it's convenient, and the SFGUI here has been slightly tampered with; It will fail if you use your own build. 
 
 ### Setup Instructions
 After the inital configuring part is done in Qt Creator, 
