@@ -2,8 +2,8 @@
 #define ELEPHANTWINDOW_H
 
 #include "openglwindow.h"
-#include "transformpanel.h"
-#include "camerapanel.h"
+#include "gui/transformpanel.h"
+#include "gui/camerapanel.h"
 
 #include "primitives/plane.h"
 #include "oglman/arcball.h"

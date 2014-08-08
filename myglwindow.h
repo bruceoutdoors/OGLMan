@@ -2,9 +2,9 @@
 #define MYGLWINDOW_H
 
 #include "openglwindow.h"
-#include "transformpanel.h"
-#include "camerapanel.h"
-#include "outliner.h"
+#include "gui/transformpanel.h"
+#include "gui/camerapanel.h"
+#include "gui/outliner.h"
 
 #include "primitives/cube.h"
 #include "primitives/arrow.h"

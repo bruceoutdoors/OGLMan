@@ -20,10 +20,10 @@ SOURCES += main.cpp \
     oglman/objreader.cpp \
     oglman/texture.cpp \
     elephantwindow.cpp \
-    panelwidget.cpp \
-    transformpanel.cpp \
-    camerapanel.cpp \
-    outliner.cpp
+    gui/panelwidget.cpp \
+    gui/transformpanel.cpp \
+    gui/camerapanel.cpp \
+    gui/outliner.cpp
 
 HEADERS += \
     myglwindow.h \
@@ -42,10 +42,10 @@ HEADERS += \
     oglman/objreader.h \
     oglman/texture.h \
     elephantwindow.h \
-    panelwidget.h \
-    transformpanel.h \
-    camerapanel.h \
-    outliner.h
+    gui/panelwidget.h \
+    gui/transformpanel.h \
+    gui/camerapanel.h \
+    gui/outliner.h
 
 
 QMAKE_CXXFLAGS += -std=c++11
