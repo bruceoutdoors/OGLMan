@@ -53,9 +53,6 @@ void OpenGLWindow::toggleFullscreen()
         resizeGL(m_mode.width, m_mode.height);
     }
 
-    // have to setup OpenGL again
-    setupGL();
-
     // use the program
     active_shader->use();
 
@@ -77,15 +74,9 @@ void OpenGLWindow::run()
 void OpenGLWindow::setup()
 {
     init();
-    setupGL();
 
     bufferman->setupBuffers();
     resizeGL(getSize().x, getSize().y);
-}
-
-void OpenGLWindow::setupGL()
-{
-    glEnable(GL_CULL_FACE);
 }
 
 void OpenGLWindow::renderScene()
@@ -105,15 +96,22 @@ void OpenGLWindow::renderScene()
 
     if (hasWireframeMode()) {
         wireframeModeOn();
+        glUniform1f(hasWireframeMode_loc, true);
         draw();
         bufferman->draw(true);
-        wireframeModeOff();
+        glUniform1f(hasWireframeMode_loc, false);
     } else {
         draw();
         bufferman->draw();
     }
 
+    // if not wireframe mode, turn it on to draw selection wireframe
+    if (!hasWireframeMode()) wireframeModeOn();
+
     drawSelectHighlight();
+
+    // off wireframe for GUI to render properly
+    wireframeModeOff();
 
     // disable depth test so SFGUI can render
     glDisable(GL_DEPTH_TEST);
@@ -135,21 +133,24 @@ void OpenGLWindow::setupLights()
 void OpenGLWindow::shadermanSetup()
 {
     if (isLightOn) {
+        // eliminate redundant calls:
+        if (active_shader == default_shader) return;
         active_shader = default_shader;
         setupLights();
     } else {
+        if (active_shader == flat_shader) return;
         active_shader = flat_shader;
-    }
 
-    isSelectRender_loc = active_shader->getUniformLoc("isSelectRender");
-    selectColor_loc = active_shader->getUniformLoc("selectColor");
-    hasWireframeMode_loc = active_shader->getUniformLoc("hasWireframeMode");
-    wireframeColor_loc = active_shader->getUniformLoc("wireframeColor");
+        isSelectRender_loc = active_shader->getUniformLoc("isSelectRender");
+        selectColor_loc = active_shader->getUniformLoc("selectColor");
+        hasWireframeMode_loc = active_shader->getUniformLoc("hasWireframeMode");
+        wireframeColor_loc = active_shader->getUniformLoc("wireframeColor");
+    }
 
     Mesh::setShaderMan(active_shader);
 
-    glUniform3fv(selectColor_loc, 1, &select_color[0]);
     glUniform3fv(wireframeColor_loc, 1, &wireframe_color[0]);
+    glUniform3fv(selectColor_loc, 1, &select_color[0]);
 }
 
 void OpenGLWindow::setActiveCamera(Camera *cam)
@@ -206,14 +207,12 @@ void OpenGLWindow::flatShadeDisplay()
 
 void OpenGLWindow::wireframeModeOn()
 {
-    glUniform1f(hasWireframeMode_loc, true);
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDisable(GL_CULL_FACE);
 }
 
 void OpenGLWindow::wireframeModeOff()
 {
-    glUniform1f(hasWireframeMode_loc, false);
     glPolygonMode(GL_FRONT, GL_FILL);
     glEnable(GL_CULL_FACE);
 }
@@ -225,11 +224,7 @@ void OpenGLWindow::drawSelectHighlight()
 
     glUniform1f(isSelectRender_loc, true);
     glLineWidth(1.5f);
-    glDisable(GL_CULL_FACE);
-    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     bufferman->drawSelected();
-    glPolygonMode(GL_FRONT, GL_FILL);
-    glEnable(GL_CULL_FACE);
     glLineWidth(1);
     glUniform1f(isSelectRender_loc, false);
 

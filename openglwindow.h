@@ -25,7 +25,6 @@ class OpenGLWindow : public sf::Window
         void toggleFullscreen();
         void run();
         void setup();
-        void setupGL();
         void renderScene();
         void setupLights();
         void shadermanSetup();
