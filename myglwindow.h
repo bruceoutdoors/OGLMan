@@ -39,6 +39,7 @@ private:
     sfg::TransformPanel::Ptr transform_panel;
     sfg::CameraPanel::Ptr camera_panel;
     sfg::Outliner::Ptr outliner;
+    sfg::PanelWidget::Ptr panel;
 
     sf::Clock *clock;
     Arcball *arcball;

@@ -3,40 +3,36 @@
 
 namespace sfg {
 
+CameraPanel::CameraPanel() :
+    PanelWidget()
+{
+    camera_name = Label::Create("Active Camera: None Selected");
+    attach(camera_name, 0, 0, 2, 1);
+    attachLabel("Focal length:", 0, 1, 1, 1, ALIGN_RIGHT);
+    attachLabel("Near plane:",   0, 2, 1, 1, ALIGN_RIGHT);
+    attachLabel("Far plane:",    0, 3, 1, 1, ALIGN_RIGHT);
+
+    setupSpinButton(focal_length, 0, 600, 0.1f, 1);
+    setupSpinButton(near_plane,   0, 100, 0.5f, 1);
+    setupSpinButton(far_plane,    0, 100, 0.5f, 1);
+
+    attach(focal_length, 1, 1, 1, 1);
+    attach(near_plane,   1, 2, 1, 1);
+    attach(far_plane,    1, 3, 1, 1);
+
+    focal_length->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+                std::bind(&CameraPanel::onFocalLength, this));
+    near_plane->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+                std::bind(&CameraPanel::onNearPlane, this));
+    far_plane->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+                std::bind(&CameraPanel::onFarPlane, this));
+}
+
 CameraPanel::Ptr CameraPanel::Create()
 {
-    Ptr ptr = std::make_shared<CameraPanel>();
-
-    ptr->SetRowSpacings( 5.f );
-    ptr->SetColumnSpacings( 5.f );
-
-    ptr->camera_name = Label::Create("Active Camera: None Selected");
-    ptr->Attach(ptr->camera_name, sf::Rect<sf::Uint32>(0, 0, 2, 1),
-         sfg::Table::FILL, sfg::Table::FILL );
-    ptr->attachLabel("Focal length:", 0, 1, 1, 1, ALIGN_RIGHT);
-    ptr->attachLabel("Near plane:",   0, 2, 1, 1, ALIGN_RIGHT);
-    ptr->attachLabel("Far plane:",    0, 3, 1, 1, ALIGN_RIGHT);
-
-    ptr->setupSpinButton(ptr->focal_length, 0, 600, 0.1f, 1);
-    ptr->setupSpinButton(ptr->near_plane,   0, 100, 0.5f, 1);
-    ptr->setupSpinButton(ptr->far_plane,    0, 100, 0.5f, 1);
-
-    ptr->Attach(ptr->focal_length, sf::Rect<sf::Uint32>(1, 1, 1, 1),
-         sfg::Table::FILL, sfg::Table::FILL );
-    ptr->Attach(ptr->near_plane, sf::Rect<sf::Uint32>(1, 2, 1, 1),
-            sfg::Table::FILL, sfg::Table::FILL );
-    ptr->Attach(ptr->far_plane, sf::Rect<sf::Uint32>(1, 3, 1, 1),
-            sfg::Table::FILL, sfg::Table::FILL );
-
-    ptr->focal_length->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&CameraPanel::onFocalLength, ptr));
-    ptr->near_plane->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&CameraPanel::onNearPlane, ptr));
-    ptr->far_plane->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&CameraPanel::onFarPlane, ptr));
-
-    return ptr;
+    return std::make_shared<CameraPanel>();
 }
+
 Camera *CameraPanel::getActiveCamera() const
 {
     return active_camera;

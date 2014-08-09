@@ -38,7 +38,7 @@ Outliner::Ptr Outliner::Create(BufferMan *man)
     return std::make_shared<Outliner>(man);
 }
 
-Box::Ptr Outliner::getBox() const
+Box::Ptr Outliner::get() const
 {
     return box;
 }

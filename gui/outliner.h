@@ -15,7 +15,7 @@ public:
     typedef std::shared_ptr<Outliner> Ptr;
     Outliner(BufferMan *man);
     static Ptr Create(BufferMan *man);
-    Box::Ptr getBox() const;
+    Box::Ptr get() const;
     Mesh *getSelectedMesh();
     bool hasSelectedMesh() const;
 

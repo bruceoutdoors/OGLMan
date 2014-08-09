@@ -110,8 +110,8 @@ void ElephantWindow::guiSetup()
     camera_panel = sfg::CameraPanel::Create();
     camera_panel->setActiveCamera(arcball);
 
-    addWindow(transform_panel, "Transform tools");
-    addWindow(camera_panel, "Camera Controls", 0, 180);
+    addWindow(transform_panel->get(), "Transform tools");
+    addWindow(camera_panel->get(), "Camera Controls", 0, 180);
 }
 
 void ElephantWindow::addWindow(sfg::Widget::Ptr widget, sf::String title,  float x, float y)

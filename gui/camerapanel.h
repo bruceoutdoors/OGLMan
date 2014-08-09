@@ -10,6 +10,7 @@ class CameraPanel : public PanelWidget
 {
 public:
     typedef std::shared_ptr<CameraPanel> Ptr;
+    CameraPanel();
     static Ptr Create();
 
     Camera *getActiveCamera() const;

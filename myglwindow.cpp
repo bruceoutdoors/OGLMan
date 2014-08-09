@@ -110,6 +110,8 @@ void MyGLWindow::guiSetup()
 {
     setActive();
 
+    panel = sfg::PanelWidget::Create();
+
     transform_panel = sfg::TransformPanel::Create();
 
     camera_panel = sfg::CameraPanel::Create();
@@ -120,9 +122,9 @@ void MyGLWindow::guiSetup()
     outliner->GetSignal(sfg::Outliner::OnSelect).Connect(
                 std::bind(&MyGLWindow::onOutlinerSelect, this));
 
-    addWindow(transform_panel, "Transform tools");
-    addWindow(camera_panel, "Camera Controls", 0, 185);
-    addWindow(outliner->getBox(), "Outliner", 0, 350);
+    addWindow(transform_panel->get(), "Transform tools");
+    addWindow(camera_panel->get(), "Camera Controls", 0, 185);
+    addWindow(outliner->get(), "Outliner", 0, 350);
 }
 
 void MyGLWindow::addWindow(sfg::Widget::Ptr widget, sf::String title,  float x, float y)
