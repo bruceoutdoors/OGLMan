@@ -1,5 +1,4 @@
 #include "myglwindow.h"
-#include <glm/gtx/transform.hpp>
 #include <iostream>
 
 const float LIGHT_MOVE = 0.1f;
@@ -208,13 +207,5 @@ bool MyGLWindow::keyboardEventHandler(int key)
 
 void MyGLWindow::onOutlinerSelect()
 {
-//    if (outliner->getSelectedMesh() != nullptr) {
-//        std::cout << "You have selected: "
-//                  << outliner->getSelectedMesh()->getName()
-//                  << std::endl;
-//    } else {
-//        std::cout << "Nothing is selected." << std::endl;
-//    }
-
     transform_panel->setActiveMesh(outliner->getSelectedMesh());
 }

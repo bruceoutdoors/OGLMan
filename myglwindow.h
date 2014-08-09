@@ -12,8 +12,6 @@
 #include "primitives/arrow.h"
 #include "primitives/plane.h"
 
-#include <SFGUI/SFGUI.hpp>
-
 class MyGLWindow : public GuiWindow
 {
 public:
