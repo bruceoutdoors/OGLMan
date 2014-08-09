@@ -39,6 +39,22 @@ OpenGLWindow::~OpenGLWindow()
     delete bufferman;
 }
 
+bool OpenGLWindow::handleEvents(sf::Event e)
+{
+    switch (e.type) {
+    case sf::Event::Closed:
+        this->close();
+        return true;
+        break;
+
+    // Resize event : adjust viewport
+    case sf::Event::Resized:
+        resizeGL(e.size.width, e.size.height);
+        break;
+    }
+    return false;
+}
+
 void OpenGLWindow::toggleFullscreen()
 {
     isFullscreen = !isFullscreen;
@@ -61,7 +77,13 @@ void OpenGLWindow::run()
     setup();
 
     while (true) {
-        if (handleEvents()) break;
+        sf::Event e;
+        while (this->pollEvent(e)) {
+            // handle events for this base class
+            if (OpenGLWindow::handleEvents(e)) return;
+            // handle events for subclasses
+            if (handleEvents(e)) return;
+        }
         renderScene();
     }
 }

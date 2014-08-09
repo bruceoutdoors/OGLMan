@@ -6,11 +6,8 @@ const float LIGHT_MOVE = 0.1f;
 const float ZOOM_SPEED = 1.0f;
 const float PAN_SPEED = 0.05f;
 
-MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWindow(mode, title)
+MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : GuiWindow(mode, title)
 {
-    isWindowSelect = false;
-    clock = new sf::Clock();
-
     arcball = new Arcball();
     walkcam = new WalkCam();
     setActiveCamera(arcball);
@@ -18,7 +15,6 @@ MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : OpenGLWind
 
 MyGLWindow::~MyGLWindow()
 {
-    delete clock;
     delete arcball;
     delete walkcam;
 }
@@ -125,79 +121,38 @@ void MyGLWindow::guiSetup()
     addWindow(outliner->get(), "Outliner", 0, 350);
 }
 
-void MyGLWindow::addWindow(sfg::Widget::Ptr widget, sf::String title,  float x, float y)
+bool MyGLWindow::handleEvents(sf::Event e)
 {
-    auto window = sfg::Window::Create();
-    window->SetStyle(window->GetStyle() ^ sfg::Window::RESIZE);
-    window->SetTitle(title);
-    window->SetPosition(sf::Vector2f(x,y));
-    window->Add(widget);
+    GuiWindow::handleEvents(e);
+    switch (e.type) {
+    // Handle keyboard events
+    case sf::Event::KeyPressed:
+        if (keyboardEventHandler(e.key.code)) return true;
+        break;
 
-    window->GetSignal(sfg::Widget::OnMouseEnter).Connect(
-                std::bind(&MyGLWindow::onWindowMove, this));
-    window->GetSignal(sfg::Widget::OnMouseLeave).Connect(
-                std::bind(&MyGLWindow::onWindowMoveRelease, this));
-
-    desktop.Add(window);
-}
-
-bool MyGLWindow::handleEvents()
-{
-    sf::Event e;
-    while (this->pollEvent(e)) {
-        desktop.HandleEvent(e);
-        switch (e.type) {
-        case sf::Event::Closed:
-            this->close();
-            return true;
-            break;
-
-        // Resize event : adjust viewport
-        case sf::Event::Resized:
-            resizeGL(e.size.width, e.size.height);
-            break;
-
-        // Handle keyboard events
-        case sf::Event::KeyPressed:
-            if (keyboardEventHandler(e.key.code)) return true;
-            break;
-
-        case sf::Event::MouseMoved:
-            if (isWindowSelect) break;
-            if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
-                getActiveCamera()->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
-            } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-                getActiveCamera()->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
-            }
-            break;
-
-        case sf::Event::MouseWheelMoved:
-            if (isWindowSelect) break;
-            if (e.mouseWheel.delta > 0) {
-                getActiveCamera()->moveForward(ZOOM_SPEED);
-            } else {
-                getActiveCamera()->moveForward(-ZOOM_SPEED);
-            }
-            break;
-
-
-        default:
-            break; // suppress enum not handled warnings
+    case sf::Event::MouseMoved:
+        if (isWindowSelect) break;
+        if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+            getActiveCamera()->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
+        } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
+            getActiveCamera()->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
         }
+        break;
+
+    case sf::Event::MouseWheelMoved:
+        if (isWindowSelect) break;
+        if (e.mouseWheel.delta > 0) {
+            getActiveCamera()->moveForward(ZOOM_SPEED);
+        } else {
+            getActiveCamera()->moveForward(-ZOOM_SPEED);
+        }
+        break;
+
+
+    default:
+        break; // suppress enum not handled warnings
     }
     return false;
-}
-
-void MyGLWindow::guiDraw()
-{
-    // Update the GUI every 1ms
-    if( clock->getElapsedTime().asMicroseconds() >= 1000 ) {
-        auto delta = static_cast<float>( clock->getElapsedTime().asMicroseconds() ) / 1000000.f;
-        // Update() takes the elapsed time in seconds.
-        desktop.Update(delta);
-        clock->restart();
-    }
-    sfgui.Display(*this);
 }
 
 bool MyGLWindow::keyboardEventHandler(int key)
@@ -249,16 +204,6 @@ bool MyGLWindow::keyboardEventHandler(int key)
     }
 
     return false;
-}
-
-void MyGLWindow::onWindowMove()
-{
-    isWindowSelect = true;
-}
-
-void MyGLWindow::onWindowMoveRelease()
-{
-    isWindowSelect = false;
 }
 
 void MyGLWindow::onOutlinerSelect()

@@ -20,7 +20,7 @@ class OpenGLWindow : public sf::Window
         virtual ~OpenGLWindow();
         virtual void draw() = 0;
         virtual void init() = 0;
-        virtual bool handleEvents() = 0;
+        virtual bool handleEvents(sf::Event e);
         virtual void guiDraw() {}
         void toggleFullscreen();
         void run();
@@ -41,8 +41,6 @@ class OpenGLWindow : public sf::Window
         void flatShadeDisplay();
 
     protected:
-        GLvoid resizeGL(GLsizei width, GLsizei height);
-
         ShaderMan *active_shader;
         ShaderMan *flat_shader;
         ShaderMan *default_shader;
@@ -57,6 +55,8 @@ class OpenGLWindow : public sf::Window
         void drawSelectHighlight();
 
     private:
+        GLvoid resizeGL(GLsizei width, GLsizei height);
+
         sf::VideoMode m_mode;
         sf::String m_title;
 

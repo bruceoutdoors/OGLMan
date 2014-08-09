@@ -1,7 +1,7 @@
 #ifndef MYGLWINDOW_H
 #define MYGLWINDOW_H
 
-#include "openglwindow.h"
+#include "guiwindow.h"
 
 #include "oglman/arcball.h"
 #include "oglman/walkcam.h"
@@ -14,33 +14,24 @@
 
 #include <SFGUI/SFGUI.hpp>
 
-class MyGLWindow : public OpenGLWindow
+class MyGLWindow : public GuiWindow
 {
 public:
     MyGLWindow(sf::VideoMode mode, const sf::String &title);
     virtual ~MyGLWindow();
     void draw();
     void init();
-    bool handleEvents();
-    void guiDraw();
+    bool handleEvents(sf::Event e);
 
 private:
     bool keyboardEventHandler(int key);
     void guiSetup();
-    void addWindow(sfg::Widget::Ptr widget,
-                   sf::String title = "Default Title",
-                   float x = 0, float y = 0);
-    void onWindowMove();
-    void onWindowMoveRelease();
 
-    sfg::SFGUI sfgui;
-    sfg::Desktop desktop;
     sfg::Label::Ptr test_label;
     sfg::TransformPanel::Ptr transform_panel;
     sfg::CameraPanel::Ptr camera_panel;
     sfg::Outliner::Ptr outliner;
 
-    sf::Clock *clock;
     Arcball *arcball;
     WalkCam *walkcam;
 
@@ -52,8 +43,6 @@ private:
     Mesh *elephant;
     Plane *plane;
     Arrow *arrow;
-
-    bool isWindowSelect;
 
     // slots:
     void onOutlinerSelect();
