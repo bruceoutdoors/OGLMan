@@ -2,15 +2,15 @@
 #define MYGLWINDOW_H
 
 #include "openglwindow.h"
+
+#include "oglman/arcball.h"
+#include "oglman/walkcam.h"
 #include "gui/transformpanel.h"
 #include "gui/camerapanel.h"
 #include "gui/outliner.h"
-
 #include "primitives/cube.h"
 #include "primitives/arrow.h"
 #include "primitives/plane.h"
-#include "oglman/arcball.h"
-#include "oglman/walkcam.h"
 
 #include <SFGUI/SFGUI.hpp>
 
@@ -39,7 +39,6 @@ private:
     sfg::TransformPanel::Ptr transform_panel;
     sfg::CameraPanel::Ptr camera_panel;
     sfg::Outliner::Ptr outliner;
-    sfg::PanelWidget::Ptr panel;
 
     sf::Clock *clock;
     Arcball *arcball;

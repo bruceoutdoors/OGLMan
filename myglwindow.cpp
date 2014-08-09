@@ -110,8 +110,6 @@ void MyGLWindow::guiSetup()
 {
     setActive();
 
-    panel = sfg::PanelWidget::Create();
-
     transform_panel = sfg::TransformPanel::Create();
 
     camera_panel = sfg::CameraPanel::Create();
@@ -255,13 +253,11 @@ bool MyGLWindow::keyboardEventHandler(int key)
 
 void MyGLWindow::onWindowMove()
 {
-//    std::cout << "window is selected!!" << std::endl;
     isWindowSelect = true;
 }
 
 void MyGLWindow::onWindowMoveRelease()
 {
-//    std::cout << "window is released!!" << std::endl;
     isWindowSelect = false;
 }
 

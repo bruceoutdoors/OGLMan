@@ -26,7 +26,6 @@ class OpenGLWindow : public sf::Window
         void run();
         void setup();
         void renderScene();
-        void setupLights();
         void shadermanSetup();
         void setActiveCamera(Camera *cam);
         Camera *getActiveCamera() const;
@@ -51,7 +50,6 @@ class OpenGLWindow : public sf::Window
 
         glm::vec3 light_position;
         glm::vec4 ambientLight;
-        glm::vec2 oldMousePosition;
 
         void wireframeModeOn();
         void wireframeModeOff();
@@ -75,7 +73,6 @@ class OpenGLWindow : public sf::Window
         bool isFullscreen;
         bool isWireframeMode;
         bool isLightOn;
-        bool wasLightOn;
 };
 
 #endif // OPENGLWINDOW_H

@@ -19,8 +19,6 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
     isFullscreen(false),
     isWireframeMode(false)
 {
-    isLightOn = true;
-
     light_position = vec3(0.0f, 3.0f, 1.0f);
     ambientLight = vec4(0.05f, 0.05f, 0.05f ,1.0f);
 
@@ -31,7 +29,7 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
     bufferman = new BufferMan();
     Mesh::setBufferMan(bufferman);
 
-    shadermanSetup();
+    onLights();
 }
 
 OpenGLWindow::~OpenGLWindow()
@@ -52,9 +50,6 @@ void OpenGLWindow::toggleFullscreen()
         create(m_mode, m_title, sf::Style::Resize | sf::Style::Close);
         resizeGL(m_mode.width, m_mode.height);
     }
-
-    // use the program
-    active_shader->use();
 
     // recreating the window causes the buffers to get cleared so we need to
     // add the data back again.
@@ -123,24 +118,22 @@ void OpenGLWindow::renderScene()
     display();
 }
 
-void OpenGLWindow::setupLights()
-{
-    eyePositionWorld_loc = active_shader->getUniformLoc("eyePositionWorld");
-    ambientLight_loc = active_shader->getUniformLoc("ambientLight");
-    lightPosition_loc = active_shader->getUniformLoc("lightPosition");
-}
-
 void OpenGLWindow::shadermanSetup()
 {
     if (isLightOn) {
         // eliminate redundant calls:
         if (active_shader == default_shader) return;
         active_shader = default_shader;
-        setupLights();
+
+        // setup lights:
+        eyePositionWorld_loc = active_shader->getUniformLoc("eyePositionWorld");
+        ambientLight_loc = active_shader->getUniformLoc("ambientLight");
+        lightPosition_loc = active_shader->getUniformLoc("lightPosition");
     } else {
         if (active_shader == flat_shader) return;
         active_shader = flat_shader;
 
+        // wireframe render setup:
         isSelectRender_loc = active_shader->getUniformLoc("isSelectRender");
         selectColor_loc = active_shader->getUniformLoc("selectColor");
         hasWireframeMode_loc = active_shader->getUniformLoc("hasWireframeMode");
@@ -219,7 +212,7 @@ void OpenGLWindow::wireframeModeOff()
 
 void OpenGLWindow::drawSelectHighlight()
 {
-    wasLightOn = isLightOn;
+    bool wasLightOn = isLightOn;
     if (isLightOn) offLights();
 
     glUniform1f(isSelectRender_loc, true);
