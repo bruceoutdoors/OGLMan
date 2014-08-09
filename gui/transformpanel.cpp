@@ -8,7 +8,8 @@ const sf::String DEFAULT_MSG = "Selected Mesh: None";
 
 TransformPanel::TransformPanel() :
     active_mesh(nullptr)
-{}
+{
+}
 
 TransformPanel::Ptr TransformPanel::Create()
 {
@@ -17,9 +18,9 @@ TransformPanel::Ptr TransformPanel::Create()
     ptr->SetRowSpacings( 5.f );
     ptr->SetColumnSpacings( 5.f );
 
-    ptr->mesh_name = sfg::Label::Create(DEFAULT_MSG);
+    ptr->mesh_name = Label::Create(DEFAULT_MSG);
     ptr->Attach(ptr->mesh_name, sf::Rect<sf::Uint32>(0, 0, 4, 1),
-            sfg::Table::FILL, sfg::Table::FILL );
+            Table::FILL, Table::FILL );
     ptr->attachLabel("Translate:", 0, 1, 1, 1, ALIGN_RIGHT);
     ptr->attachLabel("Rotation:",  0, 2, 1, 1, ALIGN_RIGHT);
     ptr->attachLabel("Scale:",     0, 3, 1, 1, ALIGN_RIGHT);
@@ -34,39 +35,39 @@ TransformPanel::Ptr TransformPanel::Create()
     for(int i = 1; i <= 2; i++) {
         for(int j = 1; j <= 3; j++) {
             ptr->Attach(ptr->spin_group[k++], sf::Rect<sf::Uint32>(j, i, 1, 1),
-                    sfg::Table::FILL, sfg::Table::FILL );
+                    Table::FILL, Table::FILL );
         }
     }
 
-    ptr->scale_slider = sfg::Scale::Create(0, 5, 0.01f);
-    ptr->scale_label = sfg::Label::Create("0.00");
+    ptr->scale_slider = Scale::Create(0, 5, 0.01f);
+    ptr->scale_label = Label::Create("0.00");
 
     ptr->Attach(ptr->scale_slider, sf::Rect<sf::Uint32>(1, 3, 2, 1),
-           sfg::Table::FILL, sfg::Table::FILL);
+           Table::FILL, Table::FILL);
     ptr->Attach(ptr->scale_label, sf::Rect<sf::Uint32>(3, 3, 1, 1),
-           sfg::Table::FILL, sfg::Table::FILL);
+           Table::FILL, Table::FILL);
 
-    ptr->reset_trans_button = sfg::Button::Create("Reset transformations");
+    ptr->reset_trans_button = Button::Create("Reset transformations");
     ptr->Attach(ptr->reset_trans_button,
                   sf::Rect<sf::Uint32>(1, 4, 3, 1),
-                  sfg::Table::FILL, sfg::Table::FILL);
+                  Table::FILL, Table::FILL);
 
-    ptr->spin_group[0]->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+    ptr->spin_group[0]->GetSignal(SpinButton::OnValueChanged).Connect(
                 std::bind(&TransformPanel::onTranslateX, ptr));
-    ptr->spin_group[1]->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+    ptr->spin_group[1]->GetSignal(SpinButton::OnValueChanged).Connect(
                 std::bind(&TransformPanel::onTranslateY, ptr));
-    ptr->spin_group[2]->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+    ptr->spin_group[2]->GetSignal(SpinButton::OnValueChanged).Connect(
                 std::bind(&TransformPanel::onTranslateZ, ptr));
-    ptr->spin_group[3]->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+    ptr->spin_group[3]->GetSignal(SpinButton::OnValueChanged).Connect(
                 std::bind(&TransformPanel::onRotateX, ptr));
-    ptr->spin_group[4]->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+    ptr->spin_group[4]->GetSignal(SpinButton::OnValueChanged).Connect(
                 std::bind(&TransformPanel::onRotateY, ptr));
-    ptr->spin_group[5]->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
+    ptr->spin_group[5]->GetSignal(SpinButton::OnValueChanged).Connect(
                 std::bind(&TransformPanel::onRotateZ, ptr));
 
-    ptr->scale_slider->GetAdjustment()->GetSignal(sfg::Adjustment::OnChange).Connect(
+    ptr->scale_slider->GetAdjustment()->GetSignal(Adjustment::OnChange).Connect(
                 std::bind(&TransformPanel::onScale, ptr));
-    ptr->reset_trans_button->GetSignal(sfg::Button::OnLeftClick).Connect(
+    ptr->reset_trans_button->GetSignal(Button::OnLeftClick).Connect(
                 std::bind(&TransformPanel::onResetTransformations, ptr));
 
     return ptr;

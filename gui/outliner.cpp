@@ -11,13 +11,7 @@ Signal::SignalID Outliner::OnSelect = 0;
 Outliner::Outliner(BufferMan *man) :
     bufferman(man), selected_mesh(nullptr)
 {
-}
-
-Outliner::Ptr Outliner::Create(BufferMan *man)
-{
-    Ptr ptr = std::make_shared<Outliner>(man);
-
-    ptr->box = Box::Create( Box::Orientation::VERTICAL, 5.f );
+    box = Box::Create( Box::Orientation::VERTICAL, 5.f );
 
     auto button_group = RadioButton::RadioButtonGroup::Create();
 
@@ -25,20 +19,23 @@ Outliner::Ptr Outliner::Create(BufferMan *man)
          i < man->getMeshesEnd(); ++i) {
         auto b = RadioButton::Create((*i)->getName(), button_group);
         b->GetSignal(ToggleButton::OnToggle).Connect(
-                    std::bind(&Outliner::onRadioSelect, ptr));
-        ptr->buttons.push_back(b);
-        ptr->box->Pack(b);
+                    std::bind(&Outliner::onRadioSelect, this));
+        buttons.push_back(b);
+        box->Pack(b);
     }
 
     // add empty select:
     auto b = RadioButton::Create("*Select nothing*", button_group);
     b->SetActive(true);
     b->GetSignal(ToggleButton::OnToggle).Connect(
-                std::bind(&Outliner::onSelectNone, ptr));
-    ptr->buttons.push_back(b);
-    ptr->box->Pack(b);
+                std::bind(&Outliner::onSelectNone, this));
+    buttons.push_back(b);
+    box->Pack(b);
+}
 
-    return ptr;
+Outliner::Ptr Outliner::Create(BufferMan *man)
+{
+    return std::make_shared<Outliner>(man);
 }
 
 Box::Ptr Outliner::getBox() const

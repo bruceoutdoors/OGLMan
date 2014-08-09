@@ -16,7 +16,7 @@ public:
     void attachLabel(sf::String text, sf::Uint32 r, sf::Uint32 c,
                      sf::Uint32 rs, sf::Uint32 cs,
                      sf::Vector2f align = ALIGN_CENTER);
-    void setupSpinButton(sfg::SpinButton::Ptr &b, float min,
+    void setupSpinButton(SpinButton::Ptr &b, float min,
                                          float max, float step, unsigned int precision);
 protected:
     std::string floatToString(float fl, unsigned int precision = 2);
