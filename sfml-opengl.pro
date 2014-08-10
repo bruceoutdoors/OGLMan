@@ -4,49 +4,49 @@ CONFIG -= app_bundle
 CONFIG -= qt
 
 SOURCES += main.cpp \
-    myglwindow.cpp \
-    openglwindow.cpp \
     oglman/buffer.cpp \
     oglman/bufferman.cpp \
     oglman/camera.cpp \
     oglman/mesh.cpp \
     oglman/shader.cpp \
     oglman/shaderman.cpp \
-    primitives/arrow.cpp \
-    primitives/cube.cpp \
-    primitives/plane.cpp \
     oglman/walkcam.cpp \
     oglman/arcball.cpp \
     oglman/objreader.cpp \
     oglman/texture.cpp \
-#    elephantwindow.cpp \
+    primitives/arrow.cpp \
+    primitives/cube.cpp \
+    primitives/plane.cpp \
     gui/panelwidget.cpp \
     gui/transformpanel.cpp \
     gui/camerapanel.cpp \
     gui/outliner.cpp \
+    openglwindow.cpp \
+    myglwindow.cpp \
+    elephantwindow.cpp \
     guiwindow.cpp
 
 HEADERS += \
-    myglwindow.h \
-    openglwindow.h \
     oglman/buffer.h \
     oglman/bufferman.h \
     oglman/camera.h \
     oglman/mesh.h \
     oglman/shader.h \
     oglman/shaderman.h \
-    primitives/arrow.h \
-    primitives/cube.h \
-    primitives/plane.h \
     oglman/walkcam.h \
     oglman/arcball.h \
     oglman/objreader.h \
     oglman/texture.h \
-#    elephantwindow.h \
+    primitives/arrow.h \
+    primitives/cube.h \
+    primitives/plane.h \
     gui/panelwidget.h \
     gui/transformpanel.h \
     gui/camerapanel.h \
     gui/outliner.h \
+    myglwindow.h \
+    openglwindow.h \
+    elephantwindow.h \
     guiwindow.h
 
 

@@ -23,12 +23,12 @@ int main()
             << "|   Scroll Wheel            => zoom in/out                      |\n"
             << "|                                                               |\n"
             << "*****************************************************************\n";
-    MyGLWindow *myWindow = new MyGLWindow(
-                sf::VideoMode(800, 600, 32),
-                "Test SFML OpenGL Window");
-//    ElephantWindow *myWindow = new ElephantWindow(
+//    MyGLWindow *myWindow = new MyGLWindow(
 //                sf::VideoMode(800, 600, 32),
-//                "Gook the elephant");
+//                "Test SFML OpenGL Window");
+    ElephantWindow *myWindow = new ElephantWindow(
+                sf::VideoMode(800, 600, 32),
+                "Gook the elephant");
     myWindow->run();
     delete myWindow;
 
