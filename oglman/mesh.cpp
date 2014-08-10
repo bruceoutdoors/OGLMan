@@ -14,9 +14,9 @@ using glm::vec2;
 using glm::vec3;
 using glm::mat4;
 
-const vec3 X_AXIS = vec3(1,0,0);
-const vec3 Y_AXIS = vec3(0,1,0);
-const vec3 Z_AXIS = vec3(0,0,1);
+const vec3 X_AXIS = vec3(1, 0, 0);
+const vec3 Y_AXIS = vec3(0, 1, 0);
+const vec3 Z_AXIS = vec3(0, 0, 1);
 
 Camera *Mesh::active_cam = NULL;
 BufferMan *Mesh::bufferman = NULL;
@@ -62,7 +62,7 @@ Mesh::Mesh(std::string path) : Mesh()
 
 Mesh::~Mesh()
 {
-    if (!isInstance()) deleteVao();
+    if (!isInstance())      { deleteVao();    }
     if (texture != nullptr) { delete texture; }
 }
 
@@ -81,10 +81,10 @@ void Mesh::draw()
     glUniform1f(hasFlatColor_loc, isFlatColor);
     glUniform1f(hasTexture_loc, isTextured);
 
-    if (isFlatColor) { glUniform3fv(flatColor_loc, 1, &flat_color[0]); }
+    if (isFlatColor)  { glUniform3fv(flatColor_loc, 1, &flat_color[0]); }
     if (hasTexture()) { texture->use(); }
 
-    glDrawElements(DRAW_MODE, getNumIndices(), GL_UNSIGNED_SHORT, (void*)getIndexBufferOffset());
+    glDrawElements(DRAW_MODE, getNumIndices(), GL_UNSIGNED_SHORT, (void *)getIndexBufferOffset());
     glBindVertexArray(0); // don't forget this!
 }
 
@@ -108,7 +108,7 @@ GLsizeiptr Mesh::getArrayBufferSize() const
     GLuint size = getVertexBufferSize() * 2;
 
     if (hasVertexColor()) { size += getVertexBufferSize(); }
-    if (hasUv())          { size += getUvBufferSize(); }
+    if (hasUv())          { size += getUvBufferSize();     }
 
     return size;
 }
@@ -117,18 +117,22 @@ void Mesh::updateWorldMatrix()
 {
     // rotation order is XYZ, for now...
     world_matrix =
-            glm::translate(vec3(translateX, translateY, translateZ)) *
-            glm::rotate(rotateZ, Z_AXIS) *
-            glm::rotate(rotateY, Y_AXIS) *
-            glm::rotate(rotateX, X_AXIS) *
-            glm::scale(vec3(scale));
+        glm::translate(vec3(translateX, translateY, translateZ)) *
+        glm::rotate(rotateZ, Z_AXIS) *
+        glm::rotate(rotateY, Y_AXIS) *
+        glm::rotate(rotateX, X_AXIS) *
+        glm::scale(vec3(scale));
 }
 
 void Mesh::resetTransformations()
 {
     world_matrix = glm::mat4();
-    rotateX = rotateY = rotateZ
-            = translateX = translateY = translateZ = 0;
+    rotateX
+        = rotateY
+        = rotateZ
+        = translateX
+        = translateY
+        = translateZ = 0;
     scale = 1;
 }
 
@@ -174,7 +178,6 @@ void Mesh::setName(const std::string &value)
 {
     name = value;
 }
-
 
 void Mesh::setTexture(const std::string &path)
 {
@@ -376,6 +379,7 @@ void Mesh::setTranslateX(const GLfloat &value)
     translateX = value;
     updateWorldMatrix();
 }
+
 GLfloat Mesh::getTranslateY() const
 {
     return translateY;
@@ -441,6 +445,7 @@ bool Mesh::hasUv() const
 {
     return !uvs.empty();
 }
+
 bool Mesh::hasTexture() const
 {
     return isTextured;

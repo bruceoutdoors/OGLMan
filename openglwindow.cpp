@@ -8,7 +8,7 @@ using glm::vec3;
 using glm::vec4;
 
 const vec3 select_color = vec3(1);
-const vec3 wireframe_color = vec3(.5,.5,1);
+const vec3 wireframe_color = vec3(.5, .5, 1);
 
 OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
                            const sf::String &title,
@@ -20,7 +20,7 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
     isWireframeMode(false)
 {
     light_position = vec3(0.0f, 3.0f, 1.0f);
-    ambientLight = vec4(0.05f, 0.05f, 0.05f ,1.0f);
+    ambientLight = vec4(0.05f, 0.05f, 0.05f , 1.0f);
 
     std::string shader_dir = "./shaders/";
     default_shader = new ShaderMan(shader_dir + "default");
@@ -52,6 +52,7 @@ bool OpenGLWindow::handleEvents(sf::Event e)
         resizeGL(e.size.width, e.size.height);
         break;
     }
+
     return false;
 }
 
@@ -78,12 +79,15 @@ void OpenGLWindow::run()
 
     while (true) {
         sf::Event e;
+
         while (this->pollEvent(e)) {
             // handle events for this base class
             if (OpenGLWindow::handleEvents(e)) return;
+
             // handle events for subclasses
             if (handleEvents(e)) return;
         }
+
         renderScene();
     }
 }
@@ -145,6 +149,7 @@ void OpenGLWindow::shadermanSetup()
     if (isLightOn) {
         // eliminate redundant calls:
         if (active_shader == default_shader) return;
+
         active_shader = default_shader;
 
         // setup lights:
@@ -153,6 +158,7 @@ void OpenGLWindow::shadermanSetup()
         lightPosition_loc = active_shader->getUniformLoc("lightPosition");
     } else {
         if (active_shader == flat_shader) return;
+
         active_shader = flat_shader;
 
         // wireframe render setup:
@@ -235,6 +241,7 @@ void OpenGLWindow::wireframeModeOff()
 void OpenGLWindow::drawSelectHighlight()
 {
     bool wasLightOn = isLightOn;
+
     if (isLightOn) offLights();
 
     glUniform1f(isSelectRender_loc, true);
@@ -249,6 +256,6 @@ void OpenGLWindow::drawSelectHighlight()
 GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)
 {
     glViewport(0, 0, width, height);         // Reset the current viewport
-    float aspect_ratio = ((float)width)/height;
+    float aspect_ratio = ((float)width) / height;
     active_camera->setAspectRatio(aspect_ratio);
 }

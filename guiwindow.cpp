@@ -20,12 +20,13 @@ bool GuiWindow::handleEvents(sf::Event e)
 void GuiWindow::guiDraw()
 {
     // Update the GUI every 1ms
-    if( clock->getElapsedTime().asMicroseconds() >= 1000 ) {
-        auto delta = static_cast<float>( clock->getElapsedTime().asMicroseconds() ) / 1000000.f;
+    if (clock->getElapsedTime().asMicroseconds() >= 1000) {
+        auto delta = static_cast<float>(clock->getElapsedTime().asMicroseconds()) / 1000000.f;
         // Update() takes the elapsed time in seconds.
         desktop.Update(delta);
         clock->restart();
     }
+
     sfgui.Display(*this);
 }
 
@@ -34,13 +35,13 @@ void GuiWindow::addWindow(sfg::Widget::Ptr widget, sf::String title, float x, fl
     auto window = sfg::Window::Create();
     window->SetStyle(window->GetStyle() ^ sfg::Window::RESIZE);
     window->SetTitle(title);
-    window->SetPosition(sf::Vector2f(x,y));
+    window->SetPosition(sf::Vector2f(x, y));
     window->Add(widget);
 
     window->GetSignal(sfg::Widget::OnMouseEnter).Connect(
-                std::bind(&GuiWindow::onWindowMove, this));
+        std::bind(&GuiWindow::onWindowMove, this));
     window->GetSignal(sfg::Widget::OnMouseLeave).Connect(
-                std::bind(&GuiWindow::onWindowMoveRelease, this));
+        std::bind(&GuiWindow::onWindowMoveRelease, this));
 
     desktop.Add(window);
 }

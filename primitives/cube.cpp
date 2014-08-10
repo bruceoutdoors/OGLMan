@@ -8,8 +8,7 @@ Cube::Cube()
 
 void Cube::store()
 {
-    vec3 stackVerts[] =
-    {
+    vec3 stackVerts[] = {
         vec3(-1.0f, +1.0f, +1.0f),  // 0
         vec3(+1.0f, +1.0f, +1.0f),  // 1
         vec3(+1.0f, +1.0f, -1.0f),  // 2
@@ -35,8 +34,7 @@ void Cube::store()
         vec3(-1.0f, -1.0f, +1.0f),  // 22
         vec3(+1.0f, -1.0f, +1.0f),  // 23
     };
-    vec3 stackNormals[] =
-    {
+    vec3 stackNormals[] = {
         vec3(+0.0f, +1.0f, +0.0f),
         vec3(+0.0f, +1.0f, +0.0f),
         vec3(+0.0f, +1.0f, +0.0f),

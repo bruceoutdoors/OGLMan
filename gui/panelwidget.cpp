@@ -5,8 +5,8 @@ namespace sfg {
 PanelWidget::PanelWidget()
 {
     table = Table::Create();
-    table->SetRowSpacings( 5.f );
-    table->SetColumnSpacings( 5.f );
+    table->SetRowSpacings(5.f);
+    table->SetColumnSpacings(5.f);
 }
 
 PanelWidget::Ptr PanelWidget::Create()
@@ -20,11 +20,11 @@ Table::Ptr PanelWidget::get() const
 }
 
 void PanelWidget::attachLabel(sf::String text, sf::Uint32 r, sf::Uint32 c,
-                                 sf::Uint32 rs, sf::Uint32 cs, sf::Vector2f align)
+                              sf::Uint32 rs, sf::Uint32 cs, sf::Vector2f align)
 {
     auto alignment = Alignment::Create();
     alignment->SetAlignment(align);
-    alignment->SetScale(sf::Vector2f( 0.f, .01f ));
+    alignment->SetScale(sf::Vector2f(0.f, .01f));
     alignment->Add(Label::Create(text));
 
     attach(alignment, r, c, rs, cs);
@@ -33,7 +33,7 @@ void PanelWidget::attachLabel(sf::String text, sf::Uint32 r, sf::Uint32 c,
 void PanelWidget::attach(Widget::Ptr widget, sf::Uint32 r, sf::Uint32 c, sf::Uint32 rs, sf::Uint32 cs)
 {
     table->Attach(widget, sf::Rect<sf::Uint32>(r, c, rs, cs),
-                  Table::FILL, Table::FILL );
+                  Table::FILL, Table::FILL);
 }
 
 void PanelWidget::setupSpinButton(SpinButton::Ptr &b, float min,

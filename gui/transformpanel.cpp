@@ -18,13 +18,13 @@ TransformPanel::TransformPanel() :
 
     // setup spin group
     spin_group.resize(6);
-    for(int i = 0; i <= 2; i++) setupSpinButton(spin_group[i], -10000, 10000, 0.25f, 2);
-    for(int i = 3; i <= 5; i++) setupSpinButton(spin_group[i], -36000, 36000, 5, 0);
+    for (int i = 0; i <= 2; i++) setupSpinButton(spin_group[i], -10000, 10000, 0.25f, 2);
+    for (int i = 3; i <= 5; i++) setupSpinButton(spin_group[i], -36000, 36000, 5, 0);
 
     // add spin group to table:
     int k = 0;
-    for(int i = 1; i <= 2; i++) {
-        for(int j = 1; j <= 3; j++) {
+    for (int i = 1; i <= 2; i++) {
+        for (int j = 1; j <= 3; j++) {
             attach(spin_group[k++], j, i, 1, 1);
         }
     }
@@ -39,22 +39,22 @@ TransformPanel::TransformPanel() :
     attach(reset_trans_button, 1, 4, 3, 1);
 
     spin_group[0]->GetSignal(SpinButton::OnValueChanged).Connect(
-                std::bind(&TransformPanel::onTranslateX, this));
+        std::bind(&TransformPanel::onTranslateX, this));
     spin_group[1]->GetSignal(SpinButton::OnValueChanged).Connect(
-                std::bind(&TransformPanel::onTranslateY, this));
+        std::bind(&TransformPanel::onTranslateY, this));
     spin_group[2]->GetSignal(SpinButton::OnValueChanged).Connect(
-                std::bind(&TransformPanel::onTranslateZ, this));
+        std::bind(&TransformPanel::onTranslateZ, this));
     spin_group[3]->GetSignal(SpinButton::OnValueChanged).Connect(
-                std::bind(&TransformPanel::onRotateX, this));
+        std::bind(&TransformPanel::onRotateX, this));
     spin_group[4]->GetSignal(SpinButton::OnValueChanged).Connect(
-                std::bind(&TransformPanel::onRotateY, this));
+        std::bind(&TransformPanel::onRotateY, this));
     spin_group[5]->GetSignal(SpinButton::OnValueChanged).Connect(
-                std::bind(&TransformPanel::onRotateZ, this));
+        std::bind(&TransformPanel::onRotateZ, this));
 
     scale_slider->GetAdjustment()->GetSignal(Adjustment::OnChange).Connect(
-                std::bind(&TransformPanel::onScale, this));
+        std::bind(&TransformPanel::onScale, this));
     reset_trans_button->GetSignal(Button::OnLeftClick).Connect(
-                std::bind(&TransformPanel::onResetTransformations, this));
+        std::bind(&TransformPanel::onResetTransformations, this));
 }
 
 TransformPanel::Ptr TransformPanel::Create()

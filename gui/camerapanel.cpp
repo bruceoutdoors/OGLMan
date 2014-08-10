@@ -21,11 +21,11 @@ CameraPanel::CameraPanel() :
     attach(far_plane,    1, 3, 1, 1);
 
     focal_length->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&CameraPanel::onFocalLength, this));
+        std::bind(&CameraPanel::onFocalLength, this));
     near_plane->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&CameraPanel::onNearPlane, this));
+        std::bind(&CameraPanel::onNearPlane, this));
     far_plane->GetSignal(sfg::SpinButton::OnValueChanged).Connect(
-                std::bind(&CameraPanel::onFarPlane, this));
+        std::bind(&CameraPanel::onFarPlane, this));
 }
 
 CameraPanel::Ptr CameraPanel::Create()

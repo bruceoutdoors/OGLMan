@@ -38,11 +38,11 @@ public:
     GLsizeiptr getUvBufferSize() const;
     GLsizeiptr getIndexBufferSize() const;
 
-    const vec3* getVertexAddress() const;
-    const vec3* getNormalAddress() const;
-    const vec3* getColorAddress() const;
-    const GLushort* getIndexAddress() const;
-    const vec2* getUvAddress() const;
+    const vec3 *getVertexAddress() const;
+    const vec3 *getNormalAddress() const;
+    const vec3 *getColorAddress() const;
+    const GLushort *getIndexAddress() const;
+    const vec2 *getUvAddress() const;
 
     void setIndexBufferOffset(GLuint offset);
     void setVertexBufferOffset(GLuint offset);

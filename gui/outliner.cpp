@@ -11,15 +11,15 @@ Signal::SignalID Outliner::OnSelect = 0;
 Outliner::Outliner(BufferMan *man) :
     bufferman(man), selected_mesh(nullptr)
 {
-    box = Box::Create( Box::Orientation::VERTICAL, 5.f );
+    box = Box::Create(Box::Orientation::VERTICAL, 5.f);
 
     auto button_group = RadioButton::RadioButtonGroup::Create();
 
     for (BufferMan::It i = man->getMeshesBegin();
-         i < man->getMeshesEnd(); ++i) {
+            i < man->getMeshesEnd(); ++i) {
         auto b = RadioButton::Create((*i)->getName(), button_group);
         b->GetSignal(ToggleButton::OnToggle).Connect(
-                    std::bind(&Outliner::onRadioSelect, this));
+            std::bind(&Outliner::onRadioSelect, this));
         buttons.push_back(b);
         box->Pack(b);
     }
@@ -28,7 +28,7 @@ Outliner::Outliner(BufferMan *man) :
     auto b = RadioButton::Create("*Select nothing*", button_group);
     b->SetActive(true);
     b->GetSignal(ToggleButton::OnToggle).Connect(
-                std::bind(&Outliner::onSelectNone, this));
+        std::bind(&Outliner::onSelectNone, this));
     buttons.push_back(b);
     box->Pack(b);
 }
@@ -68,6 +68,7 @@ void Outliner::onRadioSelect()
 {
     bufferman->deselectAll();
     BufferMan::It i = bufferman->getMeshesBegin();
+
     for (RadioButton::Ptr &b : buttons) {
         if (b->IsActive()) {
             selected_mesh = *i;
@@ -75,6 +76,7 @@ void Outliner::onRadioSelect()
             GetSignals().Emit(OnSelect);
             break;
         }
+
         if (i < bufferman->getMeshesEnd()) ++i;
     }
 }

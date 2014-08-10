@@ -45,7 +45,7 @@ void MyGLWindow::init()
     monkey_instance1 = new Mesh(monkey);
     monkey_instance1->setName("Suzzane Instance");
     monkey_instance1->enableFlatColor();
-    monkey_instance1->setFlatColor(vec3(.7,.4,.7));
+    monkey_instance1->setFlatColor(vec3(.7, .4, .7));
     monkey_instance1->setScale(0.6f);
     monkey_instance1->setTranslateY(1.0f);
     monkey_instance1->setTranslateZ(2.2f);
@@ -63,15 +63,15 @@ void MyGLWindow::init()
 
     cube = new Cube();
     cube->setName("Green cube mesh");
-    cube->setTranslate(vec3(-.5,2,0));
+    cube->setTranslate(vec3(-.5, 2, 0));
     cube->enableFlatColor();
-    cube->setFlatColor(vec3(.1,.5,.2));
+    cube->setFlatColor(vec3(.1, .5, .2));
     cube->setScale(0.3f);
 
     plane = new Plane(10);
     plane->setName("Plane mesh");
     plane->enableFlatColor();
-    plane->setFlatColor(vec3(0.6f,0.8f,1.0f));
+    plane->setFlatColor(vec3(0.6f, 0.8f, 1.0f));
 
     arrow = new Arrow();
     arrow->setName("Arrow (Vertex Colored)");
@@ -82,7 +82,7 @@ void MyGLWindow::init()
     cube_instance1 = new Mesh(cube);
     cube_instance1->setName("Cube instance");
     cube_instance1->enableFlatColor();
-    cube_instance1->setFlatColor(vec3(1.0f,1.0f,0.0f));
+    cube_instance1->setFlatColor(vec3(1.0f, 1.0f, 0.0f));
     cube_instance1->setTranslateX(-3.0f);
     cube_instance1->setTranslateY(1.0f);
     cube_instance1->setRotateX(-40);
@@ -113,7 +113,7 @@ void MyGLWindow::guiSetup()
     outliner = sfg::Outliner::Create(bufferman);
 
     outliner->GetSignal(sfg::Outliner::OnSelect).Connect(
-                std::bind(&MyGLWindow::onOutlinerSelect, this));
+        std::bind(&MyGLWindow::onOutlinerSelect, this));
 
     addWindow(transform_panel->get(), "Transform tools");
     addWindow(camera_panel->get(), "Camera Controls", 0, 185);
@@ -131,7 +131,7 @@ bool MyGLWindow::handleEvents(sf::Event e)
 
     case sf::Event::MouseMoved:
         if (isWindowSelect) break;
-        if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
+        if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             getActiveCamera()->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
         } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
             getActiveCamera()->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
@@ -146,7 +146,6 @@ bool MyGLWindow::handleEvents(sf::Event e)
             getActiveCamera()->moveForward(-ZOOM_SPEED);
         }
         break;
-
 
     default:
         break; // suppress enum not handled warnings
