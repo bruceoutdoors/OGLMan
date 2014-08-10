@@ -51,6 +51,8 @@ bool OpenGLWindow::handleEvents(sf::Event e)
     case sf::Event::Resized:
         resizeGL(e.size.width, e.size.height);
         break;
+
+    default: break; // suppress compiler complains
     }
 
     return false;
