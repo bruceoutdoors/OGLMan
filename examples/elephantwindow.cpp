@@ -16,6 +16,7 @@ ElephantWindow::ElephantWindow(sf::VideoMode mode, const sf::String &title)
 
 ElephantWindow::~ElephantWindow()
 {
+    delete arcball;
 }
 
 void ElephantWindow::draw()

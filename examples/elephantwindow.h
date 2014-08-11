@@ -8,9 +8,6 @@
 #include "primitives/plane.h"
 #include "oglman/arcball.h"
 
-#include <vector>
-#include <sstream>
-
 class ElephantWindow : public GuiWindow
 {
 public:
@@ -32,8 +29,6 @@ private:
     // GUI:
     sfg::TransformPanel::Ptr transform_panel;
     sfg::CameraPanel::Ptr camera_panel;
-
-
 };
 
 #endif // ELEPHANTWINDOW_H
