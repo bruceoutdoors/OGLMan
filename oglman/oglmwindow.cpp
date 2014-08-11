@@ -48,7 +48,7 @@ bool OGLMWindow::handleEvents(sf::Event e)
 
     // Resize event : adjust viewport
     case sf::Event::Resized:
-        resizeGL(e.size.width, e.size.height);
+        resizeGL();
         break;
 
     default: break; // suppress compiler complains
@@ -63,11 +63,11 @@ void OGLMWindow::toggleFullscreen()
 
     if (isFullscreen) {
         create(sf::VideoMode::getDesktopMode(), m_title, sf::Style::Fullscreen);
-        resizeGL(sf::VideoMode::getDesktopMode().width, sf::VideoMode::getDesktopMode().height);
     } else {
         create(m_mode, m_title, sf::Style::Resize | sf::Style::Close);
-        resizeGL(m_mode.width, m_mode.height);
     }
+
+    resizeGL();
 
     // recreating the window causes the buffers to get cleared so we need to
     // add the data back again.
@@ -99,7 +99,7 @@ void OGLMWindow::setup()
     init();
 
     bufferman->setupBuffers();
-    resizeGL(getSize().x, getSize().y);
+    resizeGL();
 }
 
 void OGLMWindow::renderScene()
@@ -189,6 +189,8 @@ void OGLMWindow::setActiveCamera(Camera *cam)
     active_camera = cam;
     // update the mesh's Camera pointer
     Mesh::setCamera(active_camera);
+
+    updateCameraAspectRatio();
 }
 
 Camera *OGLMWindow::getActiveCamera() const
@@ -283,9 +285,15 @@ void OGLMWindow::drawSelectHighlight()
     if (wasLightOn) onLights();
 }
 
-GLvoid OGLMWindow::resizeGL(GLsizei width, GLsizei height)
+GLvoid OGLMWindow::resizeGL()
 {
-    glViewport(0, 0, width, height);         // Reset the current viewport
-    float aspect_ratio = ((float)width) / height;
+    // Resize the current viewport
+    glViewport(0, 0, getSize().x, getSize().y);
+    updateCameraAspectRatio();
+}
+
+void OGLMWindow::updateCameraAspectRatio()
+{
+    float aspect_ratio = ((float)getSize().x) / getSize().y;
     active_camera->setAspectRatio(aspect_ratio);
 }

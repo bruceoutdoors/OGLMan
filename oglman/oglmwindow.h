@@ -57,7 +57,8 @@ class OGLMWindow : public sf::Window
         void drawSelectHighlight();
 
     private:
-        GLvoid resizeGL(GLsizei width, GLsizei height);
+        GLvoid resizeGL();
+        void updateCameraAspectRatio();
 
         sf::VideoMode m_mode;
         sf::String m_title;
