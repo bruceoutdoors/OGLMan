@@ -14,6 +14,7 @@ SOURCES += main.cpp \
     oglman/arcball.cpp \
     oglman/objreader.cpp \
     oglman/texture.cpp \
+    oglman/oglmwindow.cpp \
     primitives/arrow.cpp \
     primitives/cube.cpp \
     primitives/plane.cpp \
@@ -21,10 +22,9 @@ SOURCES += main.cpp \
     gui/transformpanel.cpp \
     gui/camerapanel.cpp \
     gui/outliner.cpp \
-    openglwindow.cpp \
-    myglwindow.cpp \
-    elephantwindow.cpp \
-    guiwindow.cpp
+    gui/guiwindow.cpp \
+    examples/myglwindow.cpp \
+    examples/elephantwindow.cpp \
 
 HEADERS += \
     oglman/buffer.h \
@@ -37,6 +37,7 @@ HEADERS += \
     oglman/arcball.h \
     oglman/objreader.h \
     oglman/texture.h \
+    oglman/oglmwindow.h \
     primitives/arrow.h \
     primitives/cube.h \
     primitives/plane.h \
@@ -44,10 +45,9 @@ HEADERS += \
     gui/transformpanel.h \
     gui/camerapanel.h \
     gui/outliner.h \
-    myglwindow.h \
-    openglwindow.h \
-    elephantwindow.h \
-    guiwindow.h
+    gui/guiwindow.h \
+    examples/myglwindow.h \
+    examples/elephantwindow.h \
 
 
 QMAKE_CXXFLAGS += -std=c++11

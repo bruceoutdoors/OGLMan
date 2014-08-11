@@ -6,26 +6,25 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/OpenGL.hpp>
 
-#include "oglman/shaderman.h"
-#include "oglman/bufferman.h"
-#include "oglman/camera.h"
-#include "oglman/mesh.h"
+#include "shaderman.h"
+#include "bufferman.h"
+#include "camera.h"
+#include "mesh.h"
 
-class OpenGLWindow : public sf::Window
+class OGLMWindow : public sf::Window
 {
     public:
-        OpenGLWindow(sf::VideoMode mode,
+        OGLMWindow(sf::VideoMode mode,
                      const sf::String &title,
                      unsigned int style = sf::Style::Default);
-        virtual ~OpenGLWindow();
+        virtual ~OGLMWindow();
         virtual void draw() = 0;
         virtual void init() = 0;
         virtual bool handleEvents(sf::Event e);
-        virtual void guiDraw() {}
+        virtual void renderScene();
         void toggleFullscreen();
         void run();
         void setup();
-        void renderScene();
         void shadermanSetup();
         void setActiveCamera(Camera *cam);
         Camera *getActiveCamera() const;

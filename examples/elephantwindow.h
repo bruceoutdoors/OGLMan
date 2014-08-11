@@ -1,7 +1,7 @@
 #ifndef ELEPHANTWINDOW_H
 #define ELEPHANTWINDOW_H
 
-#include "guiwindow.h"
+#include "gui/guiwindow.h"
 #include "gui/transformpanel.h"
 #include "gui/camerapanel.h"
 
@@ -14,7 +14,8 @@
 class ElephantWindow : public GuiWindow
 {
 public:
-    ElephantWindow(sf::VideoMode mode, const sf::String &title);
+    ElephantWindow(sf::VideoMode mode,
+                   const sf::String &title = "Gook the elephant");
     virtual ~ElephantWindow();
     void draw();
     void init();

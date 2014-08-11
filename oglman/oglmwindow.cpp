@@ -1,7 +1,4 @@
-#include "openglwindow.h"
-
-#include <glm/gtx/transform.hpp>
-#include <glm/gtc/matrix_transform.hpp>
+#include "oglmwindow.h"
 #include <sstream>
 
 using glm::vec2;
@@ -11,7 +8,7 @@ using glm::vec4;
 const vec3 select_color = vec3(1);
 const vec3 wireframe_color = vec3(.5, .5, 1);
 
-OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
+OGLMWindow::OGLMWindow(sf::VideoMode mode,
                            const sf::String &title,
                            unsigned int style) :
     sf::Window(mode, title, style),
@@ -34,14 +31,14 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
     onLights();
 }
 
-OpenGLWindow::~OpenGLWindow()
+OGLMWindow::~OGLMWindow()
 {
     delete default_shader;
     delete flat_shader;
     delete bufferman;
 }
 
-bool OpenGLWindow::handleEvents(sf::Event e)
+bool OGLMWindow::handleEvents(sf::Event e)
 {
     switch (e.type) {
     case sf::Event::Closed:
@@ -60,7 +57,7 @@ bool OpenGLWindow::handleEvents(sf::Event e)
     return false;
 }
 
-void OpenGLWindow::toggleFullscreen()
+void OGLMWindow::toggleFullscreen()
 {
     isFullscreen = !isFullscreen;
 
@@ -77,7 +74,7 @@ void OpenGLWindow::toggleFullscreen()
     bufferman->setupBuffers();
 }
 
-void OpenGLWindow::run()
+void OGLMWindow::run()
 {
     setup();
 
@@ -86,17 +83,18 @@ void OpenGLWindow::run()
 
         while (this->pollEvent(e)) {
             // handle events for this base class
-            if (OpenGLWindow::handleEvents(e)) return;
+            if (OGLMWindow::handleEvents(e)) return;
 
             // handle events for subclasses
             if (handleEvents(e)) return;
         }
 
         renderScene();
+        display();
     }
 }
 
-void OpenGLWindow::setup()
+void OGLMWindow::setup()
 {
     init();
 
@@ -104,7 +102,7 @@ void OpenGLWindow::setup()
     resizeGL(getSize().x, getSize().y);
 }
 
-void OpenGLWindow::renderScene()
+void OGLMWindow::renderScene()
 {
     glEnable(GL_DEPTH_TEST);
     glClear(GL_DEPTH_BUFFER_BIT | GL_COLOR_BUFFER_BIT);
@@ -144,9 +142,6 @@ void OpenGLWindow::renderScene()
     // unbound any shader programs, or GUI will not render
     glUseProgram(0);
 
-    guiDraw();
-    display();
-
     if (isFPSCountEnabled) {
         if (fps_clock.getElapsedTime().asMilliseconds() >= 1000) {
             fps_clock.restart();
@@ -159,7 +154,7 @@ void OpenGLWindow::renderScene()
     }
 }
 
-void OpenGLWindow::shadermanSetup()
+void OGLMWindow::shadermanSetup()
 {
     if (isLightOn) {
         // eliminate redundant calls:
@@ -189,91 +184,91 @@ void OpenGLWindow::shadermanSetup()
     glUniform3fv(selectColor_loc, 1, &select_color[0]);
 }
 
-void OpenGLWindow::setActiveCamera(Camera *cam)
+void OGLMWindow::setActiveCamera(Camera *cam)
 {
     active_camera = cam;
     // update the mesh's Camera pointer
     Mesh::setCamera(active_camera);
 }
 
-Camera *OpenGLWindow::getActiveCamera() const
+Camera *OGLMWindow::getActiveCamera() const
 {
     return active_camera;
 }
 
-float OpenGLWindow::getFPS() const
+float OGLMWindow::getFPS() const
 {
     if (!isFPSCountEnabled) return -1;
 
     return fps_counter;
 }
 
-void OpenGLWindow::enableFPSCounter()
+void OGLMWindow::enableFPSCounter()
 {
     fps_counter = 0;
     fps_clock.restart();
     isFPSCountEnabled = true;
 }
 
-void OpenGLWindow::disableFPSCounter()
+void OGLMWindow::disableFPSCounter()
 {
     fps_counter = 0;
     isFPSCountEnabled = false;
 }
 
-void OpenGLWindow::onLights()
+void OGLMWindow::onLights()
 {
     isLightOn = true;
     shadermanSetup();
 }
 
-void OpenGLWindow::offLights()
+void OGLMWindow::offLights()
 {
     isLightOn = false;
     shadermanSetup();
 }
 
-bool OpenGLWindow::hasLights() const
+bool OGLMWindow::hasLights() const
 {
     return isLightOn;
 }
 
-bool OpenGLWindow::hasWireframeMode() const
+bool OGLMWindow::hasWireframeMode() const
 {
     return isWireframeMode;
 }
 
-void OpenGLWindow::wireframeDisplay()
+void OGLMWindow::wireframeDisplay()
 {
     isWireframeMode = true;
     offLights();
 }
 
-void OpenGLWindow::shadedDisplay()
+void OGLMWindow::shadedDisplay()
 {
     isWireframeMode = false;
     onLights();
 }
 
-void OpenGLWindow::flatShadeDisplay()
+void OGLMWindow::flatShadeDisplay()
 {
     isWireframeMode = false;
     offLights();
 }
 
-void OpenGLWindow::wireframeModeOn()
+void OGLMWindow::wireframeModeOn()
 {
     glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
     glDisable(GL_CULL_FACE);
 }
 
-void OpenGLWindow::wireframeModeOff()
+void OGLMWindow::wireframeModeOff()
 {
     glPolygonMode(GL_FRONT, GL_FILL);
     glEnable(GL_CULL_FACE);
 }
 
-void OpenGLWindow::drawSelectHighlight()
+void OGLMWindow::drawSelectHighlight()
 {
     bool wasLightOn = isLightOn;
 
@@ -288,7 +283,7 @@ void OpenGLWindow::drawSelectHighlight()
     if (wasLightOn) onLights();
 }
 
-GLvoid OpenGLWindow::resizeGL(GLsizei width, GLsizei height)
+GLvoid OGLMWindow::resizeGL(GLsizei width, GLsizei height)
 {
     glViewport(0, 0, width, height);         // Reset the current viewport
     float aspect_ratio = ((float)width) / height;

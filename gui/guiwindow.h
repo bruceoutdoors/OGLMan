@@ -1,18 +1,18 @@
 #ifndef GUIWINDOW_H
 #define GUIWINDOW_H
 
-#include "openglwindow.h"
+#include "oglman/oglmwindow.h"
 #include <SFGUI/SFGUI.hpp>
 
-class GuiWindow : public OpenGLWindow
+class GuiWindow : public OGLMWindow
 {
 public:
     GuiWindow(sf::VideoMode mode, const sf::String &title);
     virtual ~GuiWindow();
     virtual void draw() = 0;
     virtual void init() = 0;
-    virtual bool handleEvents(sf::Event e);
-    void guiDraw();
+    bool handleEvents(sf::Event e);
+    void renderScene();
 
 protected:
     void addWindow(sfg::Widget::Ptr widget,

@@ -1,7 +1,7 @@
 #include "guiwindow.h"
 
 GuiWindow::GuiWindow(sf::VideoMode mode, const sf::String &title) :
-    OpenGLWindow(mode, title),
+    OGLMWindow(mode, title),
     isWindowSelect(false)
 {
     clock = new sf::Clock();
@@ -15,10 +15,14 @@ GuiWindow::~GuiWindow()
 bool GuiWindow::handleEvents(sf::Event e)
 {
     desktop.HandleEvent(e);
+
+    return false;
 }
 
-void GuiWindow::guiDraw()
+void GuiWindow::renderScene()
 {
+    OGLMWindow::renderScene();
+
     // Update the GUI every 100ms
     if (clock->getElapsedTime().asMilliseconds() >= 100) {
         auto delta = static_cast<float>(clock->getElapsedTime().asMicroseconds()) / 1000000.f;
@@ -27,6 +31,7 @@ void GuiWindow::guiDraw()
         clock->restart();
     }
 
+    // Render out the GUI:
     sfgui.Display(*this);
 }
 

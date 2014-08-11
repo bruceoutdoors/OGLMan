@@ -1,7 +1,7 @@
 #ifndef MYGLWINDOW_H
 #define MYGLWINDOW_H
 
-#include "guiwindow.h"
+#include "gui/guiwindow.h"
 
 #include "oglman/arcball.h"
 #include "oglman/walkcam.h"
@@ -15,7 +15,8 @@
 class MyGLWindow : public GuiWindow
 {
 public:
-    MyGLWindow(sf::VideoMode mode, const sf::String &title);
+    MyGLWindow(sf::VideoMode mode,
+               const sf::String &title = "Test OGLMan Example");
     virtual ~MyGLWindow();
     void draw();
     void init();
