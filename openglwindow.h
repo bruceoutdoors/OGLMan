@@ -29,6 +29,9 @@ class OpenGLWindow : public sf::Window
         void shadermanSetup();
         void setActiveCamera(Camera *cam);
         Camera *getActiveCamera() const;
+        float getFPS() const;
+        void enableFPSCounter();
+        void disableFPSCounter();
 
         void onLights();
         void offLights();
@@ -59,6 +62,7 @@ class OpenGLWindow : public sf::Window
 
         sf::VideoMode m_mode;
         sf::String m_title;
+        sf::Clock fps_clock;
 
         Camera *active_camera;
 
@@ -73,6 +77,9 @@ class OpenGLWindow : public sf::Window
         bool isFullscreen;
         bool isWireframeMode;
         bool isLightOn;
+        bool isFPSCountEnabled;
+
+        float fps_counter;
 };
 
 #endif // OPENGLWINDOW_H

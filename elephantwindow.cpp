@@ -10,6 +10,8 @@ ElephantWindow::ElephantWindow(sf::VideoMode mode, const sf::String &title)
 {
     arcball = new Arcball();
     setActiveCamera(arcball);
+
+    enableFPSCounter();
 }
 
 ElephantWindow::~ElephantWindow()

@@ -2,6 +2,7 @@
 
 #include <glm/gtx/transform.hpp>
 #include <glm/gtc/matrix_transform.hpp>
+#include <sstream>
 
 using glm::vec2;
 using glm::vec3;
@@ -17,7 +18,8 @@ OpenGLWindow::OpenGLWindow(sf::VideoMode mode,
     m_mode(mode),
     m_title(title),
     isFullscreen(false),
-    isWireframeMode(false)
+    isWireframeMode(false),
+    isFPSCountEnabled(false)
 {
     light_position = vec3(0.0f, 3.0f, 1.0f);
     ambientLight = vec4(0.05f, 0.05f, 0.05f , 1.0f);
@@ -144,6 +146,17 @@ void OpenGLWindow::renderScene()
 
     guiDraw();
     display();
+
+    if (isFPSCountEnabled) {
+        if (fps_clock.getElapsedTime().asMilliseconds() >= 1000) {
+            fps_clock.restart();
+            std::stringstream sstr;
+            sstr << fps_counter;
+            setTitle(m_title + " -- FPS: " + sstr.str());
+            fps_counter = 0;
+        }
+        ++fps_counter;
+    }
 }
 
 void OpenGLWindow::shadermanSetup()
@@ -186,6 +199,26 @@ void OpenGLWindow::setActiveCamera(Camera *cam)
 Camera *OpenGLWindow::getActiveCamera() const
 {
     return active_camera;
+}
+
+float OpenGLWindow::getFPS() const
+{
+    if (!isFPSCountEnabled) return -1;
+
+    return fps_counter;
+}
+
+void OpenGLWindow::enableFPSCounter()
+{
+    fps_counter = 0;
+    fps_clock.restart();
+    isFPSCountEnabled = true;
+}
+
+void OpenGLWindow::disableFPSCounter()
+{
+    fps_counter = 0;
+    isFPSCountEnabled = false;
 }
 
 void OpenGLWindow::onLights()

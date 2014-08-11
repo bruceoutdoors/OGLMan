@@ -19,8 +19,8 @@ bool GuiWindow::handleEvents(sf::Event e)
 
 void GuiWindow::guiDraw()
 {
-    // Update the GUI every 1ms
-    if (clock->getElapsedTime().asMicroseconds() >= 1000) {
+    // Update the GUI every 100ms
+    if (clock->getElapsedTime().asMilliseconds() >= 100) {
         auto delta = static_cast<float>(clock->getElapsedTime().asMicroseconds()) / 1000000.f;
         // Update() takes the elapsed time in seconds.
         desktop.Update(delta);

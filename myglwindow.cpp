@@ -10,6 +10,9 @@ MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : GuiWindow(
     arcball = new Arcball();
     walkcam = new WalkCam();
     setActiveCamera(arcball);
+
+    enableFPSCounter();
+//    setFramerateLimit(60);
 }
 
 MyGLWindow::~MyGLWindow()
