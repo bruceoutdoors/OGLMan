@@ -12,7 +12,7 @@ MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : GuiWindow(
     setActiveCamera(arcball);
 
     enableFPSCounter();
-//    setFramerateLimit(60);
+    setFramerateLimit(60);
 }
 
 MyGLWindow::~MyGLWindow()

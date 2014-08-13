@@ -1,5 +1,6 @@
 #include "oglmwindow.h"
 #include <sstream>
+#include <iostream>
 
 using glm::vec2;
 using glm::vec3;
@@ -99,6 +100,7 @@ void OGLMWindow::setup()
     init();
 
     bufferman->setupBuffers();
+    std::cout << "Total vertices in Scene: " << bufferman->getTotalVectices() << std::endl;
     resizeGL();
 }
 
