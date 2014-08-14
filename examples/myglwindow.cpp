@@ -3,7 +3,6 @@
 
 const float LIGHT_MOVE = 0.1f;
 const float ZOOM_SPEED = 1.0f;
-const float PAN_SPEED = 0.05f;
 
 MyGLWindow::MyGLWindow(sf::VideoMode mode, const sf::String &title) : GuiWindow(mode, title)
 {
@@ -137,7 +136,7 @@ bool MyGLWindow::handleEvents(sf::Event e)
         if (sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
             getActiveCamera()->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
         } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-            getActiveCamera()->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
+            getActiveCamera()->pan(vec2(e.mouseMove.x, e.mouseMove.y));
         }
         break;
 

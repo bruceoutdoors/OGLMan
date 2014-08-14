@@ -32,14 +32,14 @@ void Camera::pan(const glm::vec2 &new_mouse_position, float speed)
     vec2 mouse_delta = new_mouse_position - old_mouse_position;
     if (glm::length(mouse_delta) < 50.0f) { // fix jump
         if (mouse_delta.y > 0.0f) {
-            moveUp(speed);
+            moveUp(mouse_delta.y*speed);
         } else if (mouse_delta.y < 0.0f) {
-            moveUp(-speed);
+            moveUp(mouse_delta.y*speed);
         }
         if (mouse_delta.x > 0.0f) {
-            moveRight(-speed);
+            moveRight(-mouse_delta.x*speed);
         } else if (mouse_delta.x < 0.0f) {
-            moveRight(speed);
+            moveRight(-mouse_delta.x*speed);
         }
     }
     old_mouse_position = new_mouse_position;

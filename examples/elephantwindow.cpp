@@ -2,7 +2,6 @@
 
 const float LIGHT_MOVE = 0.1f;
 const float ZOOM_SPEED = 1.0f;
-const float PAN_SPEED  = 0.05f;
 const float INIT_SCALE = 0.25f;
 
 ElephantWindow::ElephantWindow(sf::VideoMode mode, const sf::String &title)
@@ -49,7 +48,7 @@ bool ElephantWindow::handleEvents(sf::Event e)
             if(sf::Mouse::isButtonPressed(sf::Mouse::Left)) {
                 getActiveCamera()->mouseDrag(vec2(e.mouseMove.x, e.mouseMove.y));
             } else if (sf::Mouse::isButtonPressed(sf::Mouse::Middle)) {
-                getActiveCamera()->pan(vec2(e.mouseMove.x, e.mouseMove.y), PAN_SPEED);
+                getActiveCamera()->pan(vec2(e.mouseMove.x, e.mouseMove.y));
             }
             break;
 
