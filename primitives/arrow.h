@@ -7,7 +7,6 @@ class Arrow : public Mesh
 {
 public:
     Arrow();
-    void store();
 };
 
 #endif // ARROW_H

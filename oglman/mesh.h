@@ -30,7 +30,6 @@ public:
     Mesh(Mesh *m);
     Mesh(std::string path);
     virtual ~Mesh();
-    virtual void store() {}
     void draw();
 
     GLsizeiptr getArrayBufferSize() const;

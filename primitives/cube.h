@@ -7,7 +7,6 @@ class Cube : public Mesh
 {
 public:
     Cube();
-    void store();
 };
 
 #endif // CUBE_H

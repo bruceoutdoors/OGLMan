@@ -67,7 +67,6 @@ void BufferMan::setupBuffers()
 {
     if (!is_setup) {
         for (Mesh *s : meshes) {
-            s->store();
             index_buffer_size += s->getIndexBufferSize();
             array_buffer_size += s->getArrayBufferSize();
             num_vertices += s->getNumVertices();

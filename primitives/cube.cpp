@@ -4,10 +4,6 @@ using glm::vec3;
 
 Cube::Cube()
 {
-}
-
-void Cube::store()
-{
     vec3 stackVerts[] = {
         vec3(-1.0f, +1.0f, +1.0f),  // 0
         vec3(+1.0f, +1.0f, +1.0f),  // 1

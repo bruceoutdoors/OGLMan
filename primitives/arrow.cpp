@@ -2,10 +2,6 @@
 
 Arrow::Arrow()
 {
-}
-
-void Arrow::store()
-{
     glm::vec3 stackVerts[] = {
         // Top side of arrow head
         vec3(+0.00f, +0.25f, -0.25f),         // 0
