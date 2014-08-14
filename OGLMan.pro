@@ -25,6 +25,7 @@ SOURCES += main.cpp \
     gui/guiwindow.cpp \
     examples/myglwindow.cpp \
     examples/elephantwindow.cpp \
+    primitives/sphere.cpp
 
 HEADERS += \
     oglman/buffer.h \
@@ -48,6 +49,7 @@ HEADERS += \
     gui/guiwindow.h \
     examples/myglwindow.h \
     examples/elephantwindow.h \
+    primitives/sphere.h
 
 
 QMAKE_CXXFLAGS += -std=c++11

@@ -2,9 +2,9 @@
 
 using glm::vec3;
 
-Plane::Plane(unsigned int dimensions)
+Plane::Plane(unsigned int dimensions) :
+    subdv(dimensions)
 {
-    this->dimensions = dimensions;
     makeVerts(dimensions);
     makeIndices(dimensions);
 }

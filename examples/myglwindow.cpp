@@ -65,7 +65,7 @@ void MyGLWindow::init()
 
     cube = new Cube();
     cube->setName("Green cube mesh");
-    cube->setTranslate(vec3(-.5, 2, 0));
+    cube->setTranslate(vec3(-.5, 3, 0));
     cube->enableFlatColor();
     cube->setFlatColor(vec3(.1, .5, .2));
     cube->setScale(0.3f);
@@ -99,6 +99,12 @@ void MyGLWindow::init()
     arcball->setPitch(20);
     arcball->setYaw(5);
     arcball->setDistance(10);
+
+    sphere = new Sphere(.5,16);
+    sphere->enableFlatColor();
+    sphere->setFlatColor(vec3(.3,.6,.8));
+    sphere->setTranslateY(1);
+    sphere->setTranslateX(-.5);
 
     guiSetup();
 }

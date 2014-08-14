@@ -11,6 +11,7 @@
 #include "primitives/cube.h"
 #include "primitives/arrow.h"
 #include "primitives/plane.h"
+#include "primitives/sphere.h"
 
 class MyGLWindow : public GuiWindow
 {
@@ -42,6 +43,7 @@ private:
     Mesh *elephant;
     Plane *plane;
     Arrow *arrow;
+    Sphere *sphere;
 
     // slots:
     void onOutlinerSelect();
