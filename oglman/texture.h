@@ -1,7 +1,6 @@
 #ifndef TEXTURE_H
 #define TEXTURE_H
 
-#include <SFML/Graphics.hpp>
 #include <GL/glew.h>
 #include <string>
 
@@ -17,9 +16,7 @@ public:
     static void setTextureSamplerLoc(const GLint &val);
 
 private:
-    sf::Image img_data;
     GLuint textureID;
-
     static GLint texture_sampler_loc;
 };
 

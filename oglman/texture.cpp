@@ -1,6 +1,6 @@
 #include "texture.h"
 #include "shaderman.h"
-
+#include <SFML/Graphics.hpp>
 #include <iostream>
 
 GLint Texture::texture_sampler_loc;
@@ -9,6 +9,7 @@ Texture::Texture(const std::string &path)
 {
     glewInit();
 
+    sf::Image img_data;
     if (!img_data.loadFromFile(path)) {
         std::cerr << "Could not load " << path << "\n";
         return;
