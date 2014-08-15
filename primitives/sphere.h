@@ -19,15 +19,11 @@ public:
     Sphere(float r = 1,
            GLuint subdv = 10);
 
-    GLuint getSubdv() const;
     float getRadius() const;
-
-    void setSubdv(const GLuint &value);
-    void setRadius(float value);
 
 private:
     GLuint m_subdv;
-    float radius;
+    float m_r;
 };
 
 #endif // SPHERE_H

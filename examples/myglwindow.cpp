@@ -100,7 +100,8 @@ void MyGLWindow::init()
     arcball->setYaw(5);
     arcball->setDistance(10);
 
-    sphere = new Sphere(.5,16);
+    sphere = new Sphere(.5, 16);
+    sphere->setName("Blue sphere");
     sphere->enableFlatColor();
     sphere->setFlatColor(vec3(.3,.6,.8));
     sphere->setTranslateY(1);
