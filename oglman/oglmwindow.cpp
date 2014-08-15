@@ -39,25 +39,6 @@ OGLMWindow::~OGLMWindow()
     delete bufferman;
 }
 
-bool OGLMWindow::handleEvents(sf::Event e)
-{
-    switch (e.type) {
-    case sf::Event::Closed:
-        this->close();
-        return true;
-        break;
-
-    // Resize event : adjust viewport
-    case sf::Event::Resized:
-        resizeGL();
-        break;
-
-    default: break; // suppress compiler complains
-    }
-
-    return false;
-}
-
 void OGLMWindow::toggleFullscreen()
 {
     isFullscreen = !isFullscreen;
@@ -83,11 +64,21 @@ void OGLMWindow::run()
         sf::Event e;
 
         while (this->pollEvent(e)) {
-            // handle events for this base class
-            if (OGLMWindow::handleEvents(e)) return;
+            switch (e.type) {
+            case sf::Event::Closed:
+                this->close();
+                return true;
+                break;
 
-            // handle events for subclasses
-            if (handleEvents(e)) return;
+            // Resize event : adjust viewport
+            case sf::Event::Resized:
+                resizeGL();
+                break;
+
+            default:
+                if (handleEvents(e)) return;
+                break; // suppress compiler complains
+            }
         }
 
         renderScene();
@@ -298,4 +289,9 @@ void OGLMWindow::updateCameraAspectRatio()
 {
     float aspect_ratio = ((float)getSize().x) / getSize().y;
     active_camera->setAspectRatio(aspect_ratio);
+}
+
+bool OGLMWindow::handleEvents(sf::Event e)
+{
+    return false;
 }
