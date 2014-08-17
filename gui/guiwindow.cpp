@@ -45,6 +45,8 @@ void GuiWindow::addWindow(sfg::Widget::Ptr widget, sf::String title, float x, fl
 
     window->GetSignal(sfg::Widget::OnMouseLeftPress).Connect(
         std::bind(&GuiWindow::onWindowMove, this));
+    window->GetSignal(sfg::Widget::OnMouseMove).Connect(
+        std::bind(&GuiWindow::onWindowMove, this));
     window->GetSignal(sfg::Widget::OnMouseLeftRelease).Connect(
         std::bind(&GuiWindow::onWindowMoveRelease, this));
 
