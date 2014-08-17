@@ -43,9 +43,9 @@ void GuiWindow::addWindow(sfg::Widget::Ptr widget, sf::String title, float x, fl
     window->SetPosition(sf::Vector2f(x, y));
     window->Add(widget);
 
-    window->GetSignal(sfg::Widget::OnMouseEnter).Connect(
+    window->GetSignal(sfg::Widget::OnMouseLeftPress).Connect(
         std::bind(&GuiWindow::onWindowMove, this));
-    window->GetSignal(sfg::Widget::OnMouseLeave).Connect(
+    window->GetSignal(sfg::Widget::OnMouseLeftRelease).Connect(
         std::bind(&GuiWindow::onWindowMoveRelease, this));
 
     desktop.Add(window);

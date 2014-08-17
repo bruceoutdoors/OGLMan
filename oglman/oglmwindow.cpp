@@ -67,7 +67,7 @@ void OGLMWindow::run()
             switch (e.type) {
             case sf::Event::Closed:
                 this->close();
-                return true;
+                return;
                 break;
 
             // Resize event : adjust viewport
